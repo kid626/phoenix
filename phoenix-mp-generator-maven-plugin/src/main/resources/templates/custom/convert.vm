@@ -1,0 +1,32 @@
+package ${cfg.parent_package}.convert;
+
+import ${package.Entity}.po.${entity};
+import ${package.Entity}.form.${entity}Form;
+import ${package.Entity}.vo.${entity}VO;
+import org.springframework.beans.BeanUtils;
+
+/**
+ * @Copyright Copyright © ${date.substring(0,4)} ${author} . All rights reserved.
+ * @Desc ${table.comment}转换层
+ * @ProjectName ${cfg.project_name}
+ * @Date ${date}
+ * @Author ${author}
+ */
+public class ${entity}Converter {
+
+    public static ${entity} convert2Po(${entity}Form form) {
+        ${entity} po = new ${entity}();
+        BeanUtils.copyProperties(form, po);
+        return po;
+    }
+
+    public static ${entity}VO convert2Vo(${entity} po) {
+        ${entity}VO vo = new ${entity}VO();
+        BeanUtils.copyProperties(po, vo);
+        return vo;
+    }
+
+
+
+}
+

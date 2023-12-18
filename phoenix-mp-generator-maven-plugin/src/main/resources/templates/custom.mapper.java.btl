@@ -1,0 +1,19 @@
+package ${package.Mapper};
+
+import ${package.Entity}.${entity};
+import ${superMapperClassPackage};
+
+/**
+ * @Copyright Copyright © ${date(),"yyyy"} ${author} . All rights reserved.
+ * @Desc ${table.comment!}mapper 层
+ * @ProjectName ${cfg.project_name}
+ * @Date ${date(),"yyyy-MM-dd HH:mm:ss"}
+ * @Author ${author}
+ */
+<% if(kotlin){ %>
+interface ${table.mapperName} : ${superMapperClass}<${entity}>
+<% }else{ %>
+public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
+
+}
+<% } %>

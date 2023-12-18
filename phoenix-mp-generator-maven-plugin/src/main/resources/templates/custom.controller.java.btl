@@ -1,0 +1,38 @@
+package ${package.Controller};
+
+
+import org.springframework.web.bind.annotation.RequestMapping;
+
+<% if(restControllerStyle){ %>
+import org.springframework.web.bind.annotation.RestController;
+<% }else{ %>
+import org.springframework.stereotype.Controller;
+<% } %>
+<% if(isNotEmpty(superControllerClassPackage)){ %>
+import ${superControllerClassPackage};
+<% } %>
+
+/**
+ * @Copyright Copyright © ${date(),"yyyy"} ${author} . All rights reserved.
+ * @Desc ${table.comment!}Controller 接口
+ * @ProjectName ${cfg.project_name}
+ * @Date ${date(),"yyyy-MM-dd HH:mm:ss"}
+ * @Author ${author}
+ */
+<% if(restControllerStyle){ %>
+@RestController
+<% }else{ %>
+@Controller
+<% } %>
+@RequestMapping("<% if(isNotEmpty(package.ModuleName)){ %>/${package.ModuleName}<% } %>/<% if(isNotEmpty(controllerMappingHyphenStyle)){ %>${controllerMappingHyphen}<% }else{ %>${table.entityPath}<% } %>")
+<% if(kotlin){ %>
+class ${table.controllerName}<% if(isNotEmpty(superControllerClass)){ %> : ${superControllerClass}()<% } %>
+<% }else{ %>
+    <% if(isNotEmpty(superControllerClass)){ %>
+public class ${table.controllerName} extends ${superControllerClass} {
+    <% }else{ %>
+public class ${table.controllerName} {
+    <% } %>
+
+}
+<% } %>

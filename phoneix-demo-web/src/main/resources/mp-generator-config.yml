@@ -1,0 +1,22 @@
+author: Bruce
+dbType: mysql
+dbUrl: "jdbc:mysql://localhost:3306/mybatis_plus?characterEncoding=utf8&serverTimezone=GMT%2B8"
+dbDriverName: "com.mysql.cj.jdbc.Driver"
+dbUsername: root
+dbPassword: root
+
+parentPackage: com.bruce.demo.web
+projectName: phoenix-demo
+moduleName:
+version: v1
+# 是否初始化
+isFirstInit: true
+#prefix: demo
+includes: [ "demo_user" ]
+excludes: [ ]
+
+#outputDir:
+#usebtl: true
+usevm: true
+#useftl: true
+custom: true

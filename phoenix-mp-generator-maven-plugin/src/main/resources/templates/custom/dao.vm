@@ -1,0 +1,92 @@
+package ${cfg.parent_package}.dao;
+
+import cn.hutool.core.date.DateUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.dangdang.ddframe.rdb.sharding.id.generator.IdGenerator;
+import ${package.Entity}.po.${entity};
+import ${package.Entity}.query.${entity}Query;
+import ${package.Mapper}.${entity}Mapper;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Repository;
+
+import javax.annotation.Resource;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * @Copyright Copyright © ${date.substring(0,4)} ${author} . All rights reserved.
+ * @Desc ${table.comment}Dao层
+ * @ProjectName ${cfg.project_name}
+ * @Date ${date}
+ * @Author ${author}
+ */
+@Repository
+@Slf4j
+public class ${entity}Dao {
+
+    @Resource
+    private ${entity}Mapper mapper;
+    @Resource
+    private IdGenerator idGenerator;
+
+    /**
+     * 新增
+     */
+    public Long save(${entity} po) {
+        long id = idGenerator.generateId().longValue();
+        Date now = DateUtil.date();
+        po.setId(id);
+        po.setCreateTime(now);
+        po.setUpdateTime(now);
+        po.setIsDelete("N");
+        mapper.insert(po);
+        return id;
+    }
+
+    /**
+     * 更新
+     */
+    public void update(${entity} po) {
+        Date now = DateUtil.date();
+        po.setUpdateTime(now);
+        mapper.updateById(po);
+    }
+
+    /**
+     * 删除
+     */
+    public void remove(Long id) {
+        ${entity} po = new ${entity}();
+        Date now = DateUtil.date();
+        po.setUpdateTime(now);
+        po.setIsDelete("Y");
+        mapper.updateById(po);
+    }
+
+    /**
+     * 按主键查询
+     */
+    public ${entity} queryById(Long id) {
+        LambdaQueryWrapper<${entity}> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(${entity}::getIsDelete, "N");
+        wrapper.eq(${entity}::getId, id);
+        wrapper.last("limit 1");
+        return mapper.selectOne(wrapper);
+    }
+
+
+    /**
+     * 按条件查询
+     */
+    public List<${entity}> queryList(${entity}Query query) {
+        LambdaQueryWrapper<${entity}> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(${entity}::getIsDelete, "N");
+        // TODO 其他查询条件
+        return mapper.selectList(wrapper);
+    }
+
+
+
+}
+

@@ -1,0 +1,30 @@
+package ${package.Entity}.po;
+
+#foreach($pkg in ${table.importPackages})
+import ${pkg};
+#end
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+/**
+ * @Copyright Copyright © ${date.substring(0,4)} ${author} . All rights reserved.
+ * @Desc ${table.comment}实体类
+ * @ProjectName ${cfg.project_name}
+ * @Date ${date}
+ * @Author ${author}
+ */
+@Data
+@TableName("${table.name}")
+@ApiModel(value = "${entity}对象", description = "$!{table.comment}")
+public class ${entity} implements Serializable {
+
+    private static final long serialVersionUID = -1L;
+## ----------  BEGIN 字段循环遍历  ----------
+#foreach($field in ${table.fields})
+
+    @ApiModelProperty(value = "${field.comment}")
+    private ${field.propertyType} ${field.propertyName};
+#end
+
+}

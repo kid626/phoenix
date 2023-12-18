@@ -1,0 +1,54 @@
+package ${package.Service};
+
+import ${package.Entity}.po.${entity};
+import ${package.Entity}.form.${entity}Form;
+import ${package.Entity}.vo.${entity}VO;
+import ${package.Entity}.query.${entity}Query;
+import com.bruce.phoenix.common.model.common.PageData;
+
+/**
+ * @Copyright Copyright © ${date.substring(0,4)} ${author} . All rights reserved.
+ * @Desc ${table.comment}service 层
+ * @ProjectName ${cfg.project_name}
+ * @Date ${date}
+ * @Author ${author}
+ */
+public interface ${entity}Service {
+
+    /**
+     * 新增
+     *
+     * @param form ${entity}Form
+     * @return 主键
+     */
+    Long save(${entity}Form form);
+
+
+    /**
+     * 更新
+     *
+     * @param form ${entity}Form
+     */
+    void update(${entity}Form form);
+
+    /**
+     * 删除
+     *
+     * @param id 主键
+     */
+    void remove(Long id);
+
+    /**
+     * 按主键查询
+     */
+    ${entity} queryById(Long id);
+
+    /**
+     * 分页查询
+     *
+     * @param query ${entity}Query
+     * @return 分页信息
+     */
+    PageData<${entity}VO> queryByPage(${entity}Query query);
+
+}

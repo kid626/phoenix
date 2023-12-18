@@ -1,0 +1,15 @@
+package ${package.Mapper};
+
+import ${package.Entity}.po.${entity};
+import ${superMapperClassPackage};
+
+/**
+ * @Copyright Copyright © ${date.substring(0,4)} ${author} . All rights reserved.
+ * @Desc ${table.comment}mapper 层
+ * @ProjectName ${cfg.project_name}
+ * @Date ${date}
+ * @Author ${author}
+ */
+public interface ${entity}Mapper extends ${superMapperClass}<${entity}> {
+
+}
