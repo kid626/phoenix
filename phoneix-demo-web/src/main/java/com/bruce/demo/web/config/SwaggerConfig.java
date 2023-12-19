@@ -1,6 +1,7 @@
 package com.bruce.demo.web.config;
 
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -27,6 +28,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Import(BeanValidatorPluginsConfiguration.class)
 public class SwaggerConfig {
 
+    @Value("${swagger.enable:false}")
+    private Boolean enable;
+
     /**
     * 创建API应用
     * apiInfo() 增加API相关信息
@@ -43,7 +47,7 @@ public class SwaggerConfig {
             .build()
             .groupName("api")
             .pathMapping("/")
-            .enable(true);
+            .enable(enable);
     }
 
     private ApiInfo apiInfo(String title, String description, String version) {

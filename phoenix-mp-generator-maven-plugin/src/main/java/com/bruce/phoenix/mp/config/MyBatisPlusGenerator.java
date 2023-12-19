@@ -32,6 +32,7 @@ public class MyBatisPlusGenerator {
      * 自定义配置映射的 key
      */
     private final String PROJECT_NAME = "project_name";
+    private final String SWAGGER_CONFIG = "swagger_config";
     private final String PARENT_PACKAGE = "parent_package";
     private final String PARENT_PACKAGE_VIA_SLASH = "parent_package_via_slash";
     private final String VERSION = "version";
@@ -182,6 +183,7 @@ public class MyBatisPlusGenerator {
                 map.put(PARENT_PACKAGE, mpConfig.getParentPackage());
                 map.put(PARENT_PACKAGE_VIA_SLASH, mpConfig.getParentPackage().replaceAll("\\.", "/"));
                 map.put(VERSION, mpConfig.getVersion());
+                map.put(SWAGGER_CONFIG, "${swagger.enable:false}");
 
                 this.setMap(map);
                 List<FileOutConfig> fileOutConfigList = new ArrayList<>();
