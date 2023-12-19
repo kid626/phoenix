@@ -1,6 +1,24 @@
-# 名称
+### 名称
 
-phoenix
+    phoenix
+
+### 模块介绍
+
+```text
+
+- phoenix-common
+    -   封装了常用的java工具，尽可能不依赖于第三方的包
+- phoenix-core
+    -   封装了核心 java 组件，整合一些常用工具，比如 redis 等
+- phoenix-mp-generator-maven-plugin
+    -   mp 代码自动生成插件，以插件形式打包，完成后端代码基础的 crud 工作
+- phoneix-demo-web
+    -   示例工程，引入两个 jar 包，完成简单的项目工程构建    
+```
+
+
+
+
 
 ### 安装
 
