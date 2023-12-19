@@ -31,8 +31,8 @@ public class Result<T> implements Serializable {
         this.data = data;
     }
 
-    public static Result<String> fail(Error error) {
-        return new Result<>(error.getCode(), error.getMessage(), "");
+    public static Result<String> fail(Err err) {
+        return new Result<>(err.getCode(), err.getMessage(), "");
     }
 
     public static Result<String> fail(int code, String msg) {

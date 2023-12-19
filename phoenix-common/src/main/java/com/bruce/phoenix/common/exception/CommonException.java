@@ -1,6 +1,6 @@
 package com.bruce.phoenix.common.exception;
 
-import com.bruce.phoenix.common.model.common.Error;
+import com.bruce.phoenix.common.model.common.Err;
 
 /**
  * @Copyright Copyright © 2023 fanzh . All rights reserved.
@@ -11,7 +11,7 @@ import com.bruce.phoenix.common.model.common.Error;
  */
 public class CommonException extends RuntimeException {
 
-    private int code = Error.CUSTOM_ERROR.getCode();
+    private int code = Err.CUSTOM_ERROR.getCode();
 
     private Object data;
 
@@ -23,7 +23,7 @@ public class CommonException extends RuntimeException {
         super(message);
     }
 
-    public CommonException(Error err) {
+    public CommonException(Err err) {
         super(err.getMessage());
         this.code = err.getCode();
     }

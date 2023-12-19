@@ -12,7 +12,7 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
-public class Error {
+public class Err {
 
     private int code;
     private String message;
@@ -20,8 +20,9 @@ public class Error {
     /**
      * 公共异常
      */
-    public static Error SYS_ERROR = new Error(500, "系统异常");
-    public static Error CUSTOM_ERROR = new Error(400, "自定义错误");
-    public static Error NO_AUTH = new Error(401, "无权限访问");
-    public static Error NO_LOGIN = new Error(430, "未登录");
+    public static Err SYS_ERROR = new Err(500, "系统异常");
+    public static Err CUSTOM_ERROR = new Err(502, "自定义错误");
+    public static Err PARAM_ERROR = new Err(400, "参数校验异常");
+    public static Err NO_AUTH = new Err(401, "无权限访问");
+    public static Err NO_LOGIN = new Err(430, "未登录");
 }

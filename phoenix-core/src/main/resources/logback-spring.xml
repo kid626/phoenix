@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <springProperty scope="context" name="packageName" source="log.packageName" defaultValue="com.bruce.demo"/>
+    <springProperty scope="context" name="projectName" source="log.projectName" defaultValue="app"/>
+    <property name="appHome" value="/data/log/${projectName}"/>
+
+
+    <!-- 线上环境 在文件和控制台 同时输出-->
+    <springProfile name="prod">
+        <!-- 输出到文档 -->
+        <appender name="LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${appHome}/${projectName}.log</file>
+            <encoder>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-10X{traceId} %-5level %logger:%L - %msg %n</Pattern>
+                <charset>UTF-8</charset> <!-- 设置字符集 -->
+            </encoder>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>${appHome}/admin-%d{yyyy-MM-dd}.log</fileNamePattern>
+                <maxHistory>15</maxHistory><!--日志文档保留天数-->
+            </rollingPolicy>
+        </appender>
+        <!-- 输出到控制台 -->
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-10X{traceId} %-5level %logger:%L - %msg %n</Pattern>
+                <charset>UTF-8</charset> <!-- 设置字符集 -->
+            </encoder>
+        </appender>
+        <!-- logger 用来指定包或某个具体的类，root 用来指定最基础的日志输出级别 -->
+        <!-- 禁用 swagger2 日志 -->
+        <logger name="io.swagger.models.parameters.AbstractSerializableParameter" level="ERROR"/>
+        <logger name="${packageName}" level="debug"/>
+        <!-- 容器级日志 DEBUG < INFO < WARN < ERROR -->
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="LOG_FILE"/>
+        </root>
+    </springProfile>
+
+    <!-- 在非线上环境下，不输出日志文件，在logstash和控制台输出-->
+    <springProfile name="!prod">
+        <!-- 输出到控制台 -->
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-10X{traceId} %-5level %logger:%L - %msg %n</Pattern>
+                <charset>UTF-8</charset> <!-- 设置字符集 -->
+            </encoder>
+        </appender>
+        <!-- 禁用 swagger2 日志 -->
+        <logger name="io.swagger.models.parameters.AbstractSerializableParameter" level="ERROR"/>
+        <logger name="${packageName}">
+            <level value="DEBUG"/>
+        </logger>
+        <!-- 容器级日志 -->
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+</configuration>

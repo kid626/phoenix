@@ -1,11 +1,12 @@
 package com.bruce.demo.web.model.form;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import java.util.Date;
-import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
 * @Copyright Copyright © 2023 Bruce . All rights reserved.
@@ -21,6 +22,7 @@ public class DemoUserForm implements Serializable {
     private static final long serialVersionUID = -1L;
 
     @ApiModelProperty(value = "")
+    @NotNull
     private Long id;
 
     @ApiModelProperty(value = "")

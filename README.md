@@ -1,11 +1,10 @@
-### 名称
+### 工程名称
 
-    phoenix
+    phoenix 意为凤凰，有种涅槃重生的感觉
 
 ### 模块介绍
 
 ```text
-
 - phoenix-common
     -   封装了常用的java工具，尽可能不依赖于第三方的包
 - phoenix-core
@@ -16,11 +15,26 @@
     -   示例工程，引入两个 jar 包，完成简单的项目工程构建    
 ```
 
+### phoenix-core 能力集
+
+- [x] mp generator
+- [x] aop 日志
+- [x] 异常拦截
+- [ ] springboot admin
+- [ ] nacos
+- [ ] elk
+- [ ] rabbit
+- [x] redis
+- [ ] mongo
+- [x] easyexcel
+- [ ] springboot security
+- [x] websocket
+- [ ] dubbo
 
 
+### 安装与使用
 
-
-### 安装
+#### 安装
 
     依次安装 phoneix-common , phoenix-mp-generator-maven-plugin ,  phoneix-core
 
@@ -28,7 +42,7 @@
     也可以安装到自己的私服 mvn deploy
 
 
-### 使用方式
+#### 使用方式
 
     <dependencies>
         <dependency>
@@ -55,7 +69,7 @@
         </plugins>
     </build>
     
-### 配置文件
+#### 配置文件
         src/main/resources/mp-generator-config.yml
 ```
     # 作者
