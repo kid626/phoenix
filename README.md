@@ -11,7 +11,7 @@
     -   封装了核心 java 组件，整合一些常用工具，比如 redis 等
 - phoenix-mp-generator-maven-plugin
     -   mp 代码自动生成插件，以插件形式打包，完成后端代码基础的 crud 工作
-- phoneix-demo-web
+- phoenix-demo-web
     -   示例工程，引入两个 jar 包，完成简单的项目工程构建    
 ```
 
@@ -21,7 +21,7 @@
 - [x] aop 日志
 - [x] 异常拦截
 - [ ] springboot admin
-- [ ] nacos
+- [x] nacos
 - [ ] elk
 - [ ] rabbit
 - [x] redis

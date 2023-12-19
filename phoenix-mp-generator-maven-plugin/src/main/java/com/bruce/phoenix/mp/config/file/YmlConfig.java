@@ -16,14 +16,17 @@ public class YmlConfig extends FileOutConfig {
 
     private String path;
 
-    public YmlConfig(String templatePath, String path) {
+    private String suffix;
+
+    public YmlConfig(String templatePath, String path, String suffix) {
         super(templatePath);
         this.path = path;
+        this.suffix = suffix;
     }
 
     @Override
     public String outputFile(TableInfo tableInfo) {
-        return path + File.separator + "application.yml";
+        return path + File.separator + "application" + suffix + ".yml";
     }
 
 

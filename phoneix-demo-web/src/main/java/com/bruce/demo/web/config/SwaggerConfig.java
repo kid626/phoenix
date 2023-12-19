@@ -18,7 +18,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 * @Copyright Copyright © 2023 Bruce . All rights reserved.
 * @Desc 启动类
 * @ProjectName phoenix-demo
-* @Date 2023-12-18
+* @Date 2023-12-19
 * @Author Bruce
 */
 @Configuration

@@ -4,7 +4,7 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.bruce.demo.web.model.po.DemoUser">
-        <result column="id" property="id" />
+        <id column="id" property="id" />
         <result column="dept_id" property="deptId" />
         <result column="name" property="name" />
         <result column="age" property="age" />

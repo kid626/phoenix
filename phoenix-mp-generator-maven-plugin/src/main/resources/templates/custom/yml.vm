@@ -1,47 +1,5 @@
-server:
-    port: 8080
 spring:
-    datasource:
-        name: demo
-        url: jdbc:mysql://localhost:3306/demo?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
-        username: root
-        password: root
-
-        type: com.alibaba.druid.pool.DruidDataSource
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        druid:
-            filters: stat
-            maxActive: 20
-            initialSize: 1
-            maxWait: 60000
-            minIdle: 1
-            timeBetweenEvictionRunsMillis: 60000
-            minEvictableIdleTimeMillis: 300000
-            validationQuery: select 'x'
-            testWhileIdle: true
-            testOnBorrow: false
-            testOnReturn: false
-            poolPreparedStatements: true
-            maxOpenPreparedStatements: 20
-    redis:
-        host: 127.0.0.1
-        port: 6379
-        database: 0
-        password:
-        timeout: 5000
-        prefix: ${cfg.project_name}
-        jedis:
-            pool:
-                max-active: 8
-                max-wait: -1
-                max-idle: 8
-                min-idle: 0
-
-mybatis-plus:
-    mapper-locations: classpath:${cfg.parent_package_via_slash}/sqlmap/auto/*.xml
-    configuration:
-        log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-
-log:
-    packageName: ${cfg.parent_package}
-    projectName: ${cfg.project_name}
+    application:
+        name: ${cfg.project_name}
+    profiles:
+        active: local

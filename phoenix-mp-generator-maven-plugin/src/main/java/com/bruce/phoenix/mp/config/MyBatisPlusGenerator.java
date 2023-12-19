@@ -201,7 +201,10 @@ public class MyBatisPlusGenerator {
                     log.info("初始化");
                     fileOutConfigList.add(new ApplicationConfig("/templates/custom/application.vm", joinPath(mpConfig.getOutputDir(mpConfig.getModuleName()), mpConfig.getPackageConfig().getParent())));
                     fileOutConfigList.add(new SwaggerConfig("/templates/custom/swagger.vm", joinPath(mpConfig.getOutputDir(mpConfig.getModuleName()), mpConfig.getPackageConfig().getParent())));
-                    fileOutConfigList.add(new YmlConfig("/templates/custom/yml.vm", joinPath(mpConfig.getOutputDir(mpConfig.getModuleName()), "")));
+                    fileOutConfigList.add(new YmlConfig("/templates/custom/yml.vm", joinPath(mpConfig.getOutputDir(mpConfig.getModuleName()), ""), ""));
+                    fileOutConfigList.add(new YmlConfig("/templates/custom/yml-local.vm", joinPath(mpConfig.getOutputDir(mpConfig.getModuleName()), ""), "-local"));
+                    fileOutConfigList.add(new YmlConfig("/templates/custom/yml-dev.vm", joinPath(mpConfig.getOutputDir(mpConfig.getModuleName()), ""), "-dev"));
+                    fileOutConfigList.add(new YmlConfig("/templates/custom/yml-prod.vm", joinPath(mpConfig.getOutputDir(mpConfig.getModuleName()), ""), "-prod"));
                 }
                 this.setFileOutConfigList(fileOutConfigList);
             }

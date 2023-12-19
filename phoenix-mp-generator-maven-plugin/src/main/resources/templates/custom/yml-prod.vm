@@ -1,0 +1,11 @@
+nacos:
+    config:
+        server-addr: 127.0.0.1:8848
+        data-ids: ${cfg.project_name}.yml,common.yml,env-data.yml
+        namespace: phoenix
+        auto-refresh: true
+        type: yaml
+        group: DEFAULT_GROUP
+        bootstrap:
+            enable: true
+            log-enable: true

@@ -1,0 +1,4 @@
+DB_NAME: mybatis_plus
+
+PROJECT_NAME: phoenix-demo
+PACKAGE_NAME: com.bruce.demo.web

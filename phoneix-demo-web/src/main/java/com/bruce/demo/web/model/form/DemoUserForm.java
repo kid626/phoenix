@@ -1,18 +1,17 @@
 package com.bruce.demo.web.model.form;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+import java.util.Date;
+import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.util.Date;
 
 /**
 * @Copyright Copyright © 2023 Bruce . All rights reserved.
 * @Desc 表单实体类
 * @ProjectName phoenix-demo
-* @Date 2023-12-18
+* @Date 2023-12-19
 * @Author Bruce
 */
 @Data
@@ -21,29 +20,28 @@ public class DemoUserForm implements Serializable {
 
     private static final long serialVersionUID = -1L;
 
-    @ApiModelProperty(value = "")
-    @NotNull
+    @ApiModelProperty(value = "主键")
     private Long id;
 
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "部门id")
     private Long deptId;
 
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "名称")
     private String name;
 
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "年龄")
     private Integer age;
 
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "性别")
     private Integer grade;
 
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "邮箱")
     private String email;
 
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "序列")
     private String dateColumn;
 
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "租户号")
     private String tenantCode;
 
     @ApiModelProperty(value = "创建时间")
