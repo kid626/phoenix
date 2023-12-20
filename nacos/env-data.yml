@@ -11,3 +11,5 @@ REDIS_PASSWORD:
 
 PROJECT_NAME: phoenix-demo
 PACKAGE_NAME: com.bruce.demo.web
+
+SWAGGER_ENABLE: true

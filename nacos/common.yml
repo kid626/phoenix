@@ -45,3 +45,6 @@ mybatis-plus:
 log:
   packageName: ${PACKAGE_NAME}
   projectName: ${PROJECT_NAME}
+
+swagger:
+  enable: ${SWAGGER_ENABLE}

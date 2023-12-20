@@ -45,3 +45,6 @@ mybatis-plus:
 log:
     packageName: ${cfg.parent_package}
     projectName: ${cfg.project_name}
+
+swagger:
+    enable: true

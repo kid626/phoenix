@@ -45,3 +45,6 @@ mybatis-plus:
 log:
     packageName: com.bruce.demo.web
     projectName: phoenix-demo
+
+swagger:
+    enable: true
