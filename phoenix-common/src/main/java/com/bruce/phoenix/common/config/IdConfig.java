@@ -1,4 +1,4 @@
-package com.bruce.phoenix.core.config;
+package com.bruce.phoenix.common.config;
 
 import com.dangdang.ddframe.rdb.sharding.id.generator.IdGenerator;
 import com.dangdang.ddframe.rdb.sharding.id.generator.self.IPIdGenerator;
