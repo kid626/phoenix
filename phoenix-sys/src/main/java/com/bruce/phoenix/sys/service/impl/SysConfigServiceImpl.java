@@ -1,21 +1,21 @@
 package com.bruce.phoenix.sys.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.bruce.phoenix.common.converter.PageDataConverter;
 import com.bruce.phoenix.common.exception.CommonException;
-import com.bruce.phoenix.common.model.enums.YesOrNoEnum;
-import com.bruce.phoenix.sys.mapper.SysConfigMapper;
+import com.bruce.phoenix.common.model.common.BasePageQuery;
+import com.bruce.phoenix.common.model.common.PageData;
+import com.bruce.phoenix.sys.dao.SysConfigDao;
 import com.bruce.phoenix.sys.model.converter.SysConfigConverter;
 import com.bruce.phoenix.sys.model.form.SysConfigForm;
 import com.bruce.phoenix.sys.model.po.SysConfig;
 import com.bruce.phoenix.sys.model.vo.SysConfigVO;
 import com.bruce.phoenix.sys.service.SysConfigService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,15 +29,13 @@ import java.util.List;
 public class SysConfigServiceImpl implements SysConfigService {
 
     @Resource
-    private SysConfigMapper mapper;
+    private SysConfigDao dao;
 
     private static final SysConfigConverter CONVERTER = new SysConfigConverter();
 
     @Override
     public List<SysConfigVO> queryAll() {
-        LambdaQueryWrapper<SysConfig> lambdaQuery = Wrappers.lambdaQuery();
-        lambdaQuery.eq(SysConfig::getIsDeleted, YesOrNoEnum.NO.getCode());
-        List<SysConfig> sysConfigList = mapper.selectList(lambdaQuery);
+        List<SysConfig> sysConfigList = dao.queryAll();
         List<SysConfigVO> result = Lists.newArrayList();
         for (SysConfig sysConfig : sysConfigList) {
             SysConfigVO vo = new SysConfigVO();
@@ -48,11 +46,19 @@ public class SysConfigServiceImpl implements SysConfigService {
     }
 
     @Override
+    public PageData<SysConfigVO> queryAll(BasePageQuery query) {
+        Page<SysConfig> pageInfo = PageHelper.startPage(query.getPageNum(), query.getPageSize());
+        try {
+            List<SysConfigVO> list = queryAll();
+            return PageDataConverter.convertFromPage(pageInfo, list);
+        } finally {
+            PageHelper.clearPage();
+        }
+    }
+
+    @Override
     public SysConfigVO queryByCode(String code) {
-        LambdaQueryWrapper<SysConfig> lambdaQuery = Wrappers.lambdaQuery();
-        lambdaQuery.eq(SysConfig::getIsDeleted, YesOrNoEnum.NO.getCode())
-                .eq(SysConfig::getConfigCode, code);
-        SysConfig sysConfig = mapper.selectOne(lambdaQuery);
+        SysConfig sysConfig = dao.queryByCode(code);
         if (sysConfig != null) {
             SysConfigVO vo = new SysConfigVO();
             CONVERTER.convert2Vo(sysConfig, vo);
@@ -69,15 +75,7 @@ public class SysConfigServiceImpl implements SysConfigService {
         }
         SysConfig sysConfig = new SysConfig();
         CONVERTER.convert2Po(form, sysConfig);
-        Date date = new Date();
-        sysConfig.setCreateTime(date);
-        sysConfig.setUpdateTime(date);
-        // 只能新增非默认配置
-        sysConfig.setIsDefault(YesOrNoEnum.NO.getCode());
-        sysConfig.setIsDeleted(YesOrNoEnum.NO.getCode());
-        sysConfig.setIsEnable(YesOrNoEnum.YES.getCode());
-        mapper.insert(sysConfig);
-        return sysConfig.getId();
+        return dao.save(sysConfig);
     }
 
     @Override
@@ -88,22 +86,11 @@ public class SysConfigServiceImpl implements SysConfigService {
         }
         SysConfig sysConfig = new SysConfig();
         CONVERTER.convert2Po(form, sysConfig);
-        Date date = new Date();
-        sysConfig.setUpdateTime(date);
-        mapper.updateById(sysConfig);
+        dao.update(sysConfig);
     }
 
     @Override
     public void remove(Long id) {
-        SysConfig sysConfig = new SysConfig();
-        Date date = new Date();
-        sysConfig.setUpdateTime(date);
-        sysConfig.setIsDeleted(YesOrNoEnum.YES.getCode());
-        LambdaUpdateWrapper<SysConfig> lambdaUpdate = Wrappers.lambdaUpdate();
-        lambdaUpdate.eq(SysConfig::getIsDeleted, YesOrNoEnum.NO.getCode())
-                // 不能删除默认配置
-                .eq(SysConfig::getIsDefault, YesOrNoEnum.NO.getCode())
-                .eq(SysConfig::getId, id);
-        mapper.update(sysConfig, lambdaUpdate);
+        dao.remove(id);
     }
 }

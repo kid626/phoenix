@@ -1,25 +1,22 @@
 package com.bruce.phoenix.sys.service.impl;
 
-import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.lang.tree.Tree;
+import cn.hutool.core.lang.tree.TreeNodeConfig;
+import cn.hutool.core.lang.tree.TreeUtil;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.bruce.phoenix.common.model.enums.YesOrNoEnum;
-import com.bruce.phoenix.common.tree.TreeNodeCacheService;
-import com.bruce.phoenix.common.tree.TreeNodeConvertService;
-import com.bruce.phoenix.sys.mapper.SysDictMapper;
+import com.bruce.phoenix.common.exception.CommonException;
+import com.bruce.phoenix.sys.dao.SysDictDao;
 import com.bruce.phoenix.sys.model.converter.SysDictConverter;
+import com.bruce.phoenix.sys.model.form.SysDictForm;
 import com.bruce.phoenix.sys.model.po.SysDict;
-import com.bruce.phoenix.sys.model.tree.dict.SysDictForm;
-import com.bruce.phoenix.sys.model.tree.dict.SysDictTree;
-import com.bruce.phoenix.sys.model.tree.dict.SysDictVO;
+import com.bruce.phoenix.sys.model.vo.SysDictVO;
 import com.bruce.phoenix.sys.service.SysDictService;
-import com.dangdang.ddframe.rdb.sharding.id.generator.IdGenerator;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @Copyright Copyright © 2022 Bruce . All rights reserved.
@@ -29,111 +26,130 @@ import java.util.stream.Collectors;
  * @Author Bruce
  */
 @Service
-public class SysDictServiceImpl extends TreeNodeCacheService<SysDictTree, SysDictForm, SysDictVO> implements SysDictService {
+public class SysDictServiceImpl implements SysDictService {
 
     @Resource
-    private SysDictMapper mapper;
-    @Resource
-    private IdGenerator idGenerator;
+    private SysDictDao dao;
 
     private static final SysDictConverter CONVERTER = new SysDictConverter();
+
+    private static final Long TOP_ID = 0L;
+    private static final String CODE = "code";
+    private static final String P_CODE = "pCode";
+    private static final String VALUE = "value";
 
 
     @Override
     public SysDict queryById(Long id) {
-        LambdaQueryWrapper<SysDict> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(SysDict::getId, id).eq(SysDict::getIsDeleted, YesOrNoEnum.NO.getCode());
-        wrapper.last("limit 1");
-        return mapper.selectOne(wrapper);
+        return dao.queryById(id);
     }
 
     @Override
     public SysDict queryByCode(String code) {
-        LambdaQueryWrapper<SysDict> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(SysDict::getDictCode, code).eq(SysDict::getIsDeleted, YesOrNoEnum.NO.getCode());
-        wrapper.last("limit 1");
-        return mapper.selectOne(wrapper);
+        return dao.queryByCode(code);
     }
 
     @Override
     public List<SysDict> queryByPid(Long pId) {
-        LambdaQueryWrapper<SysDict> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(SysDict::getPId, pId).eq(SysDict::getIsDeleted, YesOrNoEnum.NO.getCode());
-        return mapper.selectList(wrapper);
+        return dao.queryByPid(pId);
     }
 
     @Override
-    public TreeNodeConvertService<SysDictTree, SysDictForm, SysDictVO> generateConvert() {
-        return new SysDictConvertServiceImpl();
+    public long save(SysDictForm form) {
+        SysDict vo = queryByCode(form.getDictCode());
+        if (vo != null) {
+            throw new CommonException("code 不能重复");
+        }
+        SysDict po = new SysDict();
+        CONVERTER.convert2Po(form, po);
+        return dao.save(po);
     }
 
     @Override
-    public SysDictTree queryTreeById(Long id) {
+    public void update(SysDictForm form) {
+        SysDict vo = queryByCode(form.getDictCode());
+        if (vo != null && !vo.getId().equals(form.getId())) {
+            throw new CommonException("code 不能重复");
+        }
+        SysDict po = new SysDict();
+        CONVERTER.convert2Po(form, po);
+        dao.update(po);
+    }
+
+    @Override
+    public List<SysDictVO> tree(String code) {
+        List<SysDict> all;
+        Long topId = TOP_ID;
+        if (StrUtil.isBlank(code)) {
+            all = queryAll();
+        } else {
+            SysDict top = queryByCode(code);
+            topId = top.getPId();
+            all = queryChildNode(top.getId());
+        }
+
+        List<Tree<Long>> tree = TreeUtil.build(all, topId, new TreeNodeConfig(), SysDictConverter::convert2Tree);
+        return executeTree(tree);
+    }
+
+    private List<SysDictVO> executeTree(List<Tree<Long>> treeList) {
+        if (CollUtil.isEmpty(treeList)) {
+            return new ArrayList<>();
+        }
+        List<SysDictVO> result = new ArrayList<>();
+        for (Tree<Long> tree : treeList) {
+            SysDictVO sysDictVO = SysDictConverter.convert2VO(tree);
+            List<SysDictVO> childList = executeTree(tree.getChildren());
+            sysDictVO.setChildren(childList);
+            result.add(sysDictVO);
+        }
+        return result;
+    }
+
+    @Override
+    public List<SysDict> getRootPath(Long id) {
+        List<SysDict> list = new ArrayList<>();
         SysDict sysDict = queryById(id);
+        while (sysDict != null) {
+            list.add(sysDict);
+            sysDict = queryById(sysDict.getPId());
+        }
+        return list;
+    }
+
+    @Override
+    public List<SysDict> queryChildNode(Long id) {
+        SysDict top = queryById(id);
+        List<SysDict> result = new ArrayList<>();
+
+        // 递归获取
+        queryChildNode(top, result);
+        return result;
+    }
+
+    private void queryChildNode(SysDict sysDict, List<SysDict> result) {
+        // 获取节点如果为空，返回
         if (sysDict == null) {
-            return null;
+            return;
         }
-        return SysDictConverter.convert2Tree(sysDict);
-    }
-
-    @Override
-    public SysDictTree queryTreeByCode(String code) {
-        SysDict sysDict = queryByCode(code);
-        if (sysDict == null) {
-            return null;
+        result.add(sysDict);
+        List<SysDict> list = queryByPid(sysDict.getId());
+        if (CollUtil.isNotEmpty(list)) {
+            for (SysDict node : list) {
+                queryChildNode(node, result);
+            }
         }
-        return SysDictConverter.convert2Tree(sysDict);
+    }
+
+
+    @Override
+    public List<SysDict> queryAll() {
+        return dao.queryAll();
     }
 
     @Override
-    public List<SysDictTree> queryTreeByPid(Long pId) {
-        List<SysDict> list = queryByPid(pId);
-        return list.stream().map(SysDictConverter::convert2Tree).collect(Collectors.toList());
-    }
+    public void refresh() {
 
-    @Override
-    public List<SysDictTree> getAll() {
-        LambdaQueryWrapper<SysDict> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(SysDict::getIsDeleted, YesOrNoEnum.NO.getCode());
-        wrapper.eq(SysDict::getIsEnable, YesOrNoEnum.YES.getCode());
-        List<SysDict> list = mapper.selectList(wrapper);
-        return list.stream().map(SysDictConverter::convert2Tree).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<SysDictTree> queryLikeCode(String code) {
-        LambdaQueryWrapper<SysDict> wrapper = Wrappers.lambdaQuery();
-        if (StrUtil.isNotBlank(code)) {
-            wrapper.likeRight(SysDict::getDictCode, code);
-        }
-        wrapper.eq(SysDict::getIsDeleted, YesOrNoEnum.NO.getCode());
-        List<SysDict> list = mapper.selectList(wrapper);
-        return list.stream().map(SysDictConverter::convert2Tree).collect(Collectors.toList());
-    }
-
-    @Override
-    public long insert(SysDictTree tree) {
-        SysDict po = SysDictConverter.convert2Po(tree);
-        Long id = po.getId();
-        if (id == null) {
-            id = idGenerator.generateId().longValue();
-        }
-        po.setId(id);
-        if (StrUtil.isBlank(po.getIsEnable())) {
-            po.setIsEnable(YesOrNoEnum.YES.getCode());
-        }
-        po.setIsDefault(YesOrNoEnum.NO.getCode());
-        po.setIsDeleted(YesOrNoEnum.NO.getCode());
-        po.setCreateTime(DateUtil.date());
-        mapper.insert(po);
-        return id;
-    }
-
-    @Override
-    public long updateEntity(SysDictTree tree) {
-        SysDict po = SysDictConverter.convert2Po(tree);
-        po.setUpdateTime(DateUtil.date());
-        return mapper.updateById(po);
     }
 
 }

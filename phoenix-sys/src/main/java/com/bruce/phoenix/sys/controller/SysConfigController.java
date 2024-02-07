@@ -1,6 +1,8 @@
 package com.bruce.phoenix.sys.controller;
 
 
+import com.bruce.phoenix.common.model.common.BasePageQuery;
+import com.bruce.phoenix.common.model.common.PageData;
 import com.bruce.phoenix.common.model.common.Result;
 import com.bruce.phoenix.sys.model.form.SysConfigForm;
 import com.bruce.phoenix.sys.model.vo.SysConfigVO;
@@ -32,6 +34,13 @@ public class SysConfigController {
     @ApiOperation(value = "查询全部系统配置")
     public Result<List<SysConfigVO>> queryAll() {
         List<SysConfigVO> list = sysConfigService.queryAll();
+        return Result.success(list);
+    }
+
+    @GetMapping("/v1/page")
+    @ApiOperation(value = "分页查询全部系统配置")
+    public Result<PageData<SysConfigVO>> queryAll(@Validated BasePageQuery query) {
+        PageData<SysConfigVO> list = sysConfigService.queryAll(query);
         return Result.success(list);
     }
 

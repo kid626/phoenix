@@ -3,10 +3,9 @@ package com.bruce.phoenix.sys.controller;
 
 import com.bruce.phoenix.common.model.common.Err;
 import com.bruce.phoenix.common.model.common.Result;
+import com.bruce.phoenix.sys.model.form.SysDictForm;
 import com.bruce.phoenix.sys.model.po.SysDict;
-import com.bruce.phoenix.sys.model.tree.dict.SysDictForm;
-import com.bruce.phoenix.sys.model.tree.dict.SysDictTree;
-import com.bruce.phoenix.sys.model.tree.dict.SysDictVO;
+import com.bruce.phoenix.sys.model.vo.SysDictVO;
 import com.bruce.phoenix.sys.service.SysDictService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,9 +32,9 @@ public class SysDictController {
 
     @PostMapping("/v1/save")
     @ApiOperation("新增")
-    public Result<Long> save(@Validated @RequestBody SysDictForm form) {
-        form.setId(null);
-        return Result.success(sysDictService.save(form));
+    public Result<String> save(@Validated @RequestBody SysDictForm form) {
+        long id = sysDictService.save(form);
+        return Result.success(id + "");
     }
 
     @PutMapping("/v1/update")
@@ -71,29 +70,22 @@ public class SysDictController {
 
     @GetMapping("/v1/tree")
     @ApiOperation("生成树")
-    public Result<SysDictVO> tree() {
-        SysDictVO vo = sysDictService.tree();
-        return Result.success(vo);
-    }
-
-    @GetMapping("/v1/root")
-    @ApiOperation("获取根节点")
-    public Result<SysDictTree> getRoot() {
-        SysDictTree tree = sysDictService.getRoot();
+    public Result<List<SysDictVO>> tree(String code) {
+        List<SysDictVO> tree = sysDictService.tree(code);
         return Result.success(tree);
     }
 
     @GetMapping("/v1/path/root/{id}")
     @ApiOperation("获取当前节点到根节点的路径")
-    public Result<List<SysDictTree>> getRootPath(@PathVariable Long id) {
-        List<SysDictTree> list = sysDictService.getRootPath(id);
+    public Result<List<SysDict>> getRootPath(@PathVariable Long id) {
+        List<SysDict> list = sysDictService.getRootPath(id);
         return Result.success(list);
     }
 
     @GetMapping("/v1/path/child/{id}")
     @ApiOperation("获取当前节点及其所有子节点")
-    public Result<List<SysDictTree>> getChildNode(@PathVariable Long id) {
-        List<SysDictTree> list = sysDictService.getChildNode(id);
+    public Result<List<SysDict>> queryChildNode(@PathVariable Long id) {
+        List<SysDict> list = sysDictService.queryChildNode(id);
         return Result.success(list);
     }
 

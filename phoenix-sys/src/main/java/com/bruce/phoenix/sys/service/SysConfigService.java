@@ -1,6 +1,8 @@
 package com.bruce.phoenix.sys.service;
 
 
+import com.bruce.phoenix.common.model.common.BasePageQuery;
+import com.bruce.phoenix.common.model.common.PageData;
 import com.bruce.phoenix.sys.model.form.SysConfigForm;
 import com.bruce.phoenix.sys.model.vo.SysConfigVO;
 
@@ -21,6 +23,13 @@ public interface SysConfigService {
      * @return 全部系统配置
      */
     List<SysConfigVO> queryAll();
+
+    /**
+     * 查询全部
+     *
+     * @return 全部系统配置
+     */
+    PageData<SysConfigVO> queryAll(BasePageQuery query);
 
     /**
      * 根据 code 编码获取
