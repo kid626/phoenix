@@ -7,6 +7,7 @@ import com.dangdang.ddframe.rdb.sharding.id.generator.IdGenerator;
 import ${package.Entity}.po.${entity};
 import ${package.Entity}.query.${entity}Query;
 import ${package.Mapper}.${entity}Mapper;
+import com.bruce.phoenix.common.model.enums.YesOrNoEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -39,7 +40,7 @@ public class ${entity}Dao {
         po.setId(id);
         po.setCreateTime(now);
         po.setUpdateTime(now);
-        po.setIsDelete("N");
+        po.setIsDelete(YesOrNoEnum.NO.getCode());
         mapper.insert(po);
         return id;
     }
@@ -59,8 +60,9 @@ public class ${entity}Dao {
     public void remove(Long id) {
         ${entity} po = new ${entity}();
         Date now = DateUtil.date();
+        po.setId(id);
         po.setUpdateTime(now);
-        po.setIsDelete("Y");
+        po.setIsDelete(YesOrNoEnum.YES.getCode());
         mapper.updateById(po);
     }
 
@@ -69,7 +71,7 @@ public class ${entity}Dao {
      */
     public ${entity} queryById(Long id) {
         LambdaQueryWrapper<${entity}> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(${entity}::getIsDelete, "N");
+        wrapper.eq(${entity}::getIsDelete, YesOrNoEnum.NO.getCode());
         wrapper.eq(${entity}::getId, id);
         wrapper.last("limit 1");
         return mapper.selectOne(wrapper);
@@ -81,7 +83,7 @@ public class ${entity}Dao {
      */
     public List<${entity}> queryList(${entity}Query query) {
         LambdaQueryWrapper<${entity}> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(${entity}::getIsDelete, "N");
+        wrapper.eq(${entity}::getIsDelete, YesOrNoEnum.NO.getCode());
         // TODO 其他查询条件
         return mapper.selectList(wrapper);
     }
