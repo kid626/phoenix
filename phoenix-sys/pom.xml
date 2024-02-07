@@ -19,6 +19,23 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <phoenix.version>1.0-SNAPSHOT</phoenix.version>
     </properties>
+
+    <distributionManagement>
+        <!--正式版本  正式版本version  不能带SNAPSHOT -->
+        <!-- 与 settings.xml 中<server> 的id 相对应 -->
+        <repository>
+            <id>releases</id>
+            <name>releases</name>
+            <url>http://ip:port/repository/releases/</url>
+        </repository>
+        <!--快照-->
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>snapshots</name>
+            <url>http://ip:port/repository/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <dependencies>
         <dependency>
             <groupId>com.bruce</groupId>
