@@ -68,6 +68,13 @@ public class SysDictController {
         return Result.success(sysDict);
     }
 
+    @GetMapping("/v1/one/pCode")
+    @ApiOperation("根据父编码查询")
+    public Result<List<SysDict>> queryByPCode(@RequestParam String pCode) {
+        List<SysDict> list = sysDictService.queryByPCode(pCode);
+        return Result.success(list);
+    }
+
     @GetMapping("/v1/tree")
     @ApiOperation("生成树")
     public Result<List<SysDictVO>> tree(String code) {

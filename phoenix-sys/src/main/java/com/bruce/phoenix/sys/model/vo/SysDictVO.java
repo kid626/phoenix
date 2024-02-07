@@ -5,6 +5,7 @@ import com.bruce.phoenix.common.model.enums.YesOrNoEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +17,9 @@ import java.util.List;
  * @Author Bruce
  */
 @Data
-public class SysDictVO {
+public class SysDictVO implements Serializable {
 
+    private static final long serialVersionUID = -1L;
 
     @ApiModelProperty(value = "主键")
     private Long id;

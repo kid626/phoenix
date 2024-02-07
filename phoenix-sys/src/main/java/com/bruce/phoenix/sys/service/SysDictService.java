@@ -40,6 +40,14 @@ public interface SysDictService {
     List<SysDict> queryByPid(Long pId);
 
     /**
+     * 根据父编码查询
+     *
+     * @param pCode 父编码
+     * @return 列表
+     */
+    List<SysDict> queryByPCode(String pCode);
+
+    /**
      * 新增
      *
      * @param form TreeForm
@@ -90,5 +98,4 @@ public interface SysDictService {
      * 刷新缓存
      */
     void refresh();
-
 }

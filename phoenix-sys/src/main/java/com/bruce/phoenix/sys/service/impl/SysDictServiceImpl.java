@@ -7,11 +7,14 @@ import cn.hutool.core.lang.tree.TreeUtil;
 import cn.hutool.core.util.StrUtil;
 import com.bruce.phoenix.common.exception.CommonException;
 import com.bruce.phoenix.sys.dao.SysDictDao;
+import com.bruce.phoenix.sys.model.constant.SysConstant;
 import com.bruce.phoenix.sys.model.converter.SysDictConverter;
 import com.bruce.phoenix.sys.model.form.SysDictForm;
 import com.bruce.phoenix.sys.model.po.SysDict;
 import com.bruce.phoenix.sys.model.vo.SysDictVO;
 import com.bruce.phoenix.sys.service.SysDictService;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -30,33 +33,42 @@ public class SysDictServiceImpl implements SysDictService {
 
     @Resource
     private SysDictDao dao;
+    @Resource
+    private SysDictService sysDictServiceImpl;
 
     private static final SysDictConverter CONVERTER = new SysDictConverter();
 
     private static final Long TOP_ID = 0L;
-    private static final String CODE = "code";
-    private static final String P_CODE = "pCode";
-    private static final String VALUE = "value";
 
 
     @Override
+    @Cacheable(value = SysConstant.SYS_DICT_ID, key = "#id", unless = "#result == null")
     public SysDict queryById(Long id) {
         return dao.queryById(id);
     }
 
     @Override
+    @Cacheable(value = SysConstant.SYS_DICT_CODE, key = "#code", unless = "#result == null")
     public SysDict queryByCode(String code) {
         return dao.queryByCode(code);
     }
 
     @Override
+    @Cacheable(value = SysConstant.SYS_DICT_PID, key = "#pId", unless = "#result == null")
     public List<SysDict> queryByPid(Long pId) {
         return dao.queryByPid(pId);
     }
 
     @Override
+    public List<SysDict> queryByPCode(String pCode) {
+        SysDict sysDict = sysDictServiceImpl.queryByCode(pCode);
+        return sysDictServiceImpl.queryByPid(sysDict.getId());
+    }
+
+    @Override
+    @CacheEvict(value = {SysConstant.SYS_DICT_TREE, SysConstant.SYS_DICT_ID, SysConstant.SYS_DICT_PID, SysConstant.SYS_DICT_CODE}, allEntries = true)
     public long save(SysDictForm form) {
-        SysDict vo = queryByCode(form.getDictCode());
+        SysDict vo = sysDictServiceImpl.queryByCode(form.getDictCode());
         if (vo != null) {
             throw new CommonException("code 不能重复");
         }
@@ -66,8 +78,9 @@ public class SysDictServiceImpl implements SysDictService {
     }
 
     @Override
+    @CacheEvict(value = {SysConstant.SYS_DICT_TREE, SysConstant.SYS_DICT_ID, SysConstant.SYS_DICT_PID, SysConstant.SYS_DICT_CODE}, allEntries = true)
     public void update(SysDictForm form) {
-        SysDict vo = queryByCode(form.getDictCode());
+        SysDict vo = sysDictServiceImpl.queryByCode(form.getDictCode());
         if (vo != null && !vo.getId().equals(form.getId())) {
             throw new CommonException("code 不能重复");
         }
@@ -77,13 +90,14 @@ public class SysDictServiceImpl implements SysDictService {
     }
 
     @Override
+    @Cacheable(value = SysConstant.SYS_DICT_TREE, key = "#code==null?'':#code", unless = "#result == null")
     public List<SysDictVO> tree(String code) {
         List<SysDict> all;
         Long topId = TOP_ID;
         if (StrUtil.isBlank(code)) {
             all = queryAll();
         } else {
-            SysDict top = queryByCode(code);
+            SysDict top = sysDictServiceImpl.queryByCode(code);
             topId = top.getPId();
             all = queryChildNode(top.getId());
         }
@@ -109,17 +123,17 @@ public class SysDictServiceImpl implements SysDictService {
     @Override
     public List<SysDict> getRootPath(Long id) {
         List<SysDict> list = new ArrayList<>();
-        SysDict sysDict = queryById(id);
+        SysDict sysDict = sysDictServiceImpl.queryById(id);
         while (sysDict != null) {
             list.add(sysDict);
-            sysDict = queryById(sysDict.getPId());
+            sysDict = sysDictServiceImpl.queryById(sysDict.getPId());
         }
         return list;
     }
 
     @Override
     public List<SysDict> queryChildNode(Long id) {
-        SysDict top = queryById(id);
+        SysDict top = sysDictServiceImpl.queryById(id);
         List<SysDict> result = new ArrayList<>();
 
         // 递归获取
@@ -133,7 +147,7 @@ public class SysDictServiceImpl implements SysDictService {
             return;
         }
         result.add(sysDict);
-        List<SysDict> list = queryByPid(sysDict.getId());
+        List<SysDict> list = sysDictServiceImpl.queryByPid(sysDict.getId());
         if (CollUtil.isNotEmpty(list)) {
             for (SysDict node : list) {
                 queryChildNode(node, result);
