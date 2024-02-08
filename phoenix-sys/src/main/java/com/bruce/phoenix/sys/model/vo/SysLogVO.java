@@ -1,30 +1,21 @@
-package com.bruce.phoenix.sys.model.po;
+package com.bruce.phoenix.sys.model.vo;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import io.swagger.annotations.ApiModel;
+import com.alibaba.fastjson.annotation.JSONField;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
+import lombok.Data;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @Copyright Copyright © 2022 Bruce . All rights reserved.
- * @Desc 系统日志记录实体类
- * @ProjectName demo
- * @Date 2022-6-20 9:50:39
+ * @Copyright Copyright © 2024 fanzh . All rights reserved.
+ * @Desc
+ * @ProjectName phoenix
+ * @Date 2024/2/8 11:01
  * @Author Bruce
  */
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
-@TableName("sys_log")
-@ApiModel(value = "SysLog对象", description = "系统日志记录")
-public class SysLog implements Serializable {
+public class SysLogVO {
 
-    private static final long serialVersionUID = -1L;
 
     @ApiModelProperty(value = "主键")
     private Long id;
@@ -35,6 +26,9 @@ public class SysLog implements Serializable {
     @ApiModelProperty(value = "业务类型")
     private String businessType;
 
+    @ApiModelProperty(value = "业务类型")
+    private String businessTypeStr;
+
     @ApiModelProperty(value = "请求方法")
     private String method;
 
@@ -43,6 +37,9 @@ public class SysLog implements Serializable {
 
     @ApiModelProperty(value = "操作类别")
     private String operatorType;
+
+    @ApiModelProperty(value = "操作类别")
+    private String operatorTypeStr;
 
     @ApiModelProperty(value = "请求URL")
     private String operUrl;
@@ -59,6 +56,9 @@ public class SysLog implements Serializable {
     @ApiModelProperty(value = "操作状态")
     private String status;
 
+    @ApiModelProperty(value = "操作状态")
+    private String statusStr;
+
     @ApiModelProperty(value = "错误消息")
     private String errorMsg;
 
@@ -66,10 +66,7 @@ public class SysLog implements Serializable {
     private String createUser;
 
     @ApiModelProperty(value = "请求时间")
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
-
-    @ApiModelProperty(value = "是否删除")
-    private String isDeleted;
-
 
 }

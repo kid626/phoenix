@@ -4,6 +4,10 @@ package com.bruce.phoenix.sys.controller;
 import com.bruce.phoenix.common.model.common.BasePageQuery;
 import com.bruce.phoenix.common.model.common.PageData;
 import com.bruce.phoenix.common.model.common.Result;
+import com.bruce.phoenix.common.model.enums.BusinessTypeEnum;
+import com.bruce.phoenix.common.model.enums.OperatorTypeEnum;
+import com.bruce.phoenix.sys.log.LogRecord;
+import com.bruce.phoenix.sys.model.constant.ModuleConstant;
 import com.bruce.phoenix.sys.model.form.SysConfigForm;
 import com.bruce.phoenix.sys.model.vo.SysConfigVO;
 import com.bruce.phoenix.sys.service.SysConfigService;
@@ -32,6 +36,7 @@ public class SysConfigController {
 
     @GetMapping("/v1/all")
     @ApiOperation(value = "查询全部系统配置")
+    @LogRecord(module = ModuleConstant.SYS_CONFIG, businessType = BusinessTypeEnum.QUERY, operatorType = OperatorTypeEnum.MANAGE)
     public Result<List<SysConfigVO>> queryAll() {
         List<SysConfigVO> list = sysConfigService.queryAll();
         return Result.success(list);
@@ -39,6 +44,7 @@ public class SysConfigController {
 
     @GetMapping("/v1/page")
     @ApiOperation(value = "分页查询全部系统配置")
+    @LogRecord(module = ModuleConstant.SYS_CONFIG, businessType = BusinessTypeEnum.QUERY, operatorType = OperatorTypeEnum.MANAGE)
     public Result<PageData<SysConfigVO>> queryAll(@Validated BasePageQuery query) {
         PageData<SysConfigVO> list = sysConfigService.queryAll(query);
         return Result.success(list);
@@ -46,6 +52,7 @@ public class SysConfigController {
 
     @GetMapping("/v1/code")
     @ApiOperation(value = "根据code获取系统配置")
+    @LogRecord(module = ModuleConstant.SYS_CONFIG, businessType = BusinessTypeEnum.QUERY, operatorType = OperatorTypeEnum.MANAGE)
     public Result<SysConfigVO> queryByCode(String code) {
         SysConfigVO vo = sysConfigService.queryByCode(code);
         return Result.success(vo);
@@ -53,6 +60,7 @@ public class SysConfigController {
 
     @PostMapping("/v1/save")
     @ApiOperation(value = "新增系统配置")
+    @LogRecord(module = ModuleConstant.SYS_CONFIG, businessType = BusinessTypeEnum.INSERT, operatorType = OperatorTypeEnum.MANAGE)
     public Result<String> save(@RequestBody @Validated SysConfigForm form) {
         long id = sysConfigService.save(form);
         return Result.success(String.valueOf(id));
@@ -60,6 +68,7 @@ public class SysConfigController {
 
     @PostMapping("/v1/update")
     @ApiOperation(value = "更新系统配置")
+    @LogRecord(module = ModuleConstant.SYS_CONFIG, businessType = BusinessTypeEnum.UPDATE, operatorType = OperatorTypeEnum.MANAGE)
     public Result<String> update(@RequestBody @Validated SysConfigForm form) {
         sysConfigService.update(form);
         return Result.success();
@@ -67,6 +76,7 @@ public class SysConfigController {
 
     @PostMapping("/v1/remove/{id}")
     @ApiOperation(value = "删除系统配置")
+    @LogRecord(module = ModuleConstant.SYS_CONFIG, businessType = BusinessTypeEnum.DELETE, operatorType = OperatorTypeEnum.MANAGE)
     public Result<String> remove(@PathVariable Long id) {
         sysConfigService.remove(id);
         return Result.success();

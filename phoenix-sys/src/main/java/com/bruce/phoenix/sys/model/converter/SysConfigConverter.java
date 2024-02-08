@@ -1,5 +1,6 @@
 package com.bruce.phoenix.sys.model.converter;
 
+import com.bruce.phoenix.common.converter.BaseConverter;
 import com.bruce.phoenix.sys.model.form.SysConfigForm;
 import com.bruce.phoenix.sys.model.po.SysConfig;
 import com.bruce.phoenix.sys.model.vo.SysConfigVO;

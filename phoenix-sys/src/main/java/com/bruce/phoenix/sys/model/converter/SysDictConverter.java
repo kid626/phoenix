@@ -1,6 +1,7 @@
 package com.bruce.phoenix.sys.model.converter;
 
 import cn.hutool.core.lang.tree.Tree;
+import com.bruce.phoenix.common.converter.BaseConverter;
 import com.bruce.phoenix.sys.model.form.SysDictForm;
 import com.bruce.phoenix.sys.model.po.SysDict;
 import com.bruce.phoenix.sys.model.vo.SysDictVO;

@@ -1,4 +1,4 @@
-package com.bruce.phoenix.sys.model.converter;
+package com.bruce.phoenix.common.converter;
 
 import org.springframework.beans.BeanUtils;
 

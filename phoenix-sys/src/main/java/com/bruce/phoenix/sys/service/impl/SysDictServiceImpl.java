@@ -162,6 +162,7 @@ public class SysDictServiceImpl implements SysDictService {
     }
 
     @Override
+    @CacheEvict(value = {SysConstant.SYS_DICT_TREE, SysConstant.SYS_DICT_ID, SysConstant.SYS_DICT_PID, SysConstant.SYS_DICT_CODE}, allEntries = true)
     public void refresh() {
 
     }
