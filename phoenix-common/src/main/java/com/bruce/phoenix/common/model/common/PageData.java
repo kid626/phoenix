@@ -30,6 +30,8 @@ public class PageData<T> implements Serializable {
     private long total;
     @ApiModelProperty("封装的数据")
     private List<T> data;
+    @ApiModelProperty("封装的数据(兼容两种)")
+    private List<T> list;
 
 
 }

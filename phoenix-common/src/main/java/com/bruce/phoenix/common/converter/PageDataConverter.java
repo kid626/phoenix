@@ -31,6 +31,35 @@ public class PageDataConverter {
      * 手动分页
      */
     public static <T> PageData<T> convertFromPage(Integer page, Integer pageSize, List<T> result) {
+        PageData<T> pageData = convertBaseFromPage(page, pageSize, result);
+        result = result.stream().skip((long) pageSize * (page - 1)).limit(pageSize).collect(Collectors.toList());
+        pageData.setData(result);
+        return pageData;
+    }
+
+    public static <T> PageData<T> convertFromPageList(Page page, List<T> list) {
+        PageData<T> pageData = convertBaseFromPage(page);
+        pageData.setList(list);
+        return pageData;
+    }
+
+    public static <T> PageData<T> convertFromPageList(Page<T> page) {
+        PageData<T> pageData = convertBaseFromPage(page);
+        pageData.setList(page.getResult());
+        return pageData;
+    }
+
+    /**
+     * 手动分页
+     */
+    public static <T> PageData<T> convertFromPageList(Integer page, Integer pageSize, List<T> result) {
+        PageData<T> pageData = convertBaseFromPage(page, pageSize, result);
+        result = result.stream().skip((long) pageSize * (page - 1)).limit(pageSize).collect(Collectors.toList());
+        pageData.setList(result);
+        return pageData;
+    }
+
+    private static <T> PageData<T> convertBaseFromPage(Integer page, Integer pageSize, List<T> result) {
         PageData<T> pageData = new PageData<>();
         pageData.setPageNum(page);
         pageData.setPageSize(pageSize);
@@ -38,12 +67,10 @@ public class PageDataConverter {
         pageData.setStartRow((long) pageSize * (page - 1));
         pageData.setEndRow((long) pageSize * page);
         pageData.setPages((result.size() + pageSize - 1) / pageSize);
-        result = result.stream().skip((long) pageSize * (page - 1)).limit(pageSize).collect(Collectors.toList());
-        pageData.setData(result);
         return pageData;
     }
 
-    private static <T> PageData<T> convertBaseFromPage(Page<T> page){
+    private static <T> PageData<T> convertBaseFromPage(Page<T> page) {
         PageData<T> pageData = new PageData<>();
         pageData.setStartRow(page.getStartRow());
         pageData.setEndRow(page.getEndRow());
