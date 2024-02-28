@@ -138,6 +138,7 @@ public class TreeService extends TreeNodeBaseService<Tree, TreeForm, TreeVo> {
 - [ ] springboot security
 - [x] websocket
 - [ ] dubbo
+- [x] limiter限流
 
 
 ### 安装与使用
