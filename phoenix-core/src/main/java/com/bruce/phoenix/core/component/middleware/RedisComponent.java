@@ -1,4 +1,4 @@
-package com.bruce.phoenix.core.component;
+package com.bruce.phoenix.core.component.middleware;
 
 import cn.hutool.core.util.StrUtil;
 import com.bruce.phoenix.common.lock.Action;
@@ -10,6 +10,7 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -217,6 +218,43 @@ public class RedisComponent implements Lock {
     public Set<String> hKeys(String hashName) {
         HashOperations<String, String, String> opsForHash = redisTemplate.opsForHash();
         return opsForHash.keys(getKey(hashName));
+    }
+
+    /**
+     * 移除有序集合中，区间内的成员
+     *
+     * @param key 集合名
+     * @param min 最小
+     * @param max 最大
+     */
+    public void removeRangeByScore(String key, double min, double max) {
+        ZSetOperations<String, String> zSet = redisTemplate.opsForZSet();
+        zSet.removeRangeByScore(getKey(key), min, max);
+    }
+
+    /**
+     * 集合内元素总数
+     *
+     * @param key 集合名
+     * @param min 最小
+     * @param max 最大
+     * @return 元素总数
+     */
+    public Long count(String key, double min, double max) {
+        ZSetOperations<String, String> zSet = redisTemplate.opsForZSet();
+        return zSet.count(getKey(key), min, max);
+    }
+
+    /**
+     * 加入集合
+     *
+     * @param key   集合名
+     * @param value 值
+     * @param score 分数
+     */
+    public void add(String key, String value, double score) {
+        ZSetOperations<String, String> zSet = redisTemplate.opsForZSet();
+        zSet.add(getKey(key), value, score);
     }
 
     /**
