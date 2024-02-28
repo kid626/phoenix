@@ -34,6 +34,7 @@
 - [x] websocket
 - [ ] dubbo
 - [x] limiter限流
+- [x] 线程和定时任务异常处理
 
 
 ### 安装与使用
