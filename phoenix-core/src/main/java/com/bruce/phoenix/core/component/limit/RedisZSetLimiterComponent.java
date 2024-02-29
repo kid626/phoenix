@@ -44,7 +44,7 @@ public class RedisZSetLimiterComponent implements LimiterComponent {
      * @return 是否允许通过
      */
     @Override
-    public synchronized boolean isLimited(String key) {
+    public boolean isLimited(String key) {
         // 获取当前时间
         long nowTime = System.currentTimeMillis();
         // 移除一个时间段以前的

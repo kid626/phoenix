@@ -42,7 +42,7 @@ public class WindowLimiterComponent implements LimiterComponent {
      * @return 是否被限流
      */
     @Override
-    public synchronized boolean isLimited(String id) {
+    public boolean isLimited(String id) {
         // 获取当前时间
         long nowTime = System.currentTimeMillis();
         // 根据队列id，取出对应的限流队列，若没有则创建

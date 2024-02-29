@@ -1,7 +1,9 @@
 package com.bruce.demo.web.controller;
 
+import cn.hutool.core.thread.ThreadUtil;
 import com.bruce.demo.web.service.ThreadService;
 import com.bruce.phoenix.common.model.common.Result;
+import com.bruce.phoenix.core.annotation.Limiter;
 import com.bruce.phoenix.core.model.gateway.GatewaySignModel;
 import com.bruce.phoenix.core.util.GatewayHttpUtil;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,6 +58,13 @@ public class DemoController {
         params.put("token", token);
         String result = GatewayHttpUtil.get(model, null, params);
         return Result.success(result);
+    }
+
+    @GetMapping("/limiter")
+    @Limiter(key = "limiter:", message = "正在处理中，请勿重复操作!", expire = 60000, count = 1)
+    public Result<String> limiter() {
+        ThreadUtil.sleep(10000);
+        return Result.success();
     }
 
 
