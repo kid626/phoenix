@@ -47,4 +47,8 @@ public class Result<T> implements Serializable {
         return new Result<>(SUCCESS_CODE, "", "");
     }
 
+    public boolean isSuccess() {
+        return code == SUCCESS_CODE;
+    }
+
 }
