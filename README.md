@@ -36,12 +36,17 @@
 - [x] limiter限流
 - [x] 线程和定时任务异常处理
 
+### phoenix-sys 模块(可选)
+
+- [x] 数据字典模块
+- [x] 系统设置模块
+- [x] 系统日志模块
 
 ### 安装与使用
 
 #### 安装
 
-    依次安装 phoneix-common , phoenix-mp-generator-maven-plugin ,  phoneix-core
+    依次安装 phoneix-common , phoenix-mp-generator-maven-plugin ,  phoneix-core , phoneix-sys
 
     安装到本地:  mvn install
     也可以安装到自己的私服 mvn deploy
@@ -53,6 +58,11 @@
         <dependency>
             <groupId>com.bruce</groupId>
             <artifactId>phoenix-core</artifactId>
+            <version>${phoenix.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bruce</groupId>
+            <artifactId>phoenix-sys</artifactId>
             <version>${phoenix.version}</version>
         </dependency>
     </dependencies>
