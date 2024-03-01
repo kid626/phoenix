@@ -5,8 +5,11 @@ import com.bruce.demo.web.service.ThreadService;
 import com.bruce.phoenix.common.model.common.Result;
 import com.bruce.phoenix.common.util.BaseHttpUtil;
 import com.bruce.phoenix.core.annotation.Limiter;
+import com.bruce.phoenix.core.event.component.EventComponent;
+import com.bruce.phoenix.core.event.model.EventModel;
 import com.bruce.phoenix.core.model.gateway.GatewaySignModel;
 import com.bruce.phoenix.core.util.GatewayHttpUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,10 +27,13 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/hello")
+@Slf4j
 public class DemoController {
 
     @Resource
     private ThreadService helloService;
+    @Resource
+    private EventComponent eventComponent;
 
     @GetMapping("/async/say")
     public Result<String> sayHelloAsync() {
@@ -50,11 +56,7 @@ public class DemoController {
 
     @GetMapping("/gateway")
     public Result<String> gateway(String token) {
-        GatewaySignModel model = GatewaySignModel.builder()
-                .appKey("appKey")
-                .appSecret("appSecret")
-                .host("http://ip:port")
-                .path("/xxx").build();
+        GatewaySignModel model = GatewaySignModel.builder().appKey("appKey").appSecret("appSecret").host("http://ip:port").path("/xxx").build();
         Map<String, Object> params = new HashMap<>();
         params.put("token", token);
         String result = GatewayHttpUtil.get(model, null, params);
@@ -75,6 +77,17 @@ public class DemoController {
     @Limiter(key = "limiter:", message = "正在处理中，请勿重复操作!", expire = 60000, count = 1)
     public Result<String> limiter() {
         ThreadUtil.sleep(10000);
+        return Result.success();
+    }
+
+    @GetMapping("/event")
+    public Result<String> event() {
+        EventModel<String> model = new EventModel<>();
+        model.setParams("world");
+        model.setEventService((params) -> {
+            log.info("hello {}", params);
+        });
+        eventComponent.publishEvent(model);
         return Result.success();
     }
 
