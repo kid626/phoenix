@@ -3,6 +3,7 @@ package com.bruce.demo.web.controller;
 import cn.hutool.core.thread.ThreadUtil;
 import com.bruce.demo.web.service.ThreadService;
 import com.bruce.phoenix.common.model.common.Result;
+import com.bruce.phoenix.common.util.BaseHttpUtil;
 import com.bruce.phoenix.core.annotation.Limiter;
 import com.bruce.phoenix.core.model.gateway.GatewaySignModel;
 import com.bruce.phoenix.core.util.GatewayHttpUtil;
@@ -57,6 +58,16 @@ public class DemoController {
         Map<String, Object> params = new HashMap<>();
         params.put("token", token);
         String result = GatewayHttpUtil.get(model, null, params);
+        return Result.success(result);
+    }
+
+    @GetMapping("/http/get")
+    public Result<String> get() {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("token", "123");
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("username", "admin");
+        String result = BaseHttpUtil.get("http://172.22.12.150:8001/http/get", headers, params);
         return Result.success(result);
     }
 
