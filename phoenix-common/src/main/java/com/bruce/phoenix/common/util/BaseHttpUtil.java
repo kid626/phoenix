@@ -1,6 +1,7 @@
 package com.bruce.phoenix.common.util;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
@@ -84,13 +85,14 @@ public class BaseHttpUtil {
 
 
     private static String execute(HttpRequest httpRequest) {
+        ThreadLocalUtil.setRequestId(RandomUtil.randomString(32));
         try (HttpResponse response = httpRequest.execute()) {
             if (response == null) {
                 // 一般不会走到这步
                 log.warn("[GatewayHttpUtil] 请求异常!");
                 throw new CommonException("请求异常!");
             }
-            String body =response.body();
+            String body = response.body();
             if (response.isOk()) {
                 return body;
             } else {
@@ -102,7 +104,12 @@ public class BaseHttpUtil {
             throw e;
         } catch (Exception e) {
             throw new CommonException("系统错误,请联系管理员!");
+        } finally {
+            ThreadLocalUtil.remove();
         }
     }
+
+
+
 
 }

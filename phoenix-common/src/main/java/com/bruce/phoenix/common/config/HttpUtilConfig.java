@@ -2,6 +2,7 @@ package com.bruce.phoenix.common.config;
 
 import cn.hutool.http.GlobalInterceptor;
 import cn.hutool.http.HttpGlobalConfig;
+import com.bruce.phoenix.common.util.ThreadLocalUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -24,8 +25,16 @@ public class HttpUtilConfig {
 
     @PostConstruct
     public void init() {
-        GlobalInterceptor.INSTANCE.addRequestInterceptor(request -> log.info(String.valueOf(request)));
-        GlobalInterceptor.INSTANCE.addResponseInterceptor(response -> log.info(String.valueOf(response)));
+        GlobalInterceptor.INSTANCE.addRequestInterceptor(request -> {
+            String requestId = ThreadLocalUtil.getRequestId();
+            log.info("requestId={}", requestId);
+            log.info(String.valueOf(request));
+        });
+        GlobalInterceptor.INSTANCE.addResponseInterceptor(response -> {
+            String requestId = ThreadLocalUtil.getRequestId();
+            log.info("requestId={}", requestId);
+            log.info(String.valueOf(response));
+        });
         HttpGlobalConfig.setTimeout(timeout);
     }
 
