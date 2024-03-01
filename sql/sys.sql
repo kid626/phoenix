@@ -85,5 +85,23 @@ CREATE TABLE `sys_log`
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统日志记录' ROW_FORMAT = Dynamic;
 
+-- ----------------------------
+-- Table structure for sys_api_log
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_api_log`;
+CREATE TABLE `sys_api_log`
+(
+    `id`              bigint NOT NULL COMMENT '主键',
+    `request_id`      varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '请求唯一id',
+    `request_url`     text COLLATE utf8mb4_general_ci COMMENT '请求 url',
+    `request_headers` text COLLATE utf8mb4_general_ci COMMENT '请求头',
+    `request_method`  varchar(16) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '请求方法',
+    `request_form`    text COLLATE utf8mb4_general_ci COMMENT '请求表单',
+    `response_body`   text COLLATE utf8mb4_general_ci COMMENT '返回体',
+    `response_code`   varchar(16) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '返回http code',
+    `request_time`    datetime                               DEFAULT NULL COMMENT '请求时间',
+    `response_time`   datetime                               DEFAULT NULL COMMENT '响应时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='系统第三方请求日志';
 SET
 FOREIGN_KEY_CHECKS = 1;

@@ -38,6 +38,8 @@ spring:
         min-idle: 0
 
 mybatis-plus:
+  global-config:
+    banner: false
   mapper-locations: classpath:com/bruce/demo/web/sqlmap/auto/*.xml
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

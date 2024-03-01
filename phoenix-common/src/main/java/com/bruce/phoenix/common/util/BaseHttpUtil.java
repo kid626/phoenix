@@ -1,6 +1,8 @@
 package com.bruce.phoenix.common.util;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
@@ -85,7 +87,7 @@ public class BaseHttpUtil {
 
 
     private static String execute(HttpRequest httpRequest) {
-        ThreadLocalUtil.setRequestId(RandomUtil.randomString(32));
+        ThreadLocalUtil.setRequestId(DateUtil.format(DateUtil.date(), DatePattern.PURE_DATETIME_PATTERN) + RandomUtil.randomString(18));
         try (HttpResponse response = httpRequest.execute()) {
             if (response == null) {
                 // 一般不会走到这步
@@ -108,8 +110,6 @@ public class BaseHttpUtil {
             ThreadLocalUtil.remove();
         }
     }
-
-
 
 
 }

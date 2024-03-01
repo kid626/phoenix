@@ -18,7 +18,7 @@ public class ConvertConfig extends FileOutConfig {
 
     public ConvertConfig(String templatePath, String path) {
         super(templatePath);
-        this.path = path + File.separator + "model" + File.separator + "convert";
+        this.path = path + File.separator + "model" + File.separator + "converter";
     }
 
     @Override
