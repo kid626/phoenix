@@ -28,6 +28,7 @@ public class CommonConstant {
     public static final String APP_KEY = "appKey";
     public static final String APP_SECRET = "appSecret";
     public static final String APP_ID = "appId";
+    public static final String DEFAULT = "default";
 
 
 }

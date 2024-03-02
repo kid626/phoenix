@@ -258,6 +258,94 @@ public class RedisComponent implements Lock {
     }
 
     /**
+     * 插入列表头部
+     *
+     * @param key   列表名
+     * @param value 值
+     */
+    public Long leftPush(String key, String value) {
+        return redisTemplate.opsForList().leftPush(getKey(key), value);
+    }
+
+    /**
+     * 插入列表尾部
+     *
+     * @param key   列表名
+     * @param value 值
+     */
+    public Long rightPush(String key, String value) {
+        return redisTemplate.opsForList().rightPush(getKey(key), value);
+    }
+
+    /**
+     * 移除列表第一个元素并返回
+     *
+     * @param key 列表名
+     */
+    public String leftPop(String key) {
+        return redisTemplate.opsForList().leftPop(getKey(key));
+    }
+
+    /**
+     * 移除列表最后一个元素并返回
+     *
+     * @param key 列表名
+     */
+    public String rightPop(String key) {
+        return redisTemplate.opsForList().rightPop(getKey(key));
+    }
+
+    /**
+     * 获取列表长度
+     *
+     * @param key 列表名
+     */
+    public Long size(String key) {
+        return redisTemplate.opsForList().size(getKey(key));
+    }
+
+    /**
+     * 集合内是否包含值
+     *
+     * @param key   集合名称
+     * @param value 值
+     */
+    public Boolean isMember(String key, String value) {
+        return redisTemplate.opsForSet().isMember(getKey(key), value);
+    }
+
+    /**
+     * 集合里添加成员
+     *
+     * @param key   集合名称
+     * @param value 值
+     */
+    public void setAdd(String key, String value) {
+        redisTemplate.opsForSet().add(getKey(key), value);
+    }
+
+    /**
+     * 获取集合内所有元素
+     *
+     * @param key 集合名称
+     * @return 集合内所有元素
+     */
+    public Set<String> setMembers(String key) {
+        return redisTemplate.opsForSet().members(getKey(key));
+    }
+
+    /**
+     * 集合元素删除
+     *
+     * @param key   集合名称
+     * @param value 元素值
+     */
+    public void setRemove(String key, String value) {
+        redisTemplate.opsForSet().remove(getKey(key), value);
+    }
+
+
+    /**
      * 一次删除多个key
      *
      * @param set

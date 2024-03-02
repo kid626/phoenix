@@ -1,5 +1,6 @@
 package com.bruce.phoenix.core.event.service;
 
+import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -13,6 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 public class DefaultEventServiceImpl<T> implements EventService<T> {
     @Override
     public void proceed(T params) {
-        log.info("[DefaultEventServiceImpl#proceed] params: {}", params);
+        log.info("[DefaultEventServiceImpl#proceed] params: {}", JSONUtil.toJsonStr(params));
     }
 }

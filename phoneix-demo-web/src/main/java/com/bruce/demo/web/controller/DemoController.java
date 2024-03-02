@@ -1,6 +1,7 @@
 package com.bruce.demo.web.controller;
 
 import cn.hutool.core.thread.ThreadUtil;
+import com.bruce.demo.web.model.constant.DemoConstant;
 import com.bruce.demo.web.service.ThreadService;
 import com.bruce.phoenix.common.model.common.Result;
 import com.bruce.phoenix.common.util.BaseHttpUtil;
@@ -8,6 +9,8 @@ import com.bruce.phoenix.core.annotation.Limiter;
 import com.bruce.phoenix.core.event.component.EventComponent;
 import com.bruce.phoenix.core.event.model.EventModel;
 import com.bruce.phoenix.core.model.gateway.GatewaySignModel;
+import com.bruce.phoenix.core.mq.component.MqComponent;
+import com.bruce.phoenix.core.mq.model.MqModel;
 import com.bruce.phoenix.core.util.GatewayHttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +37,8 @@ public class DemoController {
     private ThreadService helloService;
     @Resource
     private EventComponent eventComponent;
+    @Resource
+    private MqComponent mqComponent;
 
     @GetMapping("/async/say")
     public Result<String> sayHelloAsync() {
@@ -88,6 +93,16 @@ public class DemoController {
             log.info("hello {}", params);
         });
         eventComponent.publishEvent(model);
+        return Result.success();
+    }
+
+    @GetMapping("/mq")
+    public Result<String> mq() {
+        MqModel<String> model = new MqModel<>();
+        model.setParams("world");
+        model.setTopic(DemoConstant.TOPIC_NAME_DEMO);
+        model.setType(DemoConstant.MQ_TYPE_NAME_DEMO);
+        mqComponent.sendMessage(model);
         return Result.success();
     }
 
