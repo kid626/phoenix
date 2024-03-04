@@ -39,7 +39,7 @@
     <dependencies>
         <dependency>
             <groupId>com.bruce</groupId>
-            <artifactId>phoenix-common</artifactId>
+            <artifactId>phoenix-core</artifactId>
             <version>${phoenix.version}</version>
         </dependency>
         <dependency>

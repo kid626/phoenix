@@ -2,7 +2,12 @@ package com.bruce.phoenix.core.mq.model;
 
 import com.bruce.phoenix.common.model.constants.CommonConstant;
 import com.bruce.phoenix.core.mq.service.IMqService;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 /**
  * @Copyright Copyright © 2024 fanzh . All rights reserved.
@@ -12,8 +17,14 @@ import lombok.Data;
  * @Author Bruce
  */
 @Data
-public class MqModel<T> {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class MqModel<T> implements Serializable {
 
+    /**
+     * 消息主键
+     */
     private String messageId;
 
     /**
@@ -27,9 +38,15 @@ public class MqModel<T> {
 
     /**
      * 执行器类型，默认为 default
+     * 采用策略模式
      * {@link IMqService#getType()}
      */
     private String type = CommonConstant.DEFAULT;
+
+    /**
+     * 参数类型，用于序列化 反序列化的时候类型转换
+     */
+    private String paramsType;
 
     private T params;
 

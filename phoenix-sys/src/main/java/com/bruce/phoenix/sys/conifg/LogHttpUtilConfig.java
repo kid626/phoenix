@@ -4,8 +4,10 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.http.GlobalInterceptor;
 import cn.hutool.json.JSONUtil;
 import com.bruce.phoenix.common.util.ThreadLocalUtil;
+import com.bruce.phoenix.core.mq.component.MqComponent;
+import com.bruce.phoenix.core.mq.model.MqModel;
+import com.bruce.phoenix.sys.model.constant.SysConstant;
 import com.bruce.phoenix.sys.model.form.SysApiLogForm;
-import com.bruce.phoenix.sys.service.SysApiLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,7 +26,7 @@ import javax.annotation.Resource;
 public class LogHttpUtilConfig {
 
     @Resource
-    private SysApiLogService sysApiLogService;
+    private MqComponent mqComponent;
 
     @PostConstruct
     public void init() {
@@ -38,7 +40,13 @@ public class LogHttpUtilConfig {
                     .requestForm(JSONUtil.toJsonStr(request.form()))
                     .requestTime(DateUtil.date())
                     .build();
-            sysApiLogService.save(form);
+            MqModel<SysApiLogForm> model = MqModel.<SysApiLogForm>builder()
+                    .topic(SysConstant.SYS_TOPIC)
+                    .type(SysConstant.SYS_API_LOG_ADD_MQ_TYPE)
+                    .params(form)
+                    .build();
+            mqComponent.sendMessage(model);
+
         });
         GlobalInterceptor.INSTANCE.addResponseInterceptor(response -> {
             String requestId = ThreadLocalUtil.getRequestId();
@@ -46,7 +54,12 @@ public class LogHttpUtilConfig {
                     .requestId(requestId)
                     .responseCode(response.getStatus() + "")
                     .responseBody(response.body()).build();
-            sysApiLogService.update(form);
+            MqModel<SysApiLogForm> model = MqModel.<SysApiLogForm>builder()
+                    .topic(SysConstant.SYS_TOPIC)
+                    .type(SysConstant.SYS_API_LOG_UPDATE_MQ_TYPE)
+                    .params(form)
+                    .build();
+            mqComponent.sendMessage(model);
         });
     }
 

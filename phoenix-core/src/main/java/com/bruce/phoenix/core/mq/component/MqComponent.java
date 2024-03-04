@@ -34,7 +34,7 @@ public class MqComponent {
     public synchronized <T> void sendMessage(MqModel<T> model) {
         log.info("[MqComponent#sendMessage] params: {}", JSONUtil.toJsonStr(model));
         model.setMessageId(RandomUtil.randomString(16));
-
+        model.setParamsType(model.getParams().getClass().getName());
         // 如果当前 topic 没有创建过了
         if (!redisComponent.isMember(QUEUE_TOPIC_SET_NAME, model.getTopic())) {
             // 新增 topic

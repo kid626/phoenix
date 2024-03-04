@@ -1,6 +1,8 @@
 package com.bruce.phoenix.core.mq.listener;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ClassUtil;
 import cn.hutool.json.JSONUtil;
 import com.bruce.phoenix.core.mq.component.MqComponent;
 import com.bruce.phoenix.core.mq.model.MqModel;
@@ -63,7 +65,8 @@ public class MqListener {
                         IMqService iMqService = map.get(model.getType());
                         if (iMqService != null) {
                             log.info("[MqListener#consume] topic: {} params: {}", topic, JSONUtil.toJsonStr(model.getParams()));
-                            iMqService.proceed(model.getParams());
+                            Object params = Convert.convert(ClassUtil.loadClass(model.getParamsType()), model.getParams());
+                            iMqService.proceed(params);
                         } else {
                             log.warn("[MqListener#consume] topic: {} 无对应实现方法", topic);
                         }
