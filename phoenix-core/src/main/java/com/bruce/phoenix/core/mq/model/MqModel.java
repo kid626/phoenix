@@ -27,12 +27,16 @@ public class MqModel<T> implements Serializable {
      */
     private String messageId;
 
+    private Long errorCount = 1L;
+    /**
+     * 参数类型，用于序列化 反序列化的时候类型转换
+     */
+    private String paramsType;
+
     /**
      * 用来区分不同队列，默认为 queue
      */
     private String topic = "queue";
-
-    private Long errorCount = 1L;
 
     private Long errorAllowCount = 3L;
 
@@ -42,11 +46,6 @@ public class MqModel<T> implements Serializable {
      * {@link IMqService#getType()}
      */
     private String type = CommonConstant.DEFAULT;
-
-    /**
-     * 参数类型，用于序列化 反序列化的时候类型转换
-     */
-    private String paramsType;
 
     private T params;
 
