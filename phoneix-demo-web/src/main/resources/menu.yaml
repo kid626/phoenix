@@ -1,0 +1,23 @@
+menu:
+  - name: 用户中心
+    code: user:center:menu
+    icon:
+    path: /userCenter
+    version: 1.0.0
+    menu:
+        - name: 用户管理
+          code: user:manage:menu
+          icon:
+          path: /userCenter/userManage
+          version: 1.0.0
+        - name: 角色管理
+          code: role:manage:menu
+          icon:
+          path: /userCenter/roleManage
+          version: 1.0.0
+        - name: 菜单管理
+          code: resource:manage:menu
+          icon:
+          path: /userCenter/resourceManage
+          version: 1.0.0
+

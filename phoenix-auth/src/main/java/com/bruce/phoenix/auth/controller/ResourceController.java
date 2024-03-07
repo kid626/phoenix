@@ -8,6 +8,7 @@ import com.bruce.phoenix.auth.model.vo.ResourceVO;
 import com.bruce.phoenix.auth.service.ResourceService;
 import com.bruce.phoenix.common.model.common.PageData;
 import com.bruce.phoenix.common.model.common.Result;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/resource")
+@Api(tags = "资源相关接口")
 public class ResourceController {
 
     @javax.annotation.Resource

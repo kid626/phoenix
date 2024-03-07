@@ -20,7 +20,7 @@ import lombok.experimental.Accessors;
 
 /**
  * @Copyright Copyright © ${.now?string("yyyy")} ${author} . All rights reserved.
- * @Desc ${table.comment!}实体类
+ * @Desc ${table.comment}实体类
  * @ProjectName ${cfg.project_name}
  * @Date ${.now}
  * @Author ${author}
@@ -43,7 +43,7 @@ import lombok.experimental.Accessors;
 @TableName("${table.name}")
 </#if>
 <#if swagger2>
-@ApiModel(value = "${entity}对象", description = "${table.comment!}")
+@ApiModel(value = "${entity}对象", description = "${table.comment}")
 </#if>
 <#if superEntityClass??>
 public class ${entity} extends ${superEntityClass}<#if activeRecord><${entity}></#if> {

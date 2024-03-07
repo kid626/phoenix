@@ -14,7 +14,7 @@ import ${superControllerClassPackage};
 
 /**
  * @Copyright Copyright © ${.now?string("yyyy")} ${author} . All rights reserved.
- * @Desc ${table.comment!}Controller 接口
+ * @Desc ${table.comment}Controller 接口
  * @ProjectName ${cfg.project_name}
  * @Date ${.now}
  * @Author ${author}

@@ -15,7 +15,7 @@ import lombok.experimental.Accessors;
 <% } %>
 /**
  * @Copyright Copyright © ${date(),"yyyy"} ${author} . All rights reserved.
- * @Desc ${table.comment!}实体类
+ * @Desc ${table.comment}实体类
  * @ProjectName ${cfg.project_name}
  * @Date ${date(),"yyyy-MM-dd HH:mm:ss"}
  * @Author ${author}
@@ -35,7 +35,7 @@ import lombok.experimental.Accessors;
 @TableName("${table.name}")
 <% } %>
 <% if(swagger2){ %>
-@ApiModel(value = "${entity}对象", description = "${table.comment!''}")
+@ApiModel(value = "${entity}对象", description = "${table.comment}")
 <% } %>
 <% if(isNotEmpty(superEntityClass)){ %>
 public class ${entity} extends ${superEntityClass}<% if(activeRecord){ %><${entity}><%}%>{

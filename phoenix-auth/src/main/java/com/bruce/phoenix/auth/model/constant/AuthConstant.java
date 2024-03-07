@@ -9,9 +9,11 @@ package com.bruce.phoenix.auth.model.constant;
  */
 public class AuthConstant {
 
-    private AuthConstant(){}
+    private AuthConstant() {
+    }
 
 
     public static final String DEFAULT_RESOURCE = "DEFAULT_RESOURCE";
+    public static final String DEFAULT_VERSION = "1.0.0";
 
 }

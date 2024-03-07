@@ -16,7 +16,7 @@ import com.bruce.phoenix.common.model.common.BasePageQuery;
  * @Author ${author}
  */
 @Data
-@ApiModel(value = "${entity}Query对象", description = "$!{table.comment}")
+@ApiModel(value = "${entity}Query对象", description = "${table.comment}")
 public class ${entity}Query extends BasePageQuery implements Serializable {
 
     private static final long serialVersionUID = -1L;

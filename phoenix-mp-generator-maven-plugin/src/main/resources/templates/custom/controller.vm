@@ -27,34 +27,35 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("${table.entityPath}")
+@Api(tags = "${table.comment}相关接口")
 public class ${table.controllerName} {
 
     @Resource
     private ${entity}Service service;
 
     @GetMapping("/${cfg.version}/page")
-    @ApiOperation("分页查询$!{table.comment}")
+    @ApiOperation("分页查询${table.comment}")
     public Result<PageData<${entity}VO>> queryByPage(@Validated ${entity}Query query) {
         PageData<${entity}VO> pageData = service.queryByPage(query);
         return Result.success(pageData);
     }
 
     @GetMapping("/${cfg.version}/detail/{id}")
-    @ApiOperation("查询$!{table.comment}详情")
+    @ApiOperation("查询${table.comment}详情")
     public Result<${entity}> detail(@PathVariable(value = "id") Long id) {
         ${entity} detail = service.queryById(id);
         return Result.success(detail);
     }
 
     @PostMapping("/${cfg.version}/save")
-    @ApiOperation("新增$!{table.comment}")
+    @ApiOperation("新增${table.comment}")
     public Result<String> save(@RequestBody @Validated ${entity}Form form) {
         Long id = service.save(form);
         return Result.success(String.valueOf(id));
     }
 
     @PostMapping("/${cfg.version}/update")
-    @ApiOperation("更新$!{table.comment}")
+    @ApiOperation("更新${table.comment}")
     public Result<String> update(@RequestBody @Validated ${entity}Form form) {
         service.update(form);
         return Result.success();
@@ -62,7 +63,7 @@ public class ${table.controllerName} {
 
 
     @PostMapping("/${cfg.version}/remove/{id}")
-    @ApiOperation("删除$!{table.comment}")
+    @ApiOperation("删除${table.comment}")
     public Result<String> remove(@PathVariable(value = "id") Long id) {
         service.remove(id);
         return Result.success();

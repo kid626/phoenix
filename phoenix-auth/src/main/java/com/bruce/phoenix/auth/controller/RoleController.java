@@ -1,22 +1,19 @@
 package com.bruce.phoenix.auth.controller;
 
 
-import com.bruce.phoenix.auth.model.po.Role;
 import com.bruce.phoenix.auth.model.form.RoleForm;
-import com.bruce.phoenix.auth.model.vo.RoleVO;
+import com.bruce.phoenix.auth.model.po.Role;
 import com.bruce.phoenix.auth.model.query.RoleQuery;
+import com.bruce.phoenix.auth.model.vo.RoleVO;
 import com.bruce.phoenix.auth.service.RoleService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.bruce.phoenix.common.model.common.PageData;
+import com.bruce.phoenix.common.model.common.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.bruce.phoenix.common.model.common.PageData;
-import com.bruce.phoenix.common.model.common.Result;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @Copyright Copyright © 2024 Bruce . All rights reserved.
@@ -27,6 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/role")
+@Api(tags = "角色相关接口")
 public class RoleController {
 
     @Resource

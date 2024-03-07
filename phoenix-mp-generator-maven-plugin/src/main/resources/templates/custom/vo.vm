@@ -15,7 +15,7 @@ import lombok.Data;
  * @Author ${author}
 */
 @Data
-@ApiModel(value = "${entity}VO对象", description = "$!{table.comment}")
+@ApiModel(value = "${entity}VO对象", description = "${table.comment}")
 public class ${entity}VO implements Serializable {
 
     private static final long serialVersionUID = -1L;

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * @Copyright Copyright © ${.now?string("yyyy")} ${author} . All rights reserved.
- * @Desc ${table.comment!}service 实现类
+ * @Desc ${table.comment}service 实现类
  * @ProjectName ${cfg.project_name}
  * @Date ${.now}
  * @Author ${author}

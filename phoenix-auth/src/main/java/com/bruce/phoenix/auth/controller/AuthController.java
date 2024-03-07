@@ -4,9 +4,13 @@ import cn.hutool.core.io.IoUtil;
 import com.bruce.phoenix.auth.component.AuthComponent;
 import com.bruce.phoenix.auth.component.TokenComponent;
 import com.bruce.phoenix.auth.config.AuthProperty;
+import com.bruce.phoenix.auth.filter.CustomSecurityMetadataSource;
 import com.bruce.phoenix.auth.model.common.ImageCaptcha;
 import com.bruce.phoenix.auth.model.dto.LoginDTO;
+import com.bruce.phoenix.auth.model.dto.ResourceDTO;
 import com.bruce.phoenix.auth.model.vo.ResourceVO;
+import com.bruce.phoenix.auth.scanner.AuthResourceScanner;
+import com.bruce.phoenix.auth.scanner.AuthResourceUtil;
 import com.bruce.phoenix.auth.service.AuthService;
 import com.bruce.phoenix.auth.util.CookieUtil;
 import com.bruce.phoenix.common.exception.CommonException;
@@ -16,6 +20,7 @@ import com.bruce.phoenix.core.util.UserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,6 +55,8 @@ public class AuthController {
     private HttpServletRequest request;
     @Resource
     private HttpServletResponse response;
+    @Resource
+    private CustomSecurityMetadataSource customSecurityMetadataSource;
 
 
     @ApiOperation("登录")
@@ -113,10 +120,9 @@ public class AuthController {
 
     @ApiOperation("获取图形验证码")
     @GetMapping(value = "/images/captcha")
-    public void getImageCaptcha(
-            @RequestParam(value = "rid") String rid,
-            @RequestParam(value = "width", defaultValue = "160", required = false) Integer width,
-            @RequestParam(value = "height", defaultValue = "40", required = false) Integer height) {
+    public void getImageCaptcha(@RequestParam(value = "rid") String rid, @RequestParam(value = "width", defaultValue
+            = "160", required = false) Integer width, @RequestParam(value = "height", defaultValue = "40", required =
+            false) Integer height) {
         try {
             AuthProperty.CaptchaManager captcha = property.getCaptcha();
             if (captcha == null || !Boolean.TRUE.equals(captcha.getEnable())) {
@@ -133,4 +139,34 @@ public class AuthController {
             log.info("获取图形验证码失败:{}", e.getMessage(), e);
         }
     }
+
+
+    @GetMapping(value = "/showResScript", produces = "text/html;charset=utf-8")
+    @ApiOperation("资源生成脚本")
+    public String showResScript(@RequestParam(defaultValue = "false") boolean autoIncrement,
+                                @RequestParam(defaultValue = "1.0.0") String version) {
+        if (property.isActiveProfile("prod")) {
+            return StringUtils.EMPTY;
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append("# 菜单初始化脚本\n");
+        List<ResourceDTO> menuList = AuthResourceScanner.getMenuList(version);
+        for (ResourceDTO res : menuList) {
+            sb.append(AuthResourceUtil.genDDL(res, autoIncrement)).append("\n");
+        }
+        sb.append("# 操作初始化脚本\n");
+        List<ResourceDTO> resourceList = AuthResourceScanner.getResourceList(version);
+        for (ResourceDTO res : resourceList) {
+            sb.append(AuthResourceUtil.genDDL(res, autoIncrement)).append("\n");
+        }
+        return sb.toString();
+    }
+
+    @GetMapping(value = "/refresh")
+    @ApiOperation("刷新权限")
+    public void refresh() {
+        customSecurityMetadataSource.refreshResources();
+    }
+
+
 }

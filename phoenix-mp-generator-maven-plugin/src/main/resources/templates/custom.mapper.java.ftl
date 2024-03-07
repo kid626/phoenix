@@ -5,7 +5,7 @@ import ${superMapperClassPackage};
 
 /**
  * @Copyright Copyright © ${.now?string("yyyy")} ${author} . All rights reserved.
- * @Desc ${table.comment!}mapper 层
+ * @Desc ${table.comment}mapper 层
  * @ProjectName ${cfg.project_name}
  * @Date ${.now}
  * @Author ${author}

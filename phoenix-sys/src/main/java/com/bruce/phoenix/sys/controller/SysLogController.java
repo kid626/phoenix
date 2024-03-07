@@ -6,6 +6,7 @@ import com.bruce.phoenix.common.model.common.Result;
 import com.bruce.phoenix.sys.model.query.SysLogQuery;
 import com.bruce.phoenix.sys.model.vo.SysLogVO;
 import com.bruce.phoenix.sys.service.SysLogService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/sys/log")
+@Api(tags = "系统日志相关")
 public class SysLogController {
 
     @Resource

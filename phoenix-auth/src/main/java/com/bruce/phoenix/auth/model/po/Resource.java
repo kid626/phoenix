@@ -3,7 +3,10 @@ package com.bruce.phoenix.auth.model.po;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.io.Serializable;
@@ -17,6 +20,9 @@ import java.util.Date;
  * @Author Bruce
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @TableName("resource")
 @ApiModel(value = "Resource对象", description = "")
 public class Resource implements Serializable, GrantedAuthority {
