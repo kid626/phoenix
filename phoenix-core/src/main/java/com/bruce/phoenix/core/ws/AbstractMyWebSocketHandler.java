@@ -3,6 +3,7 @@ package com.bruce.phoenix.core.ws;
 import com.bruce.phoenix.core.util.WsSessionUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -55,7 +56,6 @@ public abstract class AbstractMyWebSocketHandler extends TextWebSocketHandler {
         log.info("[AbstractMyWebSocketHandler#afterConnectionClosed] 断开连接,sessionId={}", sessionId);
         // 用户退出，移除缓存 同事关闭 session
         WsSessionUtil.remove(sessionId);
-        session.close();
     }
 
 
@@ -83,6 +83,18 @@ public abstract class AbstractMyWebSocketHandler extends TextWebSocketHandler {
         Collection<WebSocketSession> all = WsSessionUtil.values();
         for (WebSocketSession session : all) {
             session.sendMessage(new TextMessage(message));
+        }
+    }
+
+    @Scheduled(initialDelay = 5 * 60 * 1000, fixedDelay = 5 * 60 * 1000)
+    public void clean() throws Exception {
+        log.info("[AbstractMyWebSocketHandler#clean] 清理过期连接");
+        Collection<String> all = WsSessionUtil.keys();
+        for (String sessionId : all) {
+            WebSocketSession session = WsSessionUtil.get(sessionId);
+            if (session != null && !session.isOpen()) {
+                WsSessionUtil.remove(sessionId);
+            }
         }
     }
 

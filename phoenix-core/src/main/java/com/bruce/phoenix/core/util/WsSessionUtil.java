@@ -2,6 +2,7 @@ package com.bruce.phoenix.core.util;
 
 import org.springframework.web.socket.WebSocketSession;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -34,7 +35,9 @@ public class WsSessionUtil {
      *
      * @param key 自定义 key
      */
-    public static void remove(String key) {
+    public static void remove(String key) throws IOException {
+        WebSocketSession session = SESSION_POOL.get(key);
+        session.close();
         // 删除 session
         SESSION_POOL.remove(key);
     }
