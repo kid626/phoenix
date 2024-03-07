@@ -93,7 +93,7 @@ public class UserDao {
         LambdaQueryWrapper<User> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(User::getIsDelete, YesOrNoEnum.NO.getCode());
         wrapper.eq(User::getUsername, username);
-        wrapper.eq(User::getEnable, YesOrNoEnum.YES.getCode());
+        wrapper.eq(User::getIsEnable, YesOrNoEnum.YES.getCode());
         wrapper.last("limit 1");
         return mapper.selectOne(wrapper);
     }

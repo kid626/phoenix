@@ -11,6 +11,7 @@ import com.bruce.phoenix.auth.service.ResourceService;
 import com.bruce.phoenix.auth.service.RoleResourceService;
 import com.bruce.phoenix.common.converter.PageDataConverter;
 import com.bruce.phoenix.common.model.common.PageData;
+import com.bruce.phoenix.common.model.enums.YesOrNoEnum;
 import com.bruce.phoenix.core.model.security.AuthResource;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -67,7 +68,8 @@ public class RoleResourceServiceImpl implements RoleResourceService {
         Page<RoleResource> pageInfo = PageHelper.startPage(query.getPageNum(), query.getPageSize());
         try {
             List<RoleResource> list = dao.queryList(query);
-            List<RoleResourceVO> result = list.stream().map(RoleResourceConverter::convert2Vo).collect(Collectors.toList());
+            List<RoleResourceVO> result =
+                    list.stream().map(RoleResourceConverter::convert2Vo).collect(Collectors.toList());
             return PageDataConverter.convertFromPage(pageInfo, result);
         } finally {
             PageHelper.clearPage();
@@ -81,9 +83,12 @@ public class RoleResourceServiceImpl implements RoleResourceService {
         List<AuthResource> resourceList = new ArrayList<>();
         for (Long resourceId : resourceSet) {
             Resource resource = resourceService.queryById(resourceId);
-            AuthResource authResource = new AuthResource();
-            BeanUtils.copyProperties(resource, authResource);
-            resourceList.add(authResource);
+            if (resource != null && YesOrNoEnum.YES.getCode().equals(resource.getIsEnable())) {
+                AuthResource authResource = new AuthResource();
+                BeanUtils.copyProperties(resource, authResource);
+                resourceList.add(authResource);
+            }
+
         }
         return resourceList;
     }

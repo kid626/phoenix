@@ -20,8 +20,8 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@TableName("user")
-@ApiModel(value = "User对象", description = "")
+@TableName("auth_user")
+@ApiModel(value = "User对象", description = "用户")
 public class User implements Serializable {
 
     private static final long serialVersionUID = -1L;
@@ -39,7 +39,7 @@ public class User implements Serializable {
     private String salt;
 
     @ApiModelProperty(value = "是否启用")
-    private String enable;
+    private String isEnable;
 
     @ApiModelProperty(value = "是否删除")
     private String isDelete;

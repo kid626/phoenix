@@ -1,7 +1,5 @@
 package com.bruce.phoenix.auth.model.po;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -21,20 +19,19 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@TableName("user_role")
-@ApiModel(value = "UserRole对象", description = "")
+@TableName("auth_user_role")
+@ApiModel(value = "UserRole对象", description = "用户-角色关系")
 public class UserRole implements Serializable {
 
     private static final long serialVersionUID = -1L;
 
-    @ApiModelProperty(value = "")
-    @TableId(value = "id", type = IdType.AUTO)
+    @ApiModelProperty(value = "主键")
     private Long id;
 
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "用户主键")
     private Long userId;
 
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "角色主键")
     private Long roleId;
 
 

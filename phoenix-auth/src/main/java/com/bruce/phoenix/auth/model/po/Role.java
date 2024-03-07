@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @Copyright Copyright © 2021 Bruce . All rights reserved.
@@ -21,20 +22,41 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@TableName("role")
-@ApiModel(value = "Role对象", description = "")
+@TableName("auth_role")
+@ApiModel(value = "Role对象", description = "角色")
 public class Role implements Serializable {
 
     private static final long serialVersionUID = -1L;
 
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "主键")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "角色名")
     private String name;
 
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "角色编码")
     private String code;
+
+    @ApiModelProperty(value = "角色备注")
+    private String note;
+
+    @ApiModelProperty(value = "是否启用")
+    private String isEnable;
+
+    @ApiModelProperty(value = "创建人")
+    private String createUser;
+
+    @ApiModelProperty(value = "创建时间")
+    private Date createTime;
+
+    @ApiModelProperty(value = "更新人")
+    private String updateUser;
+
+    @ApiModelProperty(value = "更新时间")
+    private Date updateTime;
+
+    @ApiModelProperty(value = "是否删除")
+    private String isDelete;
 
 }

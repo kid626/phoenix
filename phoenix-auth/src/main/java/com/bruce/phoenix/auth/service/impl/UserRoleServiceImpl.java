@@ -11,6 +11,7 @@ import com.bruce.phoenix.auth.service.RoleService;
 import com.bruce.phoenix.auth.service.UserRoleService;
 import com.bruce.phoenix.common.converter.PageDataConverter;
 import com.bruce.phoenix.common.model.common.PageData;
+import com.bruce.phoenix.common.model.enums.YesOrNoEnum;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
@@ -80,7 +81,9 @@ public class UserRoleServiceImpl implements UserRoleService {
         List<Role> roleList = new ArrayList<>();
         for (Long roleId : roleSet) {
             Role role = roleService.queryById(roleId);
-            roleList.add(role);
+            if (role != null && YesOrNoEnum.YES.getCode().equals(role.getIsEnable())) {
+                roleList.add(role);
+            }
         }
         return roleList;
     }

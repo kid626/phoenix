@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -23,13 +22,13 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("resource")
-@ApiModel(value = "Resource对象", description = "")
-public class Resource implements Serializable, GrantedAuthority {
+@TableName("auth_resource")
+@ApiModel(value = "Resource对象", description = "资源")
+public class Resource implements Serializable {
 
     private static final long serialVersionUID = -1L;
 
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "主键")
     private Long id;
 
     @ApiModelProperty(value = "资源编码")
@@ -74,8 +73,4 @@ public class Resource implements Serializable, GrantedAuthority {
     @ApiModelProperty(value = "是否删除")
     private String isDelete;
 
-    @Override
-    public String getAuthority() {
-        return this.code;
-    }
 }

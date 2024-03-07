@@ -21,14 +21,13 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@TableName("role_resource")
-@ApiModel(value = "RoleResource对象", description = "角色资源关联表")
+@TableName("auth_role_resource")
+@ApiModel(value = "RoleResource对象", description = "角色-资源关系")
 public class RoleResource implements Serializable {
 
     private static final long serialVersionUID = -1L;
 
     @ApiModelProperty(value = "主键")
-    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     @ApiModelProperty(value = "角色主键")

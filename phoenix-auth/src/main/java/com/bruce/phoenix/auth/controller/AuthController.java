@@ -6,6 +6,7 @@ import com.bruce.phoenix.auth.component.TokenComponent;
 import com.bruce.phoenix.auth.config.AuthProperty;
 import com.bruce.phoenix.auth.filter.CustomSecurityMetadataSource;
 import com.bruce.phoenix.auth.model.common.ImageCaptcha;
+import com.bruce.phoenix.auth.model.dto.CaptchaDTO;
 import com.bruce.phoenix.auth.model.dto.LoginDTO;
 import com.bruce.phoenix.auth.model.dto.ResourceDTO;
 import com.bruce.phoenix.auth.model.vo.ResourceVO;
@@ -22,6 +23,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -120,18 +122,16 @@ public class AuthController {
 
     @ApiOperation("获取图形验证码")
     @GetMapping(value = "/images/captcha")
-    public void getImageCaptcha(@RequestParam(value = "rid") String rid, @RequestParam(value = "width", defaultValue
-            = "160", required = false) Integer width, @RequestParam(value = "height", defaultValue = "40", required =
-            false) Integer height) {
+    public void getImageCaptcha(@Validated CaptchaDTO dto) {
         try {
             AuthProperty.CaptchaManager captcha = property.getCaptcha();
             if (captcha == null || !Boolean.TRUE.equals(captcha.getEnable())) {
                 return;
             }
-            if (rid.length() != captcha.getLength()) {
+            if (dto.getRid().length() != captcha.getLength()) {
                 throw new CommonException("invalid rid");
             }
-            ImageCaptcha imageCaptcha = authComponent.createCaptcha(width, height, rid);
+            ImageCaptcha imageCaptcha = authComponent.createCaptcha(dto.getWidth(), dto.getHeight(), dto.getRid());
             response.setHeader(captcha.getName(), imageCaptcha.getRid());
             response.setContentType(MediaType.IMAGE_PNG_VALUE);
             IoUtil.write(response.getOutputStream(), false, imageCaptcha.getLineCaptcha().getImageBytes());

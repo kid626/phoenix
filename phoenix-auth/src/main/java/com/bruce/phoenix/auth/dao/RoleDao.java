@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.bruce.phoenix.auth.mapper.RoleMapper;
 import com.bruce.phoenix.auth.model.po.Role;
 import com.bruce.phoenix.auth.model.query.RoleQuery;
+import com.bruce.phoenix.common.model.enums.YesOrNoEnum;
 import com.dangdang.ddframe.rdb.sharding.id.generator.IdGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -37,6 +38,9 @@ public class RoleDao {
         long id = idGenerator.generateId().longValue();
         Date now = DateUtil.date();
         po.setId(id);
+        po.setCreateTime(now);
+        po.setUpdateTime(now);
+        po.setIsDelete(YesOrNoEnum.NO.getCode());
         mapper.insert(po);
         return id;
     }
@@ -45,6 +49,8 @@ public class RoleDao {
      * 更新
      */
     public void update(Role po) {
+        Date now = DateUtil.date();
+        po.setUpdateTime(now);
         mapper.updateById(po);
     }
 
@@ -52,7 +58,12 @@ public class RoleDao {
      * 删除
      */
     public void remove(Long id) {
-        mapper.deleteById(id);
+        Role po = new Role();
+        Date now = DateUtil.date();
+        po.setId(id);
+        po.setUpdateTime(now);
+        po.setIsDelete(YesOrNoEnum.YES.getCode());
+        mapper.updateById(po);
     }
 
     /**
@@ -60,6 +71,7 @@ public class RoleDao {
      */
     public Role queryById(Long id) {
         LambdaQueryWrapper<Role> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(Role::getIsDelete, YesOrNoEnum.NO.getCode());
         wrapper.eq(Role::getId, id);
         wrapper.last("limit 1");
         return mapper.selectOne(wrapper);
