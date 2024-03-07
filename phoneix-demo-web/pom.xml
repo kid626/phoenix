@@ -26,6 +26,11 @@
             <artifactId>phoenix-sys</artifactId>
             <version>${phoenix.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.bruce</groupId>
+            <artifactId>phoenix-auth</artifactId>
+            <version>${phoenix.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

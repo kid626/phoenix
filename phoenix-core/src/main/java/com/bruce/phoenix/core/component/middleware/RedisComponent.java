@@ -128,8 +128,8 @@ public class RedisComponent implements Lock {
      * @param key 键名
      * @param num 正数为加，负数为减
      */
-    public void incr(String key, Integer num) {
-        redisTemplate.opsForValue().increment(getKey(key), num);
+    public Long incr(String key, Integer num) {
+        return redisTemplate.opsForValue().increment(getKey(key), num);
     }
 
     /**
@@ -354,6 +354,17 @@ public class RedisComponent implements Lock {
         for (String key : set) {
             deleteKey(key);
         }
+    }
+
+    /**
+     * 获取并删除（并不支持 pipeline 的方式）
+     * @param key
+     * @return
+     */
+    public String getAndDelete(String key){
+        String result = get(key);
+        deleteKey(key);
+        return result;
     }
 
     /**

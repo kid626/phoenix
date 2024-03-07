@@ -50,3 +50,22 @@ log:
 
 swagger:
     enable: true
+
+auth:
+    enable: true
+    defaultExcludeUrls: [ "/auth/login", "/auth/secretKey", "/auth/showResScript", "/auth/refresh", "/auth/images/captcha", "/auth/redirect", "/error" ]
+    swaggerUrls: [ "/doc.html", "/v2/api-docs", "/v2/api-docs-ext","/swagger-resources", "/webjars/**" ]
+    token:
+        type: REDIS
+        expire: 172800000
+        name: authtoken
+    captcha:
+        enable: true
+        lineCount: 100
+        expire: 120
+        length: 16
+        name: rid
+        codeCount: 4
+    retry:
+        expire: 7200
+        nums: 5

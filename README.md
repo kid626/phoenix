@@ -127,14 +127,13 @@ com.bruce.phoenix.common.annotation 包下封装了注解，用于完成对请�
 - [x] mp generator
 - [x] aop 日志
 - [x] 异常拦截
-- [ ] springboot admin
 - [x] nacos
 - [ ] elk
 - [ ] rabbit
 - [x] redis
 - [ ] mongo
 - [x] easyexcel
-- [ ] springboot security
+- [x] springboot security
 - [x] websocket
 - [ ] dubbo
 - [x] limiter限流

@@ -22,7 +22,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `resource`;
 CREATE TABLE `resource`  (
-  `id` bigint(0) NOT NULL AUTO_INCREMENT,
+  `id` bigint(0) NOT NULL,
   `code` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '资源编码',
   `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '资源名称',
   `parent_code` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '父编码',
@@ -58,7 +58,7 @@ INSERT INTO `resource` VALUES (10, 'test', 'test', '', 4, '/demoUser/test', '', 
 -- ----------------------------
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role`  (
-  `id` bigint(0) NOT NULL AUTO_INCREMENT,
+  `id` bigint(0) NOT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
@@ -75,7 +75,7 @@ INSERT INTO `role` VALUES (2, '普通用户', 'user');
 -- ----------------------------
 DROP TABLE IF EXISTS `role_resource`;
 CREATE TABLE `role_resource`  (
-  `id` bigint(0) NOT NULL AUTO_INCREMENT,
+  `id` bigint(0) NOT NULL,
   `role_id` bigint(0) NOT NULL,
   `resource_id` bigint(0) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
@@ -95,7 +95,7 @@ INSERT INTO `role_resource` VALUES (5, 1, 10);
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`  (
-  `id` bigint(0) NOT NULL AUTO_INCREMENT,
+  `id` bigint(0) NOT NULL,
   `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `salt` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '盐值',
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,

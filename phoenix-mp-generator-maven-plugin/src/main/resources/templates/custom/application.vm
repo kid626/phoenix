@@ -19,8 +19,8 @@ import java.net.UnknownHostException;
  * @Date ${date}
  * @Author ${author}
  */
-@SpringBootApplication(scanBasePackages = {"com.bruce.phoenix.common", "com.bruce.phoenix.core", "com.bruce.phoenix.sys", "${cfg.parent_package}"})
-@MapperScan(basePackages = {"com.bruce.phoenix.sys.mapper", "${cfg.parent_package}.mapper"})
+@SpringBootApplication(scanBasePackages = {"com.bruce.phoenix.common", "com.bruce.phoenix.core", "com.bruce.phoenix.sys", "com.bruce.phoenix.auth", "${cfg.parent_package}"})
+@MapperScan(basePackages = {"com.bruce.phoenix.sys.mapper", "com.bruce.phoenix.auth.mapper", "${cfg.parent_package}.mapper"})
 @EnableScheduling
 @EnableCaching
 @Slf4j
