@@ -5,7 +5,7 @@ import ${package.Entity}.po.${entity};
 import ${package.Entity}.form.${entity}Form;
 import ${package.Entity}.vo.${entity}VO;
 import ${package.Entity}.query.${entity}Query;
-import ${package.Entity}.convert.${entity}Converter;
+import ${package.Entity}.converter.${entity}Converter;
 import ${package.Service}.${entity}Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -32,15 +32,19 @@ public class ${entity}ServiceImpl implements ${entity}Service {
     @Resource
     private ${entity}Dao dao;
 
+    private static final ${entity}Converter CONVERTER = new ${entity}Converter();
+
     @Override
     public Long save(${entity}Form form) {
-        ${entity} po = ${entity}Converter.convert2Po(form);
+        ${entity} po = new ${entity}();
+        CONVERTER.convert2Po(form, po);
         return dao.save(po);
     }
 
     @Override
     public void update(${entity}Form form) {
-        ${entity} po = ${entity}Converter.convert2Po(form);
+        ${entity} po = new ${entity}();
+        CONVERTER.convert2Po(form, po);
         dao.update(po);
     }
 
@@ -60,7 +64,11 @@ public class ${entity}ServiceImpl implements ${entity}Service {
         Page<${entity}> pageInfo = PageHelper.startPage(query.getPageNum(), query.getPageSize());
         try {
             List<${entity}> list = dao.queryList(query);
-            List<${entity}VO> result = list.stream().map(${entity}Converter::convert2Vo).collect(Collectors.toList());
+            List<${entity}VO> result = list.stream().map((po) -> {
+                ${entity}VO vo = new ${entity}VO();
+                CONVERTER.convert2Vo(po, vo);
+                return vo;
+            }).collect(Collectors.toList());
             return PageDataConverter.convertFromPage(pageInfo, result);
         } finally {
             PageHelper.clearPage();

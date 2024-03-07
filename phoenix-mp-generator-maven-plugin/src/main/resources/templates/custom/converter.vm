@@ -25,8 +25,5 @@ public class ${entity}Converter extends BaseConverter<${entity}Form, ${entity}, 
 
     }
 
-
-
-
 }
 
