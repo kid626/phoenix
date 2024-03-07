@@ -198,3 +198,35 @@ VALUES (1, 1, 1),
 /*!40000 ALTER TABLE `auth_user_role` ENABLE KEYS */;
 UNLOCK
 TABLES;
+
+DROP TABLE IF EXISTS `auth_org`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `auth_org`
+(
+    `id`          bigint NOT NULL COMMENT '主键',
+    `name`        varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  DEFAULT '' COMMENT '组织名称',
+    `code`        varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  DEFAULT '' COMMENT '组织编号',
+    `parent_id`   bigint                                                        DEFAULT NULL COMMENT '上级组织id',
+    `parent_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  DEFAULT '' COMMENT '上级组织编码',
+    `sort_order`  int                                                           DEFAULT NULL COMMENT '组织排序码',
+    `note`        varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '备注',
+    `is_enable`   char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci      DEFAULT 'Y' COMMENT '是否启用',
+    `create_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  DEFAULT '' COMMENT '创建人',
+    `create_time` datetime                                                      DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  DEFAULT '' COMMENT '修改人',
+    `update_time` datetime                                                      DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+    `is_delete`   char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci      DEFAULT 'N' COMMENT '是否删除'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='组织';
+
+
+DROP TABLE IF EXISTS `auth_user_org`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `auth_user_org`
+(
+    `id`         bigint                                 DEFAULT NULL COMMENT '主键',
+    `user_id`    bigint                                 DEFAULT NULL COMMENT '用户主键',
+    `org_code`   varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '组织编码',
+    `sort_order` int                                    DEFAULT NULL COMMENT '排序'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户-组织关系';
