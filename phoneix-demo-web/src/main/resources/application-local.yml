@@ -53,6 +53,7 @@ swagger:
 
 auth:
     enable: true
+    excludeUrls: [ "/demo/**","/ws/demo" ]
     defaultExcludeUrls: [ "/auth/login", "/auth/secretKey", "/auth/showResScript", "/auth/refresh", "/auth/images/captcha", "/auth/redirect", "/error" ]
     swaggerUrls: [ "/doc.html", "/v2/api-docs", "/v2/api-docs-ext","/swagger-resources", "/webjars/**" ]
     token:

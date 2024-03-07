@@ -26,7 +26,8 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(webSocketHandler, "/v1/demo")
+        // 如果引入了 auth ，需要将该 url 排除掉，因为 ws 本质还是走的 http 请求
+        registry.addHandler(webSocketHandler, "/ws/demo")
                 .addInterceptors(webSocketInterceptor)
                 .setAllowedOrigins("*");
     }
