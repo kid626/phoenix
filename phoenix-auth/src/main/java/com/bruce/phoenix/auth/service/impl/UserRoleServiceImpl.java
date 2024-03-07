@@ -1,7 +1,7 @@
 package com.bruce.phoenix.auth.service.impl;
 
 import com.bruce.phoenix.auth.dao.UserRoleDao;
-import com.bruce.phoenix.auth.model.convert.UserRoleConverter;
+import com.bruce.phoenix.auth.model.converter.UserRoleConverter;
 import com.bruce.phoenix.auth.model.form.UserRoleForm;
 import com.bruce.phoenix.auth.model.po.Role;
 import com.bruce.phoenix.auth.model.po.UserRole;

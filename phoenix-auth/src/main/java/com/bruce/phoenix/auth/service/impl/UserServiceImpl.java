@@ -5,7 +5,7 @@ import com.bruce.phoenix.auth.model.po.User;
 import com.bruce.phoenix.auth.model.form.UserForm;
 import com.bruce.phoenix.auth.model.vo.UserVO;
 import com.bruce.phoenix.auth.model.query.UserQuery;
-import com.bruce.phoenix.auth.model.convert.UserConverter;
+import com.bruce.phoenix.auth.model.converter.UserConverter;
 import com.bruce.phoenix.auth.service.UserService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;

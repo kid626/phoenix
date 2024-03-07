@@ -1,7 +1,7 @@
 package com.bruce.phoenix.auth.service.impl;
 
 import com.bruce.phoenix.auth.dao.ResourceDao;
-import com.bruce.phoenix.auth.model.convert.ResourceConverter;
+import com.bruce.phoenix.auth.model.converter.ResourceConverter;
 import com.bruce.phoenix.auth.model.enums.ResourceTypeEnum;
 import com.bruce.phoenix.auth.model.form.ResourceForm;
 import com.bruce.phoenix.auth.model.po.Resource;

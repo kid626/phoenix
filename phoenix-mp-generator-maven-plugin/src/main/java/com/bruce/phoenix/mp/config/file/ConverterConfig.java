@@ -12,11 +12,11 @@ import java.io.File;
  * @Date 2023/11/29 20:47
  * @Author Bruce
  */
-public class ConvertConfig extends FileOutConfig {
+public class ConverterConfig extends FileOutConfig {
 
     private String path;
 
-    public ConvertConfig(String templatePath, String path) {
+    public ConverterConfig(String templatePath, String path) {
         super(templatePath);
         this.path = path + File.separator + "model" + File.separator + "converter";
     }

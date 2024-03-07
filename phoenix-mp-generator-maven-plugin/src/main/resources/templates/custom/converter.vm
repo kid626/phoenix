@@ -1,0 +1,32 @@
+package ${cfg.parent_package}.convert;
+
+import ${package.Entity}.po.${entity};
+import ${package.Entity}.form.${entity}Form;
+import ${package.Entity}.vo.${entity}VO;
+import com.bruce.phoenix.common.converter.BaseConverter;
+
+/**
+ * @Copyright Copyright © ${date.substring(0,4)} ${author} . All rights reserved.
+ * @Desc ${table.comment}转换层
+ * @ProjectName ${cfg.project_name}
+ * @Date ${date}
+ * @Author ${author}
+ */
+public class ${entity}Converter extends BaseConverter<${entity}Form, ${entity}, ${entity}VO> {
+
+
+    @Override
+    protected void doConvert2Po(${entity}Form form, ${entity} po) {
+
+    }
+
+    @Override
+    protected void doConvert2Vo(${entity} po, ${entity}VO vo) {
+
+    }
+
+
+
+
+}
+

@@ -1,4 +1,4 @@
-package com.bruce.phoenix.auth.model.convert;
+package com.bruce.phoenix.auth.model.converter;
 
 import com.bruce.phoenix.auth.model.po.Role;
 import com.bruce.phoenix.auth.model.form.RoleForm;

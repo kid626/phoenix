@@ -1,7 +1,7 @@
 package com.bruce.phoenix.auth.service.impl;
 
 import com.bruce.phoenix.auth.dao.RoleResourceDao;
-import com.bruce.phoenix.auth.model.convert.RoleResourceConverter;
+import com.bruce.phoenix.auth.model.converter.RoleResourceConverter;
 import com.bruce.phoenix.auth.model.form.RoleResourceForm;
 import com.bruce.phoenix.auth.model.po.Resource;
 import com.bruce.phoenix.auth.model.po.RoleResource;

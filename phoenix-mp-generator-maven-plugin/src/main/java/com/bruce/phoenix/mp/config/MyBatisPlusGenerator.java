@@ -197,7 +197,7 @@ public class MyBatisPlusGenerator {
                 fileOutConfigList.add(new ControllerConfig("/templates/custom/controller.vm", joinPath(mpConfig.getOutputDir(mpConfig.getModuleName()), mpConfig.getPackageConfig().getParent())));
                 fileOutConfigList.add(new SqlMapperConfig("/templates/custom/sqlmapper.vm", joinPath(mpConfig.getOutputDir(mpConfig.getModuleName()), mpConfig.getPackageConfig().getParent())));
                 fileOutConfigList.add(new DaoConfig("/templates/custom/dao.vm", joinPath(mpConfig.getOutputDir(mpConfig.getModuleName()), mpConfig.getPackageConfig().getParent())));
-                fileOutConfigList.add(new ConvertConfig("/templates/custom/convert.vm", joinPath(mpConfig.getOutputDir(mpConfig.getModuleName()), mpConfig.getPackageConfig().getParent())));
+                fileOutConfigList.add(new ConverterConfig("/templates/custom/converter.vm", joinPath(mpConfig.getOutputDir(mpConfig.getModuleName()), mpConfig.getPackageConfig().getParent())));
                 // 是否是初始化
                 if (mpConfig.isFirstInit()) {
                     log.info("初始化");

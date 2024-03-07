@@ -5,7 +5,7 @@ import com.bruce.phoenix.auth.model.po.Role;
 import com.bruce.phoenix.auth.model.form.RoleForm;
 import com.bruce.phoenix.auth.model.vo.RoleVO;
 import com.bruce.phoenix.auth.model.query.RoleQuery;
-import com.bruce.phoenix.auth.model.convert.RoleConverter;
+import com.bruce.phoenix.auth.model.converter.RoleConverter;
 import com.bruce.phoenix.auth.service.RoleService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
