@@ -53,7 +53,9 @@ public class LogHttpUtilConfig {
             SysApiLogForm form = SysApiLogForm.builder()
                     .requestId(requestId)
                     .responseCode(response.getStatus() + "")
-                    .responseBody(response.body()).build();
+                    .responseBody(response.body())
+                    .responseTime(DateUtil.date())
+                    .build();
             MqModel<SysApiLogForm> model = MqModel.<SysApiLogForm>builder()
                     .topic(SysConstant.SYS_TOPIC)
                     .type(SysConstant.SYS_API_LOG_UPDATE_MQ_TYPE)

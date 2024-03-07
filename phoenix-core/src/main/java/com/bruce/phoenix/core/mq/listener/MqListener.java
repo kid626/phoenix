@@ -4,7 +4,9 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.json.JSONUtil;
+import com.bruce.phoenix.core.component.middleware.ScheduledThreadPoolComponent;
 import com.bruce.phoenix.core.mq.component.MqComponent;
+import com.bruce.phoenix.core.mq.model.BaseMqModel;
 import com.bruce.phoenix.core.mq.model.MqModel;
 import com.bruce.phoenix.core.mq.service.IMqService;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +36,8 @@ public class MqListener {
     @Resource
     private MqComponent mqComponent;
     @Resource
+    private ScheduledThreadPoolComponent scheduledThreadPoolComponent;
+    @Resource
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
     @Resource
     private ThreadPoolTaskScheduler scheduledThreadPoolExecutor;
@@ -58,37 +62,49 @@ public class MqListener {
         log.info("[MqListener#consume] 开始");
         Set<String> topicSet = mqComponent.getAllTopic();
         for (String topic : topicSet) {
-            MqModel<Object> model = mqComponent.rightPopByTopic(topic);
+            MqModel<? extends BaseMqModel> model = mqComponent.rightPopByTopic(topic);
             if (model != null) {
-                threadPoolTaskExecutor.execute(() -> {
-                    try {
-                        IMqService iMqService = map.get(model.getType());
-                        if (iMqService != null) {
-                            log.info("[MqListener#consume] topic: {} params: {}", topic, JSONUtil.toJsonStr(model.getParams()));
-                            Object params = Convert.convert(ClassUtil.loadClass(model.getParamsType()), model.getParams());
-                            iMqService.proceed(params);
-                        } else {
-                            log.warn("[MqListener#consume] topic: {} 无对应实现方法", topic);
-                        }
-                    } catch (Exception e) {
-                        log.error("[MqListener#consume] topic: {} 处理异常:{}", topic, e.getMessage(), e);
-                        if (model.getErrorCount() >= model.getErrorAllowCount()) {
-                            // 超过允许次数，不再重新入队了
-                            log.error("[MqListener#consume] topic: {} 重复次数超过{},不再处理", topic, model.getErrorAllowCount());
-                            return;
-                        }
-                        long count = model.getErrorCount() + 1;
-                        log.error("[MqListener#consume] topic: {} 重试，次数{}", topic, count);
-                        model.setErrorCount(count);
-                        // 重新入队
-                        mqComponent.sendMessage(model);
-                    }
-                });
+                if (Boolean.TRUE.equals(model.getScheduled())) {
+                    // 周期性任务
+                    scheduledThreadPoolComponent.startTask(model.getMessageId(),
+                            () -> execute(model, topic), model.getStartDate(), model.getPeriod());
+                } else {
+                    // 非周期性的一次性任务
+                    threadPoolTaskExecutor.execute(() -> execute(model, topic));
+                }
             }
             log.warn("[MqListener#consume] topic: {} 队列为空", topic);
         }
         log.info("[MqListener#consume] 结束");
     }
 
+
+    private void execute(MqModel<? extends BaseMqModel> model, String topic) {
+        try {
+            IMqService iMqService = map.get(model.getType());
+            if (iMqService != null) {
+                log.info("[MqListener#consume] topic: {} params: {}", topic,
+                        JSONUtil.toJsonStr(model.getParams()));
+                Object params = Convert.convert(ClassUtil.loadClass(model.getParamsType()),
+                        model.getParams());
+                iMqService.proceed(params);
+            } else {
+                log.warn("[MqListener#consume] topic: {} 无对应实现方法", topic);
+            }
+        } catch (Exception e) {
+            log.error("[MqListener#consume] topic: {} 处理异常:{}", topic, e.getMessage(), e);
+            if (model.getErrorCount() >= model.getErrorAllowCount()) {
+                // 超过允许次数，不再重新入队了
+                log.error("[MqListener#consume] topic: {} 重复次数超过{},不再处理", topic,
+                        model.getErrorAllowCount());
+                return;
+            }
+            long count = model.getErrorCount() + 1;
+            log.error("[MqListener#consume] topic: {} 重试，次数{}", topic, count);
+            model.setErrorCount(count);
+            // 重新入队
+            mqComponent.sendMessage(model);
+        }
+    }
 
 }

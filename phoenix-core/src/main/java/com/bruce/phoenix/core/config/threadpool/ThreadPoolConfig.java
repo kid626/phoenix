@@ -13,6 +13,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 
+import javax.validation.constraints.NotNull;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -50,7 +51,7 @@ public class ThreadPoolConfig implements SchedulingConfigurer, AsyncConfigurer {
      */
     private static final String SCHEDULE_PREFIX = "scheduled-thread-";
 
-    @Bean
+    @Bean(name = "threadPoolTaskExecutor")
     @Primary
     public Executor threadPoolTaskExecutor() {
         // 通过Runtime方法来获取当前服务器cpu内核，根据cpu内核来创建核心线程数和最大线程数
@@ -69,7 +70,7 @@ public class ThreadPoolConfig implements SchedulingConfigurer, AsyncConfigurer {
             private final AtomicInteger threadCount = new AtomicInteger(0);
 
             @Override
-            public Thread newThread(Runnable r) {
+            public Thread newThread(@NotNull Runnable r) {
                 //创建一个线程
                 Thread t = new Thread(r);
                 t.setName(nextThreadName());
@@ -92,7 +93,7 @@ public class ThreadPoolConfig implements SchedulingConfigurer, AsyncConfigurer {
     /**
      * 创建一个定长线程池，支持定时及周期性任务执行
      */
-    @Bean
+    @Bean(name = "scheduledThreadPoolExecutor")
     public ThreadPoolTaskScheduler scheduledThreadPoolExecutor() {
         ThreadPoolTaskScheduler executor = new ThreadPoolTaskScheduler();
         // 大于等于 任务数量

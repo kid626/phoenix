@@ -1,5 +1,6 @@
 package com.bruce.phoenix.sys.model.form;
 
+import com.bruce.phoenix.core.mq.model.BaseMqModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -22,7 +23,7 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SysApiLogForm implements Serializable {
+public class SysApiLogForm extends BaseMqModel implements Serializable {
 
     private static final long serialVersionUID = -1L;
 

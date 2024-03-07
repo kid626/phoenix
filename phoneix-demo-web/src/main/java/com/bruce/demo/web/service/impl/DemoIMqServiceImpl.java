@@ -1,6 +1,7 @@
 package com.bruce.demo.web.service.impl;
 
 import com.bruce.demo.web.model.constant.DemoConstant;
+import com.bruce.phoenix.core.mq.model.BaseMqModel;
 import com.bruce.phoenix.core.mq.service.IMqService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-public class DemoIMqServiceImpl implements IMqService<String> {
+public class DemoIMqServiceImpl implements IMqService<BaseMqModel> {
 
     @Override
     public String getType() {
@@ -22,7 +23,7 @@ public class DemoIMqServiceImpl implements IMqService<String> {
     }
 
     @Override
-    public void proceed(String params) {
-        log.info("hello {}", params);
+    public void proceed(BaseMqModel params) {
+        log.info("hello {}", params.getMessageId());
     }
 }

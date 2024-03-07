@@ -1,5 +1,6 @@
 package com.bruce.phoenix.core.mq.model;
 
+import cn.hutool.core.date.DateUtil;
 import com.bruce.phoenix.common.model.constants.CommonConstant;
 import com.bruce.phoenix.core.mq.service.IMqService;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @Copyright Copyright © 2024 fanzh . All rights reserved.
@@ -20,7 +22,7 @@ import java.io.Serializable;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MqModel<T> implements Serializable {
+public class MqModel<T extends BaseMqModel> implements Serializable {
 
     /**
      * 消息主键
@@ -32,6 +34,22 @@ public class MqModel<T> implements Serializable {
      * 参数类型，用于序列化 反序列化的时候类型转换
      */
     private String paramsType;
+
+    /**
+     * 是否是周期任务
+     */
+    private Boolean scheduled = Boolean.FALSE;
+
+    /**
+     * 开始日期，周期任务必填
+     */
+    private Date startDate = DateUtil.date();
+
+    /**
+     * 执行周期
+     * 负数表示只执行一次   单位毫秒
+     */
+    private Long period = -1L;
 
     /**
      * 用来区分不同队列，默认为 queue
