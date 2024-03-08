@@ -1,29 +1,25 @@
 package com.bruce.phoenix.sys.model.form;
 
-import com.bruce.phoenix.core.mq.model.BaseMqModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.Date;
 
 /**
-* @Copyright Copyright © 2024 Bruce . All rights reserved.
-* @Desc 系统第三方请求日志表单实体类
-* @ProjectName phoenix-sys
-* @Date 2024-03-01
-* @Author Bruce
-*/
+ * @Copyright Copyright © 2024 Bruce . All rights reserved.
+ * @Desc 系统第三方请求日志表单实体类
+ * @ProjectName phoenix-sys
+ * @Date 2024-03-01
+ * @Author Bruce
+ */
 @Data
 @ApiModel(value = "SysApiLogForm对象", description = "系统第三方请求日志")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SysApiLogForm extends BaseMqModel implements Serializable {
+public class SysApiLogForm implements Serializable {
 
     private static final long serialVersionUID = -1L;
 

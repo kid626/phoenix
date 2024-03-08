@@ -6,7 +6,6 @@ import cn.hutool.core.util.ClassUtil;
 import cn.hutool.json.JSONUtil;
 import com.bruce.phoenix.core.component.middleware.ScheduledThreadPoolComponent;
 import com.bruce.phoenix.core.mq.component.MqComponent;
-import com.bruce.phoenix.core.mq.model.BaseMqModel;
 import com.bruce.phoenix.core.mq.model.MqModel;
 import com.bruce.phoenix.core.mq.service.IMqService;
 import lombok.extern.slf4j.Slf4j;
@@ -62,7 +61,7 @@ public class MqListener {
         log.info("[MqListener#consume] 开始");
         Set<String> topicSet = mqComponent.getAllTopic();
         for (String topic : topicSet) {
-            MqModel<? extends BaseMqModel> model = mqComponent.rightPopByTopic(topic);
+            MqModel<?> model = mqComponent.rightPopByTopic(topic);
             if (model != null) {
                 if (Boolean.TRUE.equals(model.getScheduled())) {
                     // 周期性任务
@@ -79,7 +78,7 @@ public class MqListener {
     }
 
 
-    private void execute(MqModel<? extends BaseMqModel> model, String topic) {
+    private <T> void execute(MqModel<T> model, String topic) {
         try {
             IMqService iMqService = map.get(model.getType());
             if (iMqService != null) {

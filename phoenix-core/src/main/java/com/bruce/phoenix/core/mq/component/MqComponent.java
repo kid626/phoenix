@@ -5,7 +5,6 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.bruce.phoenix.core.component.middleware.RedisComponent;
-import com.bruce.phoenix.core.mq.model.BaseMqModel;
 import com.bruce.phoenix.core.mq.model.MqModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -32,11 +31,12 @@ public class MqComponent {
      */
     private final static String QUEUE_TOPIC_SET_NAME = "QUEUE_TOPIC_SET";
 
-    public synchronized void sendMessage(MqModel<? extends BaseMqModel> model) {
+    public synchronized <T> void sendMessage(MqModel<T> model) {
         log.info("[MqComponent#sendMessage] params: {}", JSONUtil.toJsonStr(model));
-        model.setMessageId(RandomUtil.randomString(16));
+        if (StrUtil.isBlank(model.getMessageId())) {
+            model.setMessageId(RandomUtil.randomString(16));
+        }
         model.setParamsType(model.getParams().getClass().getName());
-        model.getParams().setMessageId(model.getMessageId());
         // 如果当前 topic 没有创建过了
         if (!redisComponent.isMember(QUEUE_TOPIC_SET_NAME, model.getTopic())) {
             // 新增 topic
@@ -53,10 +53,10 @@ public class MqComponent {
         return redisComponent.setMembers(QUEUE_TOPIC_SET_NAME);
     }
 
-    public MqModel<? extends BaseMqModel> rightPopByTopic(String topic) {
+    public <T> MqModel<T> rightPopByTopic(String topic) {
         String value = redisComponent.rightPop(topic);
         if (StrUtil.isNotBlank(value)) {
-            return JSONUtil.toBean(value, new TypeReference<MqModel<? extends BaseMqModel>>() {}, false);
+            return JSONUtil.toBean(value, new TypeReference<MqModel<T>>() {}, false);
         }
         // 为空，则可以删除队列 topic
         redisComponent.setRemove(QUEUE_TOPIC_SET_NAME, topic);

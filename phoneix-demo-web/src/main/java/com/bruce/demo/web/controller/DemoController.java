@@ -3,6 +3,7 @@ package com.bruce.demo.web.controller;
 import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.thread.ThreadUtil;
+import cn.hutool.core.util.RandomUtil;
 import com.bruce.demo.web.model.constant.DemoConstant;
 import com.bruce.demo.web.service.ThreadService;
 import com.bruce.demo.web.ws.WebSocketHandler;
@@ -13,7 +14,6 @@ import com.bruce.phoenix.core.event.component.EventComponent;
 import com.bruce.phoenix.core.event.model.EventModel;
 import com.bruce.phoenix.core.model.gateway.GatewaySignModel;
 import com.bruce.phoenix.core.mq.component.MqComponent;
-import com.bruce.phoenix.core.mq.model.BaseMqModel;
 import com.bruce.phoenix.core.mq.model.MqModel;
 import com.bruce.phoenix.core.util.GatewayHttpUtil;
 import io.swagger.annotations.ApiOperation;
@@ -109,9 +109,8 @@ public class DemoController {
     @GetMapping("/mq")
     @ApiOperation("发送队列消息")
     public Result<String> mq() {
-        MqModel<BaseMqModel> model = new MqModel<>();
-        BaseMqModel baseMqModel = new BaseMqModel();
-        model.setParams(baseMqModel);
+        MqModel<String> model = new MqModel<>();
+        model.setParams("world");
         model.setTopic(DemoConstant.TOPIC_NAME_DEMO);
         model.setType(DemoConstant.MQ_TYPE_NAME_DEMO);
         mqComponent.sendMessage(model);
@@ -121,9 +120,10 @@ public class DemoController {
     @GetMapping("/schedule/mq")
     @ApiOperation("发送队列消息-周期性")
     public Result<String> schedule() {
-        MqModel<BaseMqModel> model = new MqModel<>();
-        BaseMqModel baseMqModel = new BaseMqModel();
-        model.setParams(baseMqModel);
+        MqModel<String> model = new MqModel<>();
+        // 外部传入，作为周期任务的 key，方便后续管理
+        model.setMessageId(RandomUtil.randomString(16));
+        model.setParams("world");
         model.setTopic(DemoConstant.TOPIC_NAME_DEMO);
         model.setType(DemoConstant.MQ_TYPE_NAME_DEMO);
         model.setScheduled(Boolean.TRUE);

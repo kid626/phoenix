@@ -22,12 +22,9 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MqModel<T extends BaseMqModel> implements Serializable {
+public class MqModel<T> implements Serializable {
 
-    /**
-     * 消息主键
-     */
-    private String messageId;
+
 
     private Long errorCount = 1L;
     /**
@@ -50,6 +47,11 @@ public class MqModel<T extends BaseMqModel> implements Serializable {
      * 负数表示只执行一次   单位毫秒
      */
     private Long period = -1L;
+
+    /**
+     * 消息主键 自行控制唯一性,建议添加前缀
+     */
+    private String messageId;
 
     /**
      * 用来区分不同队列，默认为 queue
