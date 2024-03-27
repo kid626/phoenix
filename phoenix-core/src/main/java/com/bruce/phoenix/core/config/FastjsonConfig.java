@@ -46,6 +46,8 @@ public class FastjsonConfig {
         // json序列化时将Long转成string再传递到前台，解决精度丢失问题
         SerializeConfig serializeConfig = SerializeConfig.globalInstance;
         serializeConfig.put(BigInteger.class, ToStringSerializer.instance);
+        serializeConfig.put(Long.class, ToStringSerializer.instance);
+        serializeConfig.put(Long.TYPE, ToStringSerializer.instance);
         fastJsonConfig.setSerializeConfig(serializeConfig);
         // 不统一返回，单独设置
         // fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss");
