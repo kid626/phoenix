@@ -5,7 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.bruce.phoenix.common.exception.CommonException;
 import com.bruce.phoenix.common.model.common.Err;
-import com.bruce.phoenix.common.model.common.Result;
+import com.unicom.middleware.unicom.common.dto.Result;
 import com.bruce.phoenix.common.model.constants.CommonConstant;
 import com.bruce.phoenix.common.util.BaseHttpUtil;
 import com.bruce.phoenix.core.model.gateway.GatewayResult;
@@ -111,7 +111,7 @@ public class GatewayHttpUtil {
         }
         Result<Object> result = JSONUtil.toBean(body, new TypeReference<Result<Object>>() {
         }, true);
-        if (!result.isSuccess()) {
+        if (result.getCode() != 200) {
             log.warn("[GatewayHttpUtil] 业务错误 code={} message={}", gateWayResult.getCode(), gateWayResult.getMessage());
             throw new CommonException(result.getCode(), result.getMsg());
         }

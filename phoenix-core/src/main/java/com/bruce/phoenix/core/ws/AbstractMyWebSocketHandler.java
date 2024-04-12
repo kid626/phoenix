@@ -9,7 +9,6 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.util.Collection;
 
@@ -28,7 +27,7 @@ public abstract class AbstractMyWebSocketHandler extends TextWebSocketHandler {
      * socket 建立成功事件
      */
     @Override
-    public void afterConnectionEstablished(@Nonnull WebSocketSession session) throws Exception {
+    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         String sessionId = getSessionId(session);
         log.info("[AbstractMyWebSocketHandler#afterConnectionEstablished] 成功建立连接 sessionId={}", sessionId);
         WsSessionUtil.add(sessionId, session);
@@ -38,7 +37,7 @@ public abstract class AbstractMyWebSocketHandler extends TextWebSocketHandler {
      * 接收消息事件
      */
     @Override
-    protected void handleTextMessage(@Nonnull WebSocketSession session, TextMessage message) throws Exception {
+    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         // 获得客户端传来的消息
         String payload = message.getPayload();
         String sessionId = getSessionId(session);
@@ -51,7 +50,7 @@ public abstract class AbstractMyWebSocketHandler extends TextWebSocketHandler {
      */
     @SneakyThrows
     @Override
-    public void afterConnectionClosed(@Nonnull WebSocketSession session, @Nonnull CloseStatus status) {
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
         String sessionId = getSessionId(session);
         log.info("[AbstractMyWebSocketHandler#afterConnectionClosed] 断开连接,sessionId={}", sessionId);
         // 用户退出，移除缓存 同事关闭 session
@@ -98,7 +97,7 @@ public abstract class AbstractMyWebSocketHandler extends TextWebSocketHandler {
         }
     }
 
-    protected abstract String getSessionId(@Nonnull WebSocketSession session);
+    protected abstract String getSessionId(WebSocketSession session);
 
     protected abstract void handleMessage(String sessionId, String payload) throws Exception;
 

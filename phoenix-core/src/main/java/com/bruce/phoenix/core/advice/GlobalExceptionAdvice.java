@@ -1,7 +1,7 @@
 package com.bruce.phoenix.core.advice;
 
 import com.bruce.phoenix.common.model.common.Err;
-import com.bruce.phoenix.common.model.common.Result;
+import com.unicom.middleware.unicom.common.dto.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;

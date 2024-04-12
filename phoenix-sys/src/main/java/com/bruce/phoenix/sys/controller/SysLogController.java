@@ -2,7 +2,7 @@ package com.bruce.phoenix.sys.controller;
 
 
 import com.bruce.phoenix.common.model.common.PageData;
-import com.bruce.phoenix.common.model.common.Result;
+import com.unicom.middleware.unicom.common.dto.Result;
 import com.bruce.phoenix.sys.model.query.SysLogQuery;
 import com.bruce.phoenix.sys.model.vo.SysLogVO;
 import com.bruce.phoenix.sys.service.SysLogService;

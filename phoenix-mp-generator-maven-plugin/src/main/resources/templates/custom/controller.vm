@@ -13,7 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.bruce.phoenix.common.model.common.PageData;
-import com.bruce.phoenix.common.model.common.Result;
+import com.unicom.middleware.unicom.common.dto.Result;
 
 import javax.annotation.Resource;
 import java.util.List;

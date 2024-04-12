@@ -3,7 +3,7 @@ package com.bruce.phoenix.sys.controller;
 
 import com.bruce.phoenix.common.model.common.BasePageQuery;
 import com.bruce.phoenix.common.model.common.PageData;
-import com.bruce.phoenix.common.model.common.Result;
+import com.unicom.middleware.unicom.common.dto.Result;
 import com.bruce.phoenix.common.model.enums.BusinessTypeEnum;
 import com.bruce.phoenix.common.model.enums.OperatorTypeEnum;
 import com.bruce.phoenix.sys.log.LogRecord;

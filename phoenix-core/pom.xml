@@ -6,7 +6,7 @@
 
     <groupId>com.bruce</groupId>
     <artifactId>phoenix-core</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0-unicom-SNAPSHOT</version>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -18,7 +18,7 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <phoenix.version>1.0-SNAPSHOT</phoenix.version>
+        <phoenix.version>1.0-unicom-SNAPSHOT</phoenix.version>
     </properties>
 
     <distributionManagement>
@@ -27,13 +27,13 @@
         <repository>
             <id>releases</id>
             <name>releases</name>
-            <url>http://ip:port/repository/releases/</url>
+            <url>http://nexus.fubao666.cn/repository/releases/</url>
         </repository>
         <!--快照-->
         <snapshotRepository>
             <id>snapshots</id>
             <name>snapshots</name>
-            <url>http://ip:port/repository/snapshots/</url>
+            <url>http://nexus.fubao666.cn/repository/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -155,6 +155,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 

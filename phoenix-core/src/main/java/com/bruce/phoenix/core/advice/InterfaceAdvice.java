@@ -4,7 +4,7 @@ import cn.hutool.core.date.StopWatch;
 import cn.hutool.core.lang.UUID;
 import com.bruce.phoenix.common.exception.CommonException;
 import com.bruce.phoenix.common.model.common.Err;
-import com.bruce.phoenix.common.model.common.Result;
+import com.unicom.middleware.unicom.common.dto.Result;
 import com.bruce.phoenix.common.model.constants.CommonConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -49,7 +49,7 @@ public class InterfaceAdvice {
             return Result.fail(e.getCode(), e.getMessage());
         } catch (Exception e) {
             log.error("[op:trace],fun={},result=fail,elapse={}ms", fun, stopWatch.getTotalTimeMillis(), e);
-            return Result.fail(Err.SYS_ERROR);
+            return Result.fail(Err.SYS_ERROR.getCode(), e.getMessage());
         } finally {
             stopWatch.stop();
             MDC.remove(CommonConstant.TRACE_ID);

@@ -5,7 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.bruce.phoenix.common.model.common.Result;
+import com.unicom.middleware.unicom.common.dto.Result;
 import com.bruce.phoenix.common.model.enums.BusinessStatusEnum;
 import com.bruce.phoenix.sys.model.po.SysLog;
 import com.bruce.phoenix.sys.service.SysLogService;

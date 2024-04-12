@@ -6,7 +6,7 @@
 
     <groupId>com.bruce</groupId>
     <artifactId>phoenix-common</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0-unicom-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -19,17 +19,22 @@
         <repository>
             <id>releases</id>
             <name>releases</name>
-            <url>http://ip:port/repository/releases/</url>
+            <url>http://nexus.fubao666.cn/repository/releases/</url>
         </repository>
         <!--快照-->
         <snapshotRepository>
             <id>snapshots</id>
             <name>snapshots</name>
-            <url>http://ip:port/repository/snapshots/</url>
+            <url>http://nexus.fubao666.cn/repository/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
     <dependencies>
+        <dependency>
+            <groupId>com.unicom.middleware</groupId>
+            <artifactId>unicom-common</artifactId>
+            <version>2.1-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
