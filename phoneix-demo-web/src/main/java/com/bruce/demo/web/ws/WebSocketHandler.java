@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
-import javax.annotation.Nonnull;
 import java.net.URI;
 
 /**
@@ -23,7 +22,7 @@ public class WebSocketHandler extends AbstractMyWebSocketHandler {
     private static final String USER_ID = "userId";
 
     @Override
-    protected String getSessionId(@Nonnull WebSocketSession session) {
+    protected String getSessionId(WebSocketSession session) {
         URI uri = session.getUri();
         return UrlUtil.getParameter(uri.getQuery(), USER_ID);
     }

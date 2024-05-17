@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.RandomUtil;
+import com.bruce.demo.web.model.TestParent;
 import com.bruce.demo.web.model.constant.DemoConstant;
 import com.bruce.demo.web.service.ThreadService;
 import com.bruce.demo.web.ws.WebSocketHandler;
@@ -69,9 +70,7 @@ public class DemoController {
 
     @GetMapping("/gateway")
     public Result<String> gateway(String token) {
-        GatewaySignModel model =
-                GatewaySignModel.builder().appKey("appKey").appSecret("appSecret").host("http://ip" + ":port").path(
-                        "/xxx").build();
+        GatewaySignModel model = GatewaySignModel.builder().appKey("appKey").appSecret("appSecret").host("http://ip" + ":port").path("/xxx").build();
         Map<String, Object> params = new HashMap<>();
         params.put("token", token);
         String result = GatewayHttpUtil.get(model, null, params);
@@ -145,6 +144,12 @@ public class DemoController {
     @ApiOperation("广播 websocket 消息")
     public Result<String> broadcastMessage(String message) throws IOException {
         webSocketHandler.broadcastMessage(message);
+        return Result.success();
+    }
+
+    @GetMapping("/extend")
+    @ApiOperation("测试继承")
+    public Result<String> extend(TestParent test) throws IOException {
         return Result.success();
     }
 
