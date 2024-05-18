@@ -23,13 +23,13 @@
         <repository>
             <id>releases</id>
             <name>releases</name>
-            <url>http://ip:port/repository/releases/</url>
+            <url>http://nexus.fubao666.cn/repository/releases/</url>
         </repository>
         <!--快照-->
         <snapshotRepository>
             <id>snapshots</id>
             <name>snapshots</name>
-            <url>http://ip:port/repository/snapshots/</url>
+            <url>http://nexus.fubao666.cn/repository/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 

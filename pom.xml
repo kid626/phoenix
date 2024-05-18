@@ -18,7 +18,7 @@
     </modules>
 
     <properties>
-        <revision>1.0-unicom-SNAPSHOT</revision>
+        <revision>1.1-unicom-SNAPSHOT</revision>
         <unicom-middleware.version>2.1-SNAPSHOT</unicom-middleware.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
@@ -232,18 +232,39 @@
         </plugins>
     </build>
 
+    <distributionManagement>
+        <!--正式版本  正式版本version  不能带SNAPSHOT -->
+        <!-- 与 settings.xml 中<server> 的id 相对应 -->
+        <repository>
+            <id>releases</id>
+            <name>releases</name>
+            <url>http://nexus.fubao666.cn/repository/releases/</url>
+        </repository>
+        <!--快照-->
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>snapshots</name>
+            <url>http://nexus.fubao666.cn/repository/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <profiles>
         <profile>
             <id>repository</id>
             <distributionManagement>
+                <!--正式版本  正式版本version  不能带SNAPSHOT -->
+                <!-- 与 settings.xml 中<server> 的id 相对应 -->
+                <repository>
+                    <id>releases</id>
+                    <name>releases</name>
+                    <url>http://nexus.fubao666.cn/repository/releases/</url>
+                </repository>
+                <!--快照-->
                 <snapshotRepository>
                     <id>snapshots</id>
-                    <url>https://ip:port/repositories/snapshots/</url>
+                    <name>snapshots</name>
+                    <url>http://nexus.fubao666.cn/repository/snapshots/</url>
                 </snapshotRepository>
-                <repository>
-                    <id>release</id>
-                    <url>https://ip:port/repositories/release/</url>
-                </repository>
             </distributionManagement>
             <build>
                 <plugins>

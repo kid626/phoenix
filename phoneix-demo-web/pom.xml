@@ -6,13 +6,13 @@
 
     <groupId>com.bruce</groupId>
     <artifactId>phoneix-demo-web</artifactId>
-    <version>1.0-unicom-SNAPSHOT</version>
+    <version>1.1-unicom-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <phoenix.version>1.0-unicom-SNAPSHOT</phoenix.version>
+        <phoenix.version>1.1-unicom-SNAPSHOT</phoenix.version>
     </properties>
 <!--    <dependencyManagement>-->
 <!--        <dependencies>-->
