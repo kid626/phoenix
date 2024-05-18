@@ -7,7 +7,8 @@
     <parent>
         <groupId>com.bruce</groupId>
         <artifactId>phoenix</artifactId>
-        <version>1.0-unicom-SNAPSHOT</version>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>phoenix-common</artifactId>
@@ -37,7 +38,6 @@
         <dependency>
             <groupId>com.unicom.middleware</groupId>
             <artifactId>unicom-common</artifactId>
-            <version>2.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>cn.hutool</groupId>

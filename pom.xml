@@ -6,7 +6,7 @@
 
     <groupId>com.bruce</groupId>
     <artifactId>phoenix</artifactId>
-    <version>1.0-unicom-SNAPSHOT</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
     <modules>
         <module>phoenix-all</module>
@@ -18,6 +18,8 @@
     </modules>
 
     <properties>
+        <revision>1.0-unicom-SNAPSHOT</revision>
+        <unicom-middleware.version>2.1-SNAPSHOT</unicom-middleware.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -49,6 +51,11 @@
                 <version>2.3.5.RELEASE</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.unicom.middleware</groupId>
+                <artifactId>unicom-common</artifactId>
+                <version>${unicom-middleware.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.hutool</groupId>
@@ -188,6 +195,39 @@
                         </manifestEntries>
                     </archive>
                 </configuration>
+            </plugin>
+            <!-- 添加flatten-maven-plugin插件 -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.3.0</version>
+                <inherited>true</inherited>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                        <configuration>
+                            <!-- 避免IDE将 .flattened-pom.xml 自动识别为功能模块 -->
+                            <updatePomFile>true</updatePomFile>
+                            <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                            <pomElements>
+                                <parent>expand</parent>
+                                <distributionManagement>remove</distributionManagement>
+                                <repositories>remove</repositories>
+                            </pomElements>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
