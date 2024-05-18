@@ -4,21 +4,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.3.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <groupId>com.bruce</groupId>
+        <artifactId>phoenix</artifactId>
+        <version>1.0-unicom-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.bruce</groupId>
     <artifactId>phoenix-auth</artifactId>
-    <version>1.0-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <phoenix.version>1.0-SNAPSHOT</phoenix.version>
+        <phoenix.version>1.0-unicom-SNAPSHOT</phoenix.version>
     </properties>
     <distributionManagement>
         <!--正式版本  正式版本version  不能带SNAPSHOT -->
@@ -62,7 +59,6 @@
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
-            <version>0.7.0</version>
         </dependency>
     </dependencies>
 

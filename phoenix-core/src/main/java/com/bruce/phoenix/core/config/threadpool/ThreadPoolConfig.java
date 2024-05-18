@@ -1,6 +1,5 @@
 package com.bruce.phoenix.core.config.threadpool;
 
-import cn.hutool.core.date.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Bean;
@@ -14,8 +13,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadFactory;
@@ -36,10 +33,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ThreadPoolConfig implements SchedulingConfigurer, AsyncConfigurer {
 
 
-    @Resource
-    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
-    @Resource
-    private ThreadPoolTaskScheduler scheduledThreadPoolExecutor;
 
     /**
      * 队列最大长度1000
@@ -59,14 +52,6 @@ public class ThreadPoolConfig implements SchedulingConfigurer, AsyncConfigurer {
      * 定时任务前缀
      */
     private static final String SCHEDULE_PREFIX = "scheduled-thread-";
-
-    @PostConstruct
-    public void monitor() {
-        scheduledThreadPoolExecutor.scheduleAtFixedRate(() -> {
-            print(scheduledThreadPoolExecutor);
-            print(threadPoolTaskExecutor);
-        }, DateUtil.date(), 60000);
-    }
 
 
     @Bean(name = "threadPoolTaskExecutor")
@@ -146,16 +131,6 @@ public class ThreadPoolConfig implements SchedulingConfigurer, AsyncConfigurer {
         return new CustomAsyncUncaughtExceptionHandler();
     }
 
-    private void print(ThreadPoolTaskExecutor threadPoolTaskExecutor) {
-        StringBuilder sb = new StringBuilder("[ThreadPoolConfig#print] threadPoolTaskExecutor=");
-        sb.append(threadPoolTaskExecutor.getThreadPoolExecutor());
-        log.info("{}", sb);
-    }
 
-    private void print(ThreadPoolTaskScheduler scheduledThreadPoolExecutor) {
-        StringBuilder sb = new StringBuilder("[ThreadPoolConfig#print] scheduledThreadPoolExecutor=");
-        sb.append(scheduledThreadPoolExecutor.getScheduledThreadPoolExecutor());
-        log.info("{}", sb);
-    }
 
 }

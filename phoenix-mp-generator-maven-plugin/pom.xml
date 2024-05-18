@@ -32,11 +32,22 @@
         </snapshotRepository>
     </distributionManagement>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.bruce</groupId>
+                <artifactId>phoenix-bom</artifactId>
+                <version>${phoenix.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>com.bruce</groupId>
             <artifactId>phoenix-common</artifactId>
-            <version>${phoenix.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
