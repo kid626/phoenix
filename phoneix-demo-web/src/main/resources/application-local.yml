@@ -5,7 +5,7 @@ spring:
         name: demo
         url: jdbc:mysql://localhost:3306/demo?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
         username: root
-        password: root
+        password: 255001fzh
 
         type: com.alibaba.druid.pool.DruidDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
@@ -27,7 +27,7 @@ spring:
         host: 127.0.0.1
         port: 6379
         database: 0
-        password:
+        password: 255001fzh
         timeout: 5000
         prefix: phoenix-demo
         jedis:
@@ -52,7 +52,7 @@ swagger:
     enable: true
 
 auth:
-    enable: true
+    enable: false
     excludeUrls: [ "/demo/**","/ws/demo" ]
     defaultExcludeUrls: [ "/auth/login", "/auth/secretKey", "/auth/showResScript", "/auth/refresh", "/auth/images/captcha", "/auth/redirect", "/error" ]
     swaggerUrls: [ "/doc.html", "/v2/api-docs", "/v2/api-docs-ext","/swagger-resources", "/webjars/**" ]

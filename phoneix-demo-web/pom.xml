@@ -14,23 +14,42 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <phoenix.version>1.0-SNAPSHOT</phoenix.version>
     </properties>
+<!--    <dependencyManagement>-->
+<!--        <dependencies>-->
+<!--            <dependency>-->
+<!--                <groupId>com.bruce</groupId>-->
+<!--                <artifactId>phoenix-bom</artifactId>-->
+<!--                <version>${phoenix.version}</version>-->
+<!--                <type>pom</type>-->
+<!--                <scope>import</scope>-->
+<!--            </dependency>-->
+<!--        </dependencies>-->
+<!--    </dependencyManagement>-->
 
     <dependencies>
         <dependency>
             <groupId>com.bruce</groupId>
-            <artifactId>phoenix-core</artifactId>
+            <artifactId>phoenix-all</artifactId>
             <version>${phoenix.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.bruce</groupId>
+                    <artifactId>phoenix-auth</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
-        <dependency>
-            <groupId>com.bruce</groupId>
-            <artifactId>phoenix-sys</artifactId>
-            <version>${phoenix.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.bruce</groupId>
-            <artifactId>phoenix-auth</artifactId>
-            <version>${phoenix.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.bruce</groupId>-->
+<!--            <artifactId>phoenix-core</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.bruce</groupId>-->
+<!--            <artifactId>phoenix-sys</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.bruce</groupId>-->
+<!--            <artifactId>phoenix-auth</artifactId>-->
+<!--        </dependency>-->
     </dependencies>
     <build>
         <plugins>
