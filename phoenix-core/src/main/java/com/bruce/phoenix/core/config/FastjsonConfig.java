@@ -38,8 +38,8 @@ public class FastjsonConfig {
                 SerializerFeature.WriteNullListAsEmpty,
                 //字符类型字段如果为null,输出为"",而非null
                 SerializerFeature.WriteNullStringAsEmpty,
-                //数值字段如果为null,输出为0,而非null
-                SerializerFeature.WriteNullNumberAsZero,
+                //数值字段如果为null,输出为null
+                SerializerFeature.WriteNullStringAsEmpty,
                 //是否输出值为 null 的字段
                 SerializerFeature.WriteMapNullValue
         );
