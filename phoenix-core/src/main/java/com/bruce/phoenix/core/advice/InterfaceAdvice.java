@@ -32,9 +32,9 @@ public class InterfaceAdvice {
     // @Around("execution(public * com.bruce.*.*.controller..*(..))")
     @Around("logCut()")
     public Object ajaxResultProcess(ProceedingJoinPoint pjp) throws Throwable {
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
         String traceId = UUID.fastUUID().toString(true);
+        StopWatch stopWatch = new StopWatch(traceId);
+        stopWatch.start();
         MDC.put(CommonConstant.TRACE_ID, traceId);
 
         Object obj;
@@ -42,16 +42,21 @@ public class InterfaceAdvice {
         try {
             log.info("[op:trace],fun={},args={}", fun, pjp.getArgs());
             obj = pjp.proceed();
+            stopWatch.stop();
             log.info("[op:trace],fun={},result=success,elapse={}ms", fun, stopWatch.getTotalTimeMillis());
             return obj;
         } catch (CommonException e) {
+            stopWatch.stop();
             log.info("[op:trace],fun={},result=fail,elapse={}ms,err={}", fun, stopWatch.getTotalTimeMillis(), e.getMessage());
             return Result.fail(e.getCode(), e.getMessage());
         } catch (Exception e) {
+            stopWatch.stop();
             log.error("[op:trace],fun={},result=fail,elapse={}ms", fun, stopWatch.getTotalTimeMillis(), e);
             return Result.fail(Err.SYS_ERROR);
         } finally {
-            stopWatch.stop();
+            if (stopWatch.isRunning()) {
+                stopWatch.stop();
+            }
             MDC.remove(CommonConstant.TRACE_ID);
             MDC.remove(CommonConstant.SESSION);
             MDC.remove(CommonConstant.USER_ID);
@@ -64,7 +69,8 @@ public class InterfaceAdvice {
             "||@annotation(org.springframework.web.bind.annotation.PutMapping)" +
             "||@annotation(org.springframework.web.bind.annotation.DeleteMapping)" +
             "||@annotation(org.springframework.web.bind.annotation.RequestMapping)")
-    public void logCut() {}
+    public void logCut() {
+    }
 
     private String fetchFun(ProceedingJoinPoint pjp) {
         return "[" + pjp.getSignature().getDeclaringType().getSimpleName() + "." + pjp.getSignature().getName() + "]";
