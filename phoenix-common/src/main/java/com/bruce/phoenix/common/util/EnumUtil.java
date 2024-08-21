@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 public class EnumUtil {
 
     // 实现BaseServiceEnum接口的枚举类的Class Name做key，枚举类的values()做value
-    private static Map<String, List<BaseSelectVO>> enumDict = Collections.unmodifiableMap(new HashMap<>());
+    private static Map<String, List<BaseSelectVO>> enumDict = new HashMap<>();
 
     /**
      * 生成枚举操作相关使用的缓存，减少频繁反射调用enum.values()并遍历比较所带来的性能消耗
