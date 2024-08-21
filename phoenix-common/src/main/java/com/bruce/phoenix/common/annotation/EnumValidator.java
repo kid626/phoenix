@@ -38,7 +38,7 @@ public class EnumValidator implements ConstraintValidator<EnumValid, String> {
 
             Object[] objects = cls.getEnumConstants();
             for (Object obj : objects) {
-                if (containsAll && CommonConstant.ALL.equals(obj.toString())) {
+                if (containsAll && CommonConstant.ALL.equals(value)) {
                     result = true;
                     break;
                 }
