@@ -29,6 +29,8 @@ public class CommonConstant {
     public static final String APP_SECRET = "appSecret";
     public static final String APP_ID = "appId";
     public static final String DEFAULT = "default";
+    public static final String ALL = "all";
+    public static final String ALL_STR = "全部";
 
 
 }
