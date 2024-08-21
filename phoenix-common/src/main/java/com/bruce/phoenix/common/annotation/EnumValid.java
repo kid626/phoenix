@@ -18,20 +18,28 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = EnumValidator.class)
 public @interface EnumValid {
-	String message() default "";
+    String message() default "";
 
-	// 作用参考@Validated和@Valid的区别
-	Class<?>[] groups() default {};
+    // 作用参考@Validated和@Valid的区别
+    Class<?>[] groups() default {};
 
-	Class<? extends Payload>[] payload() default {};
+    Class<? extends Payload>[] payload() default {};
 
-	/**
-	 * 目标枚举类
-	 */
-	Class<?> target() default Class.class;
+    /**
+     * 目标枚举类
+     */
+    Class<?> target() default Class.class;
 
-	/**
-	 * 是否忽略空值
-	 */
-	boolean ignoreEmpty() default true;
+    /**
+     * 是否忽略空值
+     */
+    boolean ignoreEmpty() default true;
+
+    /**
+     * 是否包含全部
+     *
+     * @return
+     */
+    boolean containsAll() default false;
+
 }
