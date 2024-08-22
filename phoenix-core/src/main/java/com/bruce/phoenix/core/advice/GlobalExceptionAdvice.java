@@ -3,6 +3,7 @@ package com.bruce.phoenix.core.advice;
 import com.bruce.phoenix.common.model.common.Err;
 import com.bruce.phoenix.common.model.common.Result;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.exceptions.PersistenceException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -83,7 +84,7 @@ public class GlobalExceptionAdvice {
      *
      * @return 返回请求方
      */
-    @ExceptionHandler(value = {SQLException.class, SQLSyntaxErrorException.class, DataAccessException.class})
+    @ExceptionHandler(value = {SQLException.class, SQLSyntaxErrorException.class, DataAccessException.class, PersistenceException.class})
     public Result<String> handleSqlException() {
         return Result.fail(Err.SQL_ERROR.getCode(), Err.SQL_ERROR.getMessage());
     }
