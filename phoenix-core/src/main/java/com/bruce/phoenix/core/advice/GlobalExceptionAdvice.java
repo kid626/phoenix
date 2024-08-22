@@ -3,6 +3,7 @@ package com.bruce.phoenix.core.advice;
 import com.bruce.phoenix.common.model.common.Err;
 import com.bruce.phoenix.common.model.common.Result;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import java.sql.SQLException;
+import java.sql.SQLSyntaxErrorException;
 import java.util.Set;
 
 /**
@@ -36,8 +39,7 @@ public class GlobalExceptionAdvice {
         BindingResult result = e.getBindingResult();
         StringBuilder sb = new StringBuilder("Invalid Request:");
         for (FieldError fieldError : result.getFieldErrors()) {
-            sb.append(fieldError.getField()).append("=[").append(fieldError.getRejectedValue()).append("]")
-                    .append(fieldError.getDefaultMessage()).append(";");
+            sb.append(fieldError.getField()).append("=[").append(fieldError.getRejectedValue()).append("]").append(fieldError.getDefaultMessage()).append(";");
         }
         return Result.fail(Err.PARAM_ERROR.getCode(), sb.toString());
     }
@@ -53,8 +55,7 @@ public class GlobalExceptionAdvice {
         BindingResult result = ex.getBindingResult();
         StringBuilder sb = new StringBuilder("Invalid Request:");
         for (FieldError fieldError : result.getFieldErrors()) {
-            sb.append(fieldError.getField()).append("=[").append(fieldError.getRejectedValue()).append("]")
-                    .append(fieldError.getDefaultMessage()).append(";");
+            sb.append(fieldError.getField()).append("=[").append(fieldError.getRejectedValue()).append("]").append(fieldError.getDefaultMessage()).append(";");
         }
         // 生成返回结果
         return Result.fail(Err.PARAM_ERROR.getCode(), sb.toString());
@@ -76,4 +77,16 @@ public class GlobalExceptionAdvice {
         // 生成返回结果
         return Result.fail(Err.PARAM_ERROR.getCode(), sb.toString());
     }
+
+    /**
+     * sql 错误拦截
+     *
+     * @return 返回请求方
+     */
+    @ExceptionHandler(value = {SQLException.class, SQLSyntaxErrorException.class, DataAccessException.class})
+    public Result<String> handleSqlException() {
+        return Result.fail(Err.SQL_ERROR.getCode(), Err.SQL_ERROR.getMessage());
+    }
+
+
 }

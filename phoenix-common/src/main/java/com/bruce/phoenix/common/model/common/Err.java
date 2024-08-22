@@ -23,6 +23,7 @@ public class Err {
     public static Err SYS_ERROR = new Err(500, "系统异常");
     public static Err GATEWAY_ERROR = new Err(501, "网关异常");
     public static Err CUSTOM_ERROR = new Err(502, "自定义错误");
+    public static Err SQL_ERROR = new Err(505, "SQL执行错误");
     public static Err PARAM_ERROR = new Err(400, "参数校验异常");
     public static Err NO_AUTH = new Err(401, "无权限访问");
     public static Err NO_LOGIN = new Err(430, "未登录");
