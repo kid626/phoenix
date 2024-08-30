@@ -7,6 +7,7 @@ import com.bruce.phoenix.common.exception.CommonException;
 import com.bruce.phoenix.common.model.common.Result;
 import com.bruce.phoenix.common.model.constants.CommonConstant;
 import com.bruce.phoenix.common.util.BaseHttpUtil;
+import com.bruce.phoenix.common.model.common.Err;
 import com.bruce.phoenix.core.model.gateway.GatewaySignModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.DigestUtils;
@@ -102,11 +103,12 @@ public class GatewayHttpUtil {
 
 
     private static String handleBody(String body) {
+
         Result<Object> result = JSONUtil.toBean(body, new TypeReference<Result<Object>>() {
         }, true);
         if (!result.isSuccess()) {
             log.warn("[GatewayHttpUtil] 业务错误 code={} message={}", result.getCode(), result.getMsg());
-            throw new CommonException(result.getCode(), result.getMsg());
+            throw new CommonException(Err.GATEWAY_ERROR.getCode(), result.getMsg());
         }
         if (result.getData() instanceof String) {
             return String.valueOf(result.getData());
