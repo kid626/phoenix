@@ -4,27 +4,39 @@ import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.RandomUtil;
+import com.bruce.demo.web.excel.DemoExcelListener;
+import com.bruce.demo.web.excel.DemoExcelModel;
 import com.bruce.demo.web.model.constant.DemoConstant;
+import com.bruce.demo.web.model.enums.TestEnum;
+import com.bruce.demo.web.service.DemoUserService;
 import com.bruce.demo.web.service.ThreadService;
 import com.bruce.demo.web.ws.WebSocketHandler;
+import com.bruce.phoenix.common.model.common.BaseSelectVO;
 import com.bruce.phoenix.common.model.common.Result;
 import com.bruce.phoenix.common.util.BaseHttpUtil;
+import com.bruce.phoenix.common.util.EnumUtil;
 import com.bruce.phoenix.core.annotation.Limiter;
 import com.bruce.phoenix.core.event.component.EventComponent;
 import com.bruce.phoenix.core.event.model.EventModel;
+import com.bruce.phoenix.core.excel.component.ExcelComponent;
+import com.bruce.phoenix.core.excel.model.ImportResultModel;
 import com.bruce.phoenix.core.model.gateway.GatewaySignModel;
 import com.bruce.phoenix.core.mq.component.MqComponent;
 import com.bruce.phoenix.core.mq.model.MqModel;
 import com.bruce.phoenix.core.util.GatewayHttpUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -47,6 +59,10 @@ public class DemoController {
     private MqComponent mqComponent;
     @Resource
     private WebSocketHandler webSocketHandler;
+    @Resource
+    private ExcelComponent excelComponent;
+    @Resource
+    private DemoUserService demoUserService;
 
     @GetMapping("/async/say")
     public Result<String> sayHelloAsync() {
@@ -145,6 +161,34 @@ public class DemoController {
     @ApiOperation("广播 websocket 消息")
     public Result<String> broadcastMessage(String message) throws IOException {
         webSocketHandler.broadcastMessage(message);
+        return Result.success();
+    }
+
+    @GetMapping("/test/enum")
+    @ApiOperation("枚举下拉框")
+    public Result<List<BaseSelectVO>> getSelect() {
+        List<BaseSelectVO> list = EnumUtil.getSelect(TestEnum.class);
+        return Result.success(list);
+    }
+
+    @GetMapping("/excel/template")
+    @ApiOperation(value = "获取导入模板", httpMethod = "GET", notes = "下载符合条件的Excel", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public Result<String> template() {
+        excelComponent.loadTemplate("demo.xlsx", "测试导入模板.xlsx");
+        return Result.success();
+    }
+
+    @PostMapping("/excel/import")
+    @ApiOperation("导入")
+    public Result<ImportResultModel<DemoExcelModel>> importData(MultipartFile file) throws IOException {
+        ImportResultModel<DemoExcelModel> model = excelComponent.importData(file, DemoExcelModel.class, new DemoExcelListener(demoUserService), 3);
+        return Result.success(model);
+    }
+
+    @GetMapping("/excel/get")
+    @ApiOperation(value = "获取错误数据", httpMethod = "GET", notes = "下载符合条件的Excel", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public Result<String> downloadErrorData(String operationId) {
+        excelComponent.downloadErrorData("测试导入失败数据.xlsx", "测试导入失败数据.xlsx", operationId);
         return Result.success();
     }
 

@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -113,32 +114,54 @@ public class ExcelComponent {
      * @param filepath 文件路径
      * @param filename 文件名,建议不要带目录
      */
-    public <T extends BaseImportModel> void fillTemplate(String filename, String filepath, List<T> data) {
+    public void downloadErrorData(String filename, String filepath, String operationId) {
+        // 获取错误数据
+        ImportResultModel<BaseImportModel> model = get(operationId);
+        // 填充错误数据
+        fillTemplate(filename, filepath, model.getErrorDataList());
+    }
+
+    /**
+     * 填充错误数据
+     *
+     * @param filepath 文件路径
+     * @param filename 文件名,建议不要带目录
+     */
+    private <T extends BaseImportModel> void fillTemplate(String filename, String filepath, List<T> data) {
         try {
-            EasyExcelUtil.simpleFill(response, filepath, null, data, WriteDirectionEnum.VERTICAL);
+            ClassPathResource classPathResource = new ClassPathResource(filepath);
+            String templatePath = classPathResource.getFile().getPath();
             // 设置输出的格式
             response.reset();
+            // 设置响应类型
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            // 设置编码格式
+            response.setCharacterEncoding("utf-8");
             response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(filename, "UTF-8"));
+            EasyExcelUtil.simpleFill(response, templatePath, null, data, WriteDirectionEnum.VERTICAL);
         } catch (IOException e) {
             log.warn("填充 excel 模板失败:{}", e.getMessage(), e);
             throw new CommonException("填充 excel 模板失败!");
         }
     }
 
-    public <T extends BaseImportModel> ImportResultModel<T> set(List<T> errorList) {
+    private <T extends BaseImportModel> ImportResultModel<T> set(List<T> errorList) {
         String operationId = UUID.fastUUID().toString(true);
         ImportResultModel<T> model = new ImportResultModel<>();
         model.setOperationId(operationId);
-        if (CollUtil.isEmpty(errorList)) {
-            String key = MessageFormat.format(EXCEL_IMPORT_CACHE, operationId);
+        if (CollUtil.isNotEmpty(errorList)) {
             model.setErrorCount((long) errorList.size());
             model.setErrorDataList(errorList);
-            redisComponent.setExpire(key, JSON.toJSONString(model), 1L, TimeUnit.DAYS);
+        } else {
+            model.setErrorCount(0L);
+            model.setErrorDataList(new ArrayList<>());
         }
+        String key = MessageFormat.format(EXCEL_IMPORT_CACHE, operationId);
+        redisComponent.setExpire(key, JSON.toJSONString(model), 1L, TimeUnit.DAYS);
         return model;
     }
 
-    public <T extends BaseImportModel> ImportResultModel<T> get(String operationId) {
+    private <T extends BaseImportModel> ImportResultModel<T> get(String operationId) {
         String key = MessageFormat.format(EXCEL_IMPORT_CACHE, operationId);
         String result = redisComponent.get(key);
         return JSONUtil.toBean(result, new TypeReference<ImportResultModel<T>>() {}, false);

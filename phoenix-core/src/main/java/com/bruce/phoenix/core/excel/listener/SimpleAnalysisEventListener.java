@@ -1,6 +1,7 @@
 package com.bruce.phoenix.core.excel.listener;
 
 
+import cn.hutool.json.JSONUtil;
 import com.alibaba.excel.context.AnalysisContext;
 import com.bruce.phoenix.core.excel.model.BaseImportModel;
 import com.bruce.phoenix.core.excel.service.IExcelService;
@@ -8,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Copyright Copyright © 2024 fanzh . All rights reserved.
@@ -52,5 +54,10 @@ public class SimpleAnalysisEventListener<T extends BaseImportModel> extends Abst
     @Override
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
         log.info("数据分析完成,累计数据:{},成功数据:{},失败数据:{}", allDataList.size(), successDataList.size(), failureDataList.size());
+    }
+
+    @Override
+    public void invokeHeadMap(Map<Integer, String> headMap, AnalysisContext context) {
+        log.info("头部信息:{}", JSONUtil.toJsonStr(headMap));
     }
 }
