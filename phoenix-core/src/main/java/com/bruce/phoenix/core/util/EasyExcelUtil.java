@@ -10,6 +10,7 @@ import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import com.alibaba.excel.write.builder.ExcelWriterSheetBuilder;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.fill.FillConfig;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +25,7 @@ import java.util.Map;
  * @Date 2021/2/2 16:33
  * @Author Bruce
  */
+@Slf4j
 public class EasyExcelUtil {
 
     /**
@@ -234,5 +236,11 @@ public class EasyExcelUtil {
         excelWriter.write(tailData, writeSheet);
         excelWriter.finish();
     }
+
+
+
+
+
+
 
 }
