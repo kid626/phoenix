@@ -8,10 +8,10 @@ import com.alibaba.excel.enums.WriteDirectionEnum;
 import com.alibaba.fastjson.JSON;
 import com.bruce.phoenix.common.exception.CommonException;
 import com.bruce.phoenix.core.component.middleware.RedisComponent;
-import com.bruce.phoenix.core.excel.listener.AbstractAnalysisEventListener;
+import com.bruce.phoenix.core.excel.listener.ParallelAnalysisEventListener;
+import com.bruce.phoenix.core.excel.listener.SimpleAnalysisEventListener;
 import com.bruce.phoenix.core.excel.model.BaseImportModel;
 import com.bruce.phoenix.core.excel.model.ImportResultModel;
-import com.bruce.phoenix.core.excel.service.IExcelService;
 import com.bruce.phoenix.core.util.EasyExcelUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
@@ -88,18 +88,38 @@ public class ExcelComponent {
         }
     }
 
-    public <T extends BaseImportModel> ImportResultModel<T> importData(MultipartFile file, Class<T> pojoClass, AbstractAnalysisEventListener<T> listener, IExcelService<T> iExcelService, Integer headRowNumber) throws IOException {
+    /**
+     * 导入数据 结果统一处理
+     *
+     * @param file          文件
+     * @param pojoClass     每一行对应实体类 继承 {@link BaseImportModel}
+     * @param listener      监听器,继承 {@link SimpleAnalysisEventListener}把数据加载到 allDataList 里,然后统一处理
+     * @param headRowNumber 头部行数
+     * @param <T>           泛型,对应 pojoClass
+     * @return 导入结果
+     * @throws IOException 文件读取异常
+     */
+    public <T extends BaseImportModel> ImportResultModel<T> importData(MultipartFile file, Class<T> pojoClass, SimpleAnalysisEventListener<T> listener, Integer headRowNumber) throws IOException {
         // step 1 从 excel 中读取
         EasyExcelUtil.simpleRead(file, pojoClass, listener, headRowNumber, 0);
-        // step 2 获取所有数据    TODO 边获取边处理
-        List<T> allDataList = listener.getAllDataList();
-        // step 3 处理数据
-        allDataList = iExcelService.proceed(allDataList);
-        // step 4 填充错误数据,并返回
-        return set(allDataList);
+        // step 2 获取出错的数据
+        List<T> failureDataList = listener.getFailureDataList();
+        // step 3 填充错误数据,并返回
+        return set(failureDataList);
     }
 
-    public <T extends BaseImportModel> ImportResultModel<T> importData(MultipartFile file, Class<T> pojoClass, AbstractAnalysisEventListener<T> listener, Integer headRowNumber) throws IOException {
+    /**
+     * 导入数据 边读取,边处理
+     *
+     * @param file          文件
+     * @param pojoClass     每一行对应实体类 继承 {@link BaseImportModel}
+     * @param listener      监听器,继承 {@link ParallelAnalysisEventListener}边读取边处理
+     * @param headRowNumber 头部行数
+     * @param <T>           泛型,对应 pojoClass
+     * @return 导入结果
+     * @throws IOException 文件读取异常
+     */
+    public <T extends BaseImportModel> ImportResultModel<T> importData(MultipartFile file, Class<T> pojoClass, ParallelAnalysisEventListener<T> listener, Integer headRowNumber) throws IOException {
         // step 1 从 excel 中读取
         EasyExcelUtil.simpleRead(file, pojoClass, listener, headRowNumber, 0);
         // step 2 获取出错的数据

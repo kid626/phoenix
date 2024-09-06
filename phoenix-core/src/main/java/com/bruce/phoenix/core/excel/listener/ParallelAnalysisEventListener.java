@@ -14,13 +14,13 @@ import java.util.Map;
 
 /**
  * @Copyright Copyright © 2024 fanzh . All rights reserved.
- * @Desc
+ * @Desc 并行处理监听器, 边读取, 边处理
  * @ProjectName phoenix
  * @Date 2024/9/4 15:56
  * @Author Bruce
  */
 @Slf4j
-public class SimpleAnalysisEventListener<T extends BaseImportModel> extends AbstractAnalysisEventListener<T> {
+public class ParallelAnalysisEventListener<T extends BaseImportModel> extends AbstractAnalysisEventListener<T> {
 
     private final List<T> allDataList = new ArrayList<>();
     private final List<T> successDataList = new ArrayList<>();
@@ -33,7 +33,7 @@ public class SimpleAnalysisEventListener<T extends BaseImportModel> extends Abst
 
     @Override
     public final List<T> getFailureDataList() {
-        return getExcelService().proceed(allDataList);
+        return failureDataList;
     }
 
     @Override
@@ -49,7 +49,14 @@ public class SimpleAnalysisEventListener<T extends BaseImportModel> extends Abst
     @Override
     public final void invoke(T t, AnalysisContext analysisContext) {
         allDataList.add(t);
-        successDataList.add(t);
+        IExcelService<T> excelService = getExcelService();
+        T temp = excelService.isValidate(t);
+        if (temp != null) {
+            failureDataList.add(temp);
+        } else {
+            successDataList.add(t);
+        }
+
     }
 
     @Override

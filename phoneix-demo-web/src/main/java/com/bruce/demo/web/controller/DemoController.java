@@ -6,6 +6,7 @@ import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.bruce.demo.web.excel.DemoExcelListener;
 import com.bruce.demo.web.excel.DemoExcelModel;
+import com.bruce.demo.web.excel.DemoParallelExcelListener;
 import com.bruce.demo.web.model.constant.DemoConstant;
 import com.bruce.demo.web.model.enums.TestEnum;
 import com.bruce.demo.web.service.DemoUserService;
@@ -182,6 +183,13 @@ public class DemoController {
     @ApiOperation("导入")
     public Result<ImportResultModel<DemoExcelModel>> importData(MultipartFile file) throws IOException {
         ImportResultModel<DemoExcelModel> model = excelComponent.importData(file, DemoExcelModel.class, new DemoExcelListener(demoUserService), 3);
+        return Result.success(model);
+    }
+
+    @PostMapping("/excel/import/parallel")
+    @ApiOperation("导入 边读取边处理")
+    public Result<ImportResultModel<DemoExcelModel>> importDataParallel(MultipartFile file) throws IOException {
+        ImportResultModel<DemoExcelModel> model = excelComponent.importData(file, DemoExcelModel.class, new DemoParallelExcelListener(demoUserService), 3);
         return Result.success(model);
     }
 

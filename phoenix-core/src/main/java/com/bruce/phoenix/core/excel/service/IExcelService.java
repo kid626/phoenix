@@ -11,10 +11,22 @@ import java.util.List;
  * @Date 2024/9/4 16:08
  * @Author Bruce
  */
-@FunctionalInterface
 public interface IExcelService<T extends BaseImportModel> {
 
+    /**
+     * 列表转换 适合批量处理的场景
+     */
+    default List<T> proceed(List<T> list) {
+        return list;
+    }
 
-    List<T> proceed(List<T> list);
+    /**
+     * 单个转换 适合边读取边处理的场景
+     *
+     * @return 为空说明校验通过
+     */
+    default T isValidate(T t) {
+        return t;
+    }
 
 }

@@ -28,19 +28,19 @@ public class DemoExcelServiceImpl implements IExcelService<DemoExcelModel> {
         List<DemoExcelModel> result = new ArrayList<>();
         for (DemoExcelModel demoExcelModel : list) {
 
-            if(StrUtil.isBlank(demoExcelModel.getParam1())){
+            if (StrUtil.isBlank(demoExcelModel.getParam1())) {
                 demoExcelModel.setError("参数1不能为空");
                 result.add(demoExcelModel);
                 continue;
             }
 
-            if(StrUtil.isBlank(demoExcelModel.getParam2())){
+            if (StrUtil.isBlank(demoExcelModel.getParam2())) {
                 demoExcelModel.setError("参数2不能为空");
                 result.add(demoExcelModel);
                 continue;
             }
 
-            if(StrUtil.isBlank(demoExcelModel.getParam3())){
+            if (StrUtil.isBlank(demoExcelModel.getParam3())) {
                 demoExcelModel.setError("参数3不能为空");
                 result.add(demoExcelModel);
                 continue;
@@ -50,5 +50,28 @@ public class DemoExcelServiceImpl implements IExcelService<DemoExcelModel> {
         }
 
         return result;
+    }
+
+    @Override
+    public DemoExcelModel isValidate(DemoExcelModel demoExcelModel) {
+        if (StrUtil.isBlank(demoExcelModel.getParam1())) {
+            demoExcelModel.setError("参数1不能为空");
+            return demoExcelModel;
+        }
+
+        if (StrUtil.isBlank(demoExcelModel.getParam2())) {
+            demoExcelModel.setError("参数2不能为空");
+            return demoExcelModel;
+        }
+
+        if (StrUtil.isBlank(demoExcelModel.getParam3())) {
+            demoExcelModel.setError("参数3不能为空");
+            return demoExcelModel;
+        }
+        // 执行新增
+        // demoUserService.save();
+
+        // 如果校验通过，返回 nul
+        return null;
     }
 }
