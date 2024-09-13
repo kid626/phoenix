@@ -1,11 +1,11 @@
 package com.bruce.phoenix.common.util;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.bruce.phoenix.common.model.common.BaseSelectVO;
 import com.bruce.phoenix.common.model.constants.CommonConstant;
 import com.bruce.phoenix.common.model.enums.BaseServiceEnum;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -42,7 +42,7 @@ public class EnumUtil {
         if (basePackages == null) {
             return;
         }
-        Set<String> packages = Arrays.stream(basePackages).filter(StringUtils::isNotBlank).collect(Collectors.toSet());
+        Set<String> packages = Arrays.stream(basePackages).filter(StrUtil::isNotBlank).collect(Collectors.toSet());
         Set<Class> enumClasses = new HashSet<>();
 
         ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();

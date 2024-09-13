@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -28,7 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Date 2024/3/2 14:07
  * @Author Bruce
  */
-@Component
+// @Component
 @Slf4j
 public class MqListener {
 

@@ -1,5 +1,7 @@
 package com.bruce.demo.web;
 
+import com.bruce.phoenix.core.mq.EnableMq;
+import com.bruce.phoenix.core.token.EnableToken;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -24,6 +26,8 @@ import java.net.UnknownHostException;
 @EnableScheduling
 @EnableCaching
 @Slf4j
+@EnableMq
+@EnableToken
 public class Application {
 
     public static void main(String[] args) throws UnknownHostException {

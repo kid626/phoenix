@@ -24,6 +24,8 @@ import com.bruce.phoenix.core.excel.model.ImportResultModel;
 import com.bruce.phoenix.core.model.gateway.GatewaySignModel;
 import com.bruce.phoenix.core.mq.component.MqComponent;
 import com.bruce.phoenix.core.mq.model.MqModel;
+import com.bruce.phoenix.core.token.component.TokenComponent;
+import com.bruce.phoenix.core.token.model.BaseTokenModel;
 import com.bruce.phoenix.core.util.GatewayHttpUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -64,6 +66,8 @@ public class DemoController {
     private ExcelComponent excelComponent;
     @Resource
     private DemoUserService demoUserService;
+    @Resource
+    private TokenComponent tokenComponent;
 
     @GetMapping("/async/say")
     public Result<String> sayHelloAsync() {
@@ -198,6 +202,13 @@ public class DemoController {
     public Result<String> downloadErrorData(String operationId) {
         excelComponent.downloadErrorData("测试导入失败数据.xlsx", "测试导入失败数据.xlsx", operationId);
         return Result.success();
+    }
+
+    @GetMapping("/token")
+    @ApiOperation("token 管理测试")
+    public Result<BaseTokenModel> token(String key) {
+        BaseTokenModel token = tokenComponent.getTokenCache(key);
+        return Result.success(token);
     }
 
 
