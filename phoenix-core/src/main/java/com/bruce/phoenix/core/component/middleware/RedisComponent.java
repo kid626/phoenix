@@ -269,6 +269,16 @@ public class RedisComponent implements Lock {
     }
 
     /**
+     * 批量插入列表头部
+     *
+     * @param key    列表名
+     * @param values 值
+     */
+    public Long leftPushAll(String key, List<String> values) {
+        return redisTemplate.opsForList().leftPushAll(getKey(key), values);
+    }
+
+    /**
      * 插入列表尾部
      *
      * @param key   列表名
@@ -276,6 +286,16 @@ public class RedisComponent implements Lock {
      */
     public Long rightPush(String key, String value) {
         return redisTemplate.opsForList().rightPush(getKey(key), value);
+    }
+
+    /**
+     * 批量插入列表尾部
+     *
+     * @param key   列表名
+     * @param values 值
+     */
+    public Long rightPushAll(String key, List<String> values) {
+        return redisTemplate.opsForList().rightPushAll(getKey(key), values);
     }
 
     /**
