@@ -1,5 +1,7 @@
 package com.bruce.phoenix.sys.service.impl;
 
+import cn.hutool.core.lang.TypeReference;
+import cn.hutool.json.JSONUtil;
 import com.bruce.phoenix.common.converter.PageDataConverter;
 import com.bruce.phoenix.common.exception.CommonException;
 import com.bruce.phoenix.common.model.common.BasePageQuery;
@@ -92,5 +94,21 @@ public class SysConfigServiceImpl implements SysConfigService {
     @Override
     public void remove(Long id) {
         dao.remove(id);
+    }
+
+    @Override
+    public <T> T queryOrDefault(String code, T defaultValue) {
+        SysConfigVO sysConfigVO = queryByCode(code);
+        if (sysConfigVO != null) {
+            // 存在
+            return JSONUtil.toBean(sysConfigVO.getConfigValue(), new TypeReference<T>() {}, false);
+        }
+        // 如果不存在 则新增，value 为默认值
+        SysConfigForm sysConfigForm = new SysConfigForm();
+        sysConfigForm.setConfigCode(code);
+        sysConfigForm.setConfigValue(code);
+        sysConfigForm.setConfigValue(JSONUtil.toJsonStr(defaultValue));
+        save(sysConfigForm);
+        return defaultValue;
     }
 }

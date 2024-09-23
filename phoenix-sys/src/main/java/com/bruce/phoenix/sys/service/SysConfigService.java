@@ -60,4 +60,7 @@ public interface SysConfigService {
      */
     void remove(Long id);
 
+
+    <T> T queryOrDefault(String code, T defaultValue);
+
 }
