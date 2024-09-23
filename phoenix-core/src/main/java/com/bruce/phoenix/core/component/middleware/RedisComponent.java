@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -305,6 +306,27 @@ public class RedisComponent implements Lock {
     }
 
     /**
+     * 根据下标获取列表元素
+     *
+     * @param key   列表名
+     * @param start 开始索引
+     * @param end   结束索引
+     */
+    public List<String> range(String key, Long start, Long end) {
+        return redisTemplate.opsForList().range(getKey(key), start, end);
+    }
+
+    /**
+     * 获取指定下标索引的列表元素
+     *
+     * @param key   列表名
+     * @param index 下标索引
+     */
+    public String index(String key, Long index) {
+        return redisTemplate.opsForList().index(getKey(key), index);
+    }
+
+    /**
      * 集合内是否包含值
      *
      * @param key   集合名称
@@ -358,10 +380,11 @@ public class RedisComponent implements Lock {
 
     /**
      * 获取并删除（并不支持 pipeline 的方式）
+     *
      * @param key
      * @return
      */
-    public String getAndDelete(String key){
+    public String getAndDelete(String key) {
         String result = get(key);
         deleteKey(key);
         return result;
