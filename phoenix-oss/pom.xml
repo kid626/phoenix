@@ -12,7 +12,7 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <phoenix.version>1.1-unicom-SNAPSHOT</phoenix.version>
+        <phoenix.version>1.0-SNAPSHOT</phoenix.version>
         <minio.version>3.0.10</minio.version>
     </properties>
 
