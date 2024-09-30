@@ -1,0 +1,22 @@
+author: Bruce
+dbType: mysql
+dbUrl: "jdbc:mysql://localhost:3306/demo?characterEncoding=utf8&serverTimezone=GMT%2B8"
+dbDriverName: "com.mysql.cj.jdbc.Driver"
+dbUsername: root
+dbPassword: root
+
+parentPackage: com.bruce.phoenix.oss
+projectName: phoenix-oss
+moduleName:
+version: v1
+# 是否初始化
+isFirstInit: false
+prefix: oss
+includes: [ "oss_file_info" ]
+excludes: [ ]
+
+#outputDir:
+#usebtl: true
+usevm: true
+#useftl: true
+custom: true
