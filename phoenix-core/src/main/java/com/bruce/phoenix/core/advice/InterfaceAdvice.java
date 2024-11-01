@@ -7,6 +7,7 @@ import com.bruce.phoenix.common.exception.CommonException;
 import com.bruce.phoenix.common.model.common.Err;
 import com.bruce.phoenix.common.model.common.Result;
 import com.bruce.phoenix.common.model.constants.CommonConstant;
+import com.bruce.phoenix.common.util.TraceUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -41,6 +42,7 @@ public class InterfaceAdvice {
     @Around("logCut()")
     public Object ajaxResultProcess(ProceedingJoinPoint pjp) throws Throwable {
         String traceId = UUID.fastUUID().toString(true);
+        TraceUtil.set(traceId);
         StopWatch stopWatch = new StopWatch(traceId);
         stopWatch.start();
         MDC.put(CommonConstant.TRACE_ID, traceId);
