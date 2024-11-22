@@ -17,6 +17,7 @@ import com.bruce.phoenix.common.model.common.Result;
 import com.bruce.phoenix.common.util.BaseHttpUtil;
 import com.bruce.phoenix.common.util.EnumUtil;
 import com.bruce.phoenix.core.annotation.Limiter;
+import com.bruce.phoenix.core.component.middleware.SequenceComponent;
 import com.bruce.phoenix.core.event.component.EventComponent;
 import com.bruce.phoenix.core.event.model.EventModel;
 import com.bruce.phoenix.core.excel.component.ExcelComponent;
@@ -68,6 +69,8 @@ public class DemoController {
     private DemoUserService demoUserService;
     @Resource
     private TokenComponent tokenComponent;
+    @Resource
+    private SequenceComponent sequenceComponent;
 
     @GetMapping("/async/say")
     public Result<String> sayHelloAsync() {
@@ -209,6 +212,13 @@ public class DemoController {
     public Result<BaseTokenModel> token(String key) {
         BaseTokenModel token = tokenComponent.getTokenCache(key);
         return Result.success(token);
+    }
+
+    @GetMapping("/sequence")
+    @ApiOperation("sequence 序列生成测试")
+    public Result<String> sequence() {
+        String value = sequenceComponent.generalSequence("test", 5);
+        return Result.success(value);
     }
 
 

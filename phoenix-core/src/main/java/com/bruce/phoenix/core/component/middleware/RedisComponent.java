@@ -291,7 +291,7 @@ public class RedisComponent implements Lock {
     /**
      * 批量插入列表尾部
      *
-     * @param key   列表名
+     * @param key    列表名
      * @param values 值
      */
     public Long rightPushAll(String key, List<String> values) {
@@ -417,8 +417,8 @@ public class RedisComponent implements Lock {
      * @param value  增加值
      * @param expire 秒
      */
-    public void incrAndExpire(String key, long value, long expire) {
-        executePipelined(new RedisCallback<String>() {
+    public Long incrAndExpire(String key, long value, long expire) {
+        List<Object> result = executePipelined(new RedisCallback<String>() {
             @Override
             public String doInRedis(RedisConnection connection) throws DataAccessException {
                 byte[] bytes = getKey(key).getBytes();
@@ -428,14 +428,15 @@ public class RedisComponent implements Lock {
                 return null;
             }
         });
+        return Long.valueOf(result.get(0) + "");
     }
 
-    public void incrAndExpire(String key, long expire) {
-        incrAndExpire(key, DEFAULT_VALUE, expire);
+    public Long incrAndExpire(String key, long expire) {
+        return incrAndExpire(key, DEFAULT_VALUE, expire);
     }
 
-    public void incrAndExpire(String key) {
-        incrAndExpire(key, DEFAULT_VALUE, DEFAULT_TIMEOUT);
+    public Long incrAndExpire(String key) {
+        return incrAndExpire(key, DEFAULT_VALUE, DEFAULT_TIMEOUT);
     }
 
     /**
@@ -481,8 +482,8 @@ public class RedisComponent implements Lock {
     }
 
 
-    public void executePipelined(RedisCallback<?> action) {
-        redisTemplate.executePipelined(action);
+    public List<Object> executePipelined(RedisCallback<?> action) {
+        return redisTemplate.executePipelined(action);
     }
 
     @Override
