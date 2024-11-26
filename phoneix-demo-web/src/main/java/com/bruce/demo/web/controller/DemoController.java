@@ -221,5 +221,12 @@ public class DemoController {
         return Result.success(value);
     }
 
+    @GetMapping("/sequence/multi")
+    @ApiOperation("sequence 多序列生成测试")
+    public Result<List<String>> sequenceMulti() {
+        List<String> list = sequenceComponent.generalSequence("test", 5, 10);
+        return Result.success(list);
+    }
+
 
 }
