@@ -41,7 +41,7 @@ public class PageDataConverter {
     /**
      * 手动分页
      */
-    public <T> PageData<T> convertFromPage(BasePageQuery query, List<T> result, Long total) {
+    public static <T> PageData<T> convertFromPage(BasePageQuery query, List<T> result, Long total) {
         PageData<T> pageData = convertBaseFromPage(query, total);
         pageData.setData(result);
         return pageData;
@@ -72,7 +72,7 @@ public class PageDataConverter {
     /**
      * 手动分页
      */
-    public <T> PageData<T> convertFromPageList(BasePageQuery query, List<T> result, Long total) {
+    public static <T> PageData<T> convertFromPageList(BasePageQuery query, List<T> result, Long total) {
         PageData<T> pageData = convertBaseFromPage(query, total);
         pageData.setList(result);
         return pageData;
