@@ -1,5 +1,6 @@
 package com.bruce.phoenix.common.converter;
 
+import com.bruce.phoenix.common.model.common.BasePageQuery;
 import com.bruce.phoenix.common.model.common.PageData;
 import com.github.pagehelper.Page;
 
@@ -37,6 +38,15 @@ public class PageDataConverter {
         return pageData;
     }
 
+    /**
+     * 手动分页
+     */
+    public <T> PageData<T> convertFromPage(BasePageQuery query, List<T> result, Long total) {
+        PageData<T> pageData = convertBaseFromPage(query, total);
+        pageData.setData(result);
+        return pageData;
+    }
+
     public static <T> PageData<T> convertFromPageList(Page page, List<T> list) {
         PageData<T> pageData = convertBaseFromPage(page);
         pageData.setList(list);
@@ -55,6 +65,15 @@ public class PageDataConverter {
     public static <T> PageData<T> convertFromPageList(Integer page, Integer pageSize, List<T> result) {
         PageData<T> pageData = convertBaseFromPage(page, pageSize, result);
         result = result.stream().skip((long) pageSize * (page - 1)).limit(pageSize).collect(Collectors.toList());
+        pageData.setList(result);
+        return pageData;
+    }
+
+    /**
+     * 手动分页
+     */
+    public <T> PageData<T> convertFromPageList(BasePageQuery query, List<T> result, Long total) {
+        PageData<T> pageData = convertBaseFromPage(query, total);
         pageData.setList(result);
         return pageData;
     }
@@ -78,6 +97,17 @@ public class PageDataConverter {
         pageData.setPageSize(page.getPageSize());
         pageData.setPages(page.getPages());
         pageData.setTotal(page.getTotal());
+        return pageData;
+    }
+
+    private static <T> PageData<T> convertBaseFromPage(BasePageQuery query, Long total) {
+        PageData<T> pageData = new PageData();
+        pageData.setPageNum(query.getPageNum());
+        pageData.setPageSize(query.getPageSize());
+        pageData.setTotal(total);
+        pageData.setStartRow((long) query.getPageSize() * (long) (query.getPageNum() - 1));
+        pageData.setEndRow((long) query.getPageSize() * (long) query.getPageNum());
+        pageData.setPages((long) ((total + query.getPageSize() - 1) / query.getPageSize()));
         return pageData;
     }
 
