@@ -1,5 +1,6 @@
 package com.bruce.phoenix.common.converter;
 
+import cn.hutool.core.collection.CollUtil;
 import com.bruce.phoenix.common.model.common.BasePageQuery;
 import com.bruce.phoenix.common.model.common.PageData;
 import com.github.pagehelper.Page;
@@ -47,6 +48,14 @@ public class PageDataConverter {
         return pageData;
     }
 
+    public static <T> PageData<T> convert2Empty(Integer page, Integer pageSize) {
+        return convertFromPage(page, pageSize, CollUtil.newArrayList());
+    }
+
+    public static <T> PageData<T> convert2Empty(BasePageQuery query) {
+        return convertFromPage(query.getPageNum(), query.getPageSize(), CollUtil.newArrayList());
+    }
+
     public static <T> PageData<T> convertFromPageList(Page page, List<T> list) {
         PageData<T> pageData = convertBaseFromPage(page);
         pageData.setList(list);
@@ -78,6 +87,24 @@ public class PageDataConverter {
         return pageData;
     }
 
+
+    public static <T> PageData<T> convert2EmptyList(Integer page, Integer pageSize) {
+        return convertFromPageList(page, pageSize, CollUtil.newArrayList());
+    }
+
+    public static <T> PageData<T> convert2EmptyList(BasePageQuery query) {
+        return convertFromPageList(query.getPageNum(), query.getPageSize(), CollUtil.newArrayList());
+    }
+
+    /**
+     * 手动分页
+     *
+     * @param page
+     * @param pageSize
+     * @param result
+     * @param <T>
+     * @return
+     */
     private static <T> PageData<T> convertBaseFromPage(Integer page, Integer pageSize, List<T> result) {
         PageData<T> pageData = new PageData<>();
         pageData.setPageNum(page);
@@ -89,6 +116,13 @@ public class PageDataConverter {
         return pageData;
     }
 
+    /**
+     * Page 转换为 PageData
+     *
+     * @param page
+     * @param <T>
+     * @return
+     */
     private static <T> PageData<T> convertBaseFromPage(Page<T> page) {
         PageData<T> pageData = new PageData<>();
         pageData.setStartRow(page.getStartRow());
@@ -100,6 +134,14 @@ public class PageDataConverter {
         return pageData;
     }
 
+    /**
+     * 手动分页
+     *
+     * @param query BasePageQuery
+     * @param total 总数
+     * @param <T>
+     * @return
+     */
     private static <T> PageData<T> convertBaseFromPage(BasePageQuery query, Long total) {
         PageData<T> pageData = new PageData();
         pageData.setPageNum(query.getPageNum());
