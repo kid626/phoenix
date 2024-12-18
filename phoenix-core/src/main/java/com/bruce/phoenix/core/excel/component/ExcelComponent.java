@@ -150,7 +150,7 @@ public class ExcelComponent {
     private <T extends BaseImportModel> void fillTemplate(String filename, String filepath, List<T> data) {
         try {
             ClassPathResource classPathResource = new ClassPathResource(filepath);
-            String templatePath = classPathResource.getFile().getPath();
+            InputStream is = classPathResource.getInputStream();
             // 设置输出的格式
             response.reset();
             // 设置响应类型
@@ -158,7 +158,7 @@ public class ExcelComponent {
             // 设置编码格式
             response.setCharacterEncoding("utf-8");
             response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(filename, "UTF-8"));
-            EasyExcelUtil.simpleFill(response, templatePath, null, data, WriteDirectionEnum.VERTICAL);
+            EasyExcelUtil.simpleFill(response, is, null, data, WriteDirectionEnum.VERTICAL);
         } catch (IOException e) {
             log.warn("填充 excel 模板失败:{}", e.getMessage(), e);
             throw new CommonException("填充 excel 模板失败!");

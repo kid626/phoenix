@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -166,6 +167,32 @@ public class EasyExcelUtil {
     /**
      * 简单填充，适合 header + 列表 模式
      *
+     * @param fileName  生成的文件名
+     * @param is        InputStream
+     * @param map       用于填充 header 里的参数 模板中以 {name} 来替代
+     * @param fillData  用于填充 列表，模板中以 {.name} 来替代
+     * @param direction 方向 HORIZONTAL | VERTICAL {@link WriteDirectionEnum},默认为 VERTICAL
+     * @param <T>       列表实体类
+     */
+    public static <T> void simpleFill(String fileName, InputStream is, Map<String, Object> map, List<T> fillData, WriteDirectionEnum direction) {
+        if (direction == null) {
+            direction = WriteDirectionEnum.VERTICAL;
+        }
+        FillConfig fillConfig = FillConfig.builder().direction(direction).build();
+        ExcelWriter excelWriter = EasyExcel.write(fileName).withTemplate(is).build();
+        WriteSheet writeSheet = EasyExcel.writerSheet().build();
+        if (CollUtil.isNotEmpty(fillData)) {
+            excelWriter.fill(fillData, fillConfig, writeSheet);
+        }
+        if (CollUtil.isNotEmpty(map)) {
+            excelWriter.fill(map, fillConfig, writeSheet);
+        }
+        excelWriter.finish();
+    }
+
+    /**
+     * 简单填充，适合 header + 列表 模式
+     *
      * @param response         HttpServletResponse
      * @param templateFileName 模板文件名
      * @param map              用于填充 header 里的参数 模板中以 {name} 来替代
@@ -179,6 +206,32 @@ public class EasyExcelUtil {
         }
         FillConfig fillConfig = FillConfig.builder().direction(direction).build();
         ExcelWriter excelWriter = EasyExcel.write(response.getOutputStream()).withTemplate(templateFileName).build();
+        WriteSheet writeSheet = EasyExcel.writerSheet().build();
+        if (CollUtil.isNotEmpty(fillData)) {
+            excelWriter.fill(fillData, fillConfig, writeSheet);
+        }
+        if (CollUtil.isNotEmpty(map)) {
+            excelWriter.fill(map, fillConfig, writeSheet);
+        }
+        excelWriter.finish();
+    }
+
+    /**
+     * 简单填充，适合 header + 列表 模式
+     *
+     * @param response         HttpServletResponse
+     * @param is 模板文件名
+     * @param map              用于填充 header 里的参数 模板中以 {name} 来替代
+     * @param fillData         用于填充 列表，模板中以 {.name} 来替代
+     * @param direction        方向 HORIZONTAL | VERTICAL {@link WriteDirectionEnum},默认为 VERTICAL
+     * @param <T>              列表实体类
+     */
+    public static <T> void simpleFill(HttpServletResponse response, InputStream is, Map<String, Object> map, List<T> fillData, WriteDirectionEnum direction) throws IOException {
+        if (direction == null) {
+            direction = WriteDirectionEnum.VERTICAL;
+        }
+        FillConfig fillConfig = FillConfig.builder().direction(direction).build();
+        ExcelWriter excelWriter = EasyExcel.write(response.getOutputStream()).withTemplate(is).build();
         WriteSheet writeSheet = EasyExcel.writerSheet().build();
         if (CollUtil.isNotEmpty(fillData)) {
             excelWriter.fill(fillData, fillConfig, writeSheet);
@@ -236,11 +289,6 @@ public class EasyExcelUtil {
         excelWriter.write(tailData, writeSheet);
         excelWriter.finish();
     }
-
-
-
-
-
 
 
 }
