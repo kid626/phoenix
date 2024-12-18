@@ -6,6 +6,7 @@ import cn.hutool.core.lang.UUID;
 import cn.hutool.json.JSONUtil;
 import com.alibaba.excel.enums.WriteDirectionEnum;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.bruce.phoenix.common.exception.CommonException;
 import com.bruce.phoenix.core.component.middleware.RedisComponent;
 import com.bruce.phoenix.core.excel.listener.ParallelAnalysisEventListener;
@@ -134,9 +135,9 @@ public class ExcelComponent {
      * @param filepath 文件路径
      * @param filename 文件名,建议不要带目录
      */
-    public void downloadErrorData(String filename, String filepath, String operationId) {
+    public <T extends BaseImportModel> void downloadErrorData(String filename, String filepath, String operationId) {
         // 获取错误数据
-        ImportResultModel<BaseImportModel> model = get(operationId);
+        ImportResultModel<T> model = get(operationId);
         // 填充错误数据
         fillTemplate(filename, filepath, model.getErrorDataList());
     }
@@ -177,7 +178,7 @@ public class ExcelComponent {
             model.setErrorDataList(new ArrayList<>());
         }
         String key = MessageFormat.format(EXCEL_IMPORT_CACHE, operationId);
-        redisComponent.setExpire(key, JSON.toJSONString(model), 1L, TimeUnit.DAYS);
+        redisComponent.setExpire(key, JSON.toJSONString(model, SerializerFeature.WriteNullStringAsEmpty), 1L, TimeUnit.DAYS);
         return model;
     }
 

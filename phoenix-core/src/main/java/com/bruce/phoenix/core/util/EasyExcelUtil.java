@@ -219,12 +219,12 @@ public class EasyExcelUtil {
     /**
      * 简单填充，适合 header + 列表 模式
      *
-     * @param response         HttpServletResponse
-     * @param is 模板文件名
-     * @param map              用于填充 header 里的参数 模板中以 {name} 来替代
-     * @param fillData         用于填充 列表，模板中以 {.name} 来替代
-     * @param direction        方向 HORIZONTAL | VERTICAL {@link WriteDirectionEnum},默认为 VERTICAL
-     * @param <T>              列表实体类
+     * @param response  HttpServletResponse
+     * @param is        InputStream
+     * @param map       用于填充 header 里的参数 模板中以 {name} 来替代
+     * @param fillData  用于填充 列表，模板中以 {.name} 来替代
+     * @param direction 方向 HORIZONTAL | VERTICAL {@link WriteDirectionEnum},默认为 VERTICAL
+     * @param <T>       列表实体类
      */
     public static <T> void simpleFill(HttpServletResponse response, InputStream is, Map<String, Object> map, List<T> fillData, WriteDirectionEnum direction) throws IOException {
         if (direction == null) {
