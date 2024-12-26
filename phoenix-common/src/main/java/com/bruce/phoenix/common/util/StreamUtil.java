@@ -8,6 +8,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @Copyright Copyright © 2024 fanzh . All rights reserved.
@@ -86,5 +87,17 @@ public class StreamUtil {
         return result;
     }
 
+    /**
+     * 合并两个map
+     *
+     * @param m1 map1
+     * @param m2 map2
+     * @return 合并后的 map
+     */
+    public static Map<String, Long> merge(Map<String, Long> m1, Map<String, Long> m2) {
+        return Stream.of(m1, m2)
+                .flatMap(m -> m.entrySet().stream())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (v1, v2) -> v1 + v2));
+    }
 
 }
