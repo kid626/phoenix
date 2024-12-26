@@ -8,6 +8,7 @@ import com.alibaba.excel.enums.WriteDirectionEnum;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.bruce.phoenix.common.exception.CommonException;
+import com.bruce.phoenix.common.model.constants.DigitalConstant;
 import com.bruce.phoenix.core.component.middleware.RedisComponent;
 import com.bruce.phoenix.core.excel.listener.ParallelAnalysisEventListener;
 import com.bruce.phoenix.core.excel.listener.SimpleAnalysisEventListener;
@@ -47,6 +48,8 @@ public class ExcelComponent {
     private RedisComponent redisComponent;
 
     public static final String EXCEL_IMPORT_CACHE = "cache:excel:import:{0}";
+    public static final Integer EXPORT_MAX_NUM = DigitalConstant.W;
+    public static final String EXPORT_MAX_MESSAGE = "您好，只支持导出最近" + EXPORT_MAX_NUM + "条数据，请调整查询条件再导出！";
 
     /**
      * 加载模板
@@ -143,12 +146,41 @@ public class ExcelComponent {
     }
 
     /**
-     * 填充错误数据
+     * 导出
      *
-     * @param filepath 文件路径
      * @param filename 文件名,建议不要带目录
+     * @param filepath 文件路径
+     * @param data     查询出来的数据
+     * @param <T>      数据类型
      */
-    private <T extends BaseImportModel> void fillTemplate(String filename, String filepath, List<T> data) {
+    public <T> void export(String filename, String filepath, List<T> data) {
+        export(filename, filepath, data, EXPORT_MAX_NUM, EXPORT_MAX_MESSAGE);
+    }
+
+    /**
+     * 导出
+     *
+     * @param filename 文件名,建议不要带目录
+     * @param filepath 文件路径
+     * @param data     查询出来的数据
+     * @param maxNum   允许导出的最大条数
+     * @param message  导出超过最大条数返回 message
+     * @param <T>      数据类型
+     */
+    public <T> void export(String filename, String filepath, List<T> data, Integer maxNum, String message) {
+        if (data.size() > maxNum) {
+            throw new CommonException(message);
+        }
+        fillTemplate(filename, filepath, data);
+    }
+
+    /**
+     * 填充数据
+     *
+     * @param filename 文件名,建议不要带目录
+     * @param filepath 文件路径
+     */
+    private <T> void fillTemplate(String filename, String filepath, List<T> data) {
         try {
             ClassPathResource classPathResource = new ClassPathResource(filepath);
             InputStream is = classPathResource.getInputStream();
