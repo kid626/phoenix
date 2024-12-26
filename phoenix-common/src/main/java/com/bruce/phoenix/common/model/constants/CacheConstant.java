@@ -7,7 +7,7 @@ package com.bruce.phoenix.common.model.constants;
  * @Date 2021/2/4 21:44
  * @Author Bruce
  */
-public class CacheConstant {
+public final class CacheConstant {
 
     public static final String TREE = "tree";
 

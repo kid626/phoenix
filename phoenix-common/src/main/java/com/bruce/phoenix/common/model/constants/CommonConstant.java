@@ -7,7 +7,7 @@ package com.bruce.phoenix.common.model.constants;
  * @Date 2022/6/17 9:54
  * @Author fzh
  */
-public class CommonConstant {
+public final class CommonConstant {
 
     private CommonConstant() {
     }

@@ -3,13 +3,13 @@ package com.bruce.phoenix.common.util;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.StopWatch;
 import cn.hutool.core.lang.Console;
+import com.bruce.phoenix.common.model.constants.FunctionConstant;
 import org.junit.Test;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -58,8 +58,7 @@ public class BatchProcessingUtilTest {
         Function<List<Long>, Long> action = (input) -> {
             return Long.valueOf(input.size());
         };
-        BiFunction<? super Long, ? super Long, ? extends Long> merge = (a, b) -> a + b;
-        Long value = BatchProcessingUtil.batchProcessing(list, 1000, action, merge, 0L);
+        Long value = BatchProcessingUtil.batchProcessing(list, 1000, action, FunctionConstant.MERGE_LONG, 0L);
         stopWatch.stop();
         Console.log(value);
         Console.log(stopWatch.prettyPrint(TimeUnit.MILLISECONDS));
@@ -73,8 +72,7 @@ public class BatchProcessingUtilTest {
         Function<List<Long>, Long> action = (input) -> {
             return Long.valueOf(input.size());
         };
-        BiFunction<? super Long, ? super Long, ? extends Long> merge = (a, b) -> a + b;
-        Long value = BatchProcessingUtil.parallelBatchProcessing(list, 1000, action, merge);
+        Long value = BatchProcessingUtil.parallelBatchProcessing(list, 1000, action, FunctionConstant.MERGE_LONG);
         stopWatch.stop();
         Console.log(value);
         Console.log(stopWatch.prettyPrint(TimeUnit.MILLISECONDS));
@@ -83,7 +81,7 @@ public class BatchProcessingUtilTest {
     private List<Long> generateList() {
         List<Long> list = CollUtil.newArrayList();
         for (int i = 0; i < 1000000; i++) {
-            list.add(Long.valueOf(i));
+            list.add((long) i);
         }
         return list;
     }
