@@ -25,6 +25,6 @@ import java.util.List;
 public class ScreenPieChartVO<T> implements Serializable {
 
     @ApiModelProperty("数据")
-    private List<List<ScreenBaseDataVO<ScreenNameValueVO<T>>>> series;
+    private List<ScreenBaseDataVO<ScreenNameValueVO<T>>> series;
 
 }

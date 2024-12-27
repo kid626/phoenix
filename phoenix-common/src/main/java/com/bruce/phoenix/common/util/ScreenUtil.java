@@ -19,12 +19,17 @@ import java.util.List;
 public class ScreenUtil {
 
     public static <T> ScreenPieChartVO<T> buildPieChartVO(List<ScreenNameValueVO<T>> list) {
-        List<List<ScreenBaseDataVO<ScreenNameValueVO<T>>>> series = new ArrayList<>();
+        return buildPieChartVO(list, "");
+    }
+
+    public static <T> ScreenPieChartVO<T> buildPieChartVO(List<ScreenNameValueVO<T>> list, String name) {
+        List<ScreenBaseDataVO<ScreenNameValueVO<T>>> series = new ArrayList<>();
         ScreenBaseDataVO<ScreenNameValueVO<T>> screenBaseDataVO = ScreenBaseDataVO.<ScreenNameValueVO<T>>builder()
                 .type(ScreenTypeEnum.PIE.getCode())
                 .data(list)
+                .name(name)
                 .build();
-        series.add(Arrays.asList(screenBaseDataVO));
+        series.add(screenBaseDataVO);
         return ScreenPieChartVO.<T>builder().series(series).build();
     }
 
