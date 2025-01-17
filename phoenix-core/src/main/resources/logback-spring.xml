@@ -26,6 +26,11 @@
                 <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-10X{traceId} %-5level %logger:%L - %msg %n</Pattern>
                 <charset>UTF-8</charset> <!-- 设置字符集 -->
             </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>WARN</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
         </appender>
         <!-- logger 用来指定包或某个具体的类，root 用来指定最基础的日志输出级别 -->
         <!-- 禁用 swagger2 日志 -->
