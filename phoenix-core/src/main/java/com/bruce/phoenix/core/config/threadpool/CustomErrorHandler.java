@@ -15,6 +15,6 @@ public class CustomErrorHandler implements ErrorHandler {
 
     @Override
     public void handleError(Throwable t) {
-        log.info("定时任务异常:{}", t.getMessage(), t);
+        log.warn("定时任务异常:ThreadName={},Err={}", Thread.currentThread().getName(), t.getMessage(), t);
     }
 }

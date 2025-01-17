@@ -18,7 +18,7 @@ public class CustomAsyncUncaughtExceptionHandler implements AsyncUncaughtExcepti
 
     @Override
     public void handleUncaughtException(Throwable ex, Method method, Object... params) {
-        log.info("AsyncError: Method: {}, Param: {}, Error: {}",
-                method.getName(), JSONObject.toJSONString(params), ex.getMessage(), ex);
+        log.warn("AsyncError: ThreadName:{}  Method: {}, Param: {}, Error: {}",
+                Thread.currentThread().getName(), method.getName(), JSONObject.toJSONString(params), ex.getMessage(), ex);
     }
 }

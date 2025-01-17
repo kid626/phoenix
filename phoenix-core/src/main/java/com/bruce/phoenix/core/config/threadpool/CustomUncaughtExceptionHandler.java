@@ -13,6 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
     @Override
     public void uncaughtException(Thread t, Throwable e) {
-        log.info("线程:{}发生异常:{}", t.getName(), e.getMessage(), e);
+        log.warn("线程:{}发生异常:{}", t.getName(), e.getMessage(), e);
     }
 }

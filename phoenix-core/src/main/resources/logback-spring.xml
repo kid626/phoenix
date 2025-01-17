@@ -12,7 +12,7 @@
         <appender name="LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <file>${appHome}/${projectName}.log</file>
             <encoder>
-                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-10X{traceId} %-5level %logger:%L - %msg %n</Pattern>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread]  %-10X{traceId} %-5level %logger:%L - %msg %n</Pattern>
                 <charset>UTF-8</charset> <!-- 设置字符集 -->
             </encoder>
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -23,7 +23,7 @@
         <!-- 输出到控制台 -->
         <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
             <encoder>
-                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-10X{traceId} %-5level %logger:%L - %msg %n</Pattern>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-10X{traceId} %-5level %logger:%L - %msg %n</Pattern>
                 <charset>UTF-8</charset> <!-- 设置字符集 -->
             </encoder>
             <filter class="ch.qos.logback.classic.filter.LevelFilter">
@@ -48,7 +48,7 @@
         <!-- 输出到控制台 -->
         <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
             <encoder>
-                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-10X{traceId} %-5level %logger:%L - %msg %n</Pattern>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-10X{traceId} %-5level %logger:%L - %msg %n</Pattern>
                 <charset>UTF-8</charset> <!-- 设置字符集 -->
             </encoder>
         </appender>

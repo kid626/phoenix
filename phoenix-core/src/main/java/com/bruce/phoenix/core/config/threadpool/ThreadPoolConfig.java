@@ -1,5 +1,6 @@
 package com.bruce.phoenix.core.config.threadpool;
 
+import cn.hutool.core.util.RandomUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +18,6 @@ import javax.validation.constraints.NotNull;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @Copyright Copyright © 2023 fanzh . All rights reserved.
@@ -70,7 +70,6 @@ public class ThreadPoolConfig implements SchedulingConfigurer, AsyncConfigurer {
         threadPoolTaskExecutor.setKeepAliveSeconds(KEEP_ALIVE_SECONDS);
         // 自定义线程工厂
         threadPoolTaskExecutor.setThreadFactory(new ThreadFactory() {
-            private final AtomicInteger threadCount = new AtomicInteger(0);
 
             @Override
             public Thread newThread(@NotNull Runnable r) {
@@ -83,7 +82,7 @@ public class ThreadPoolConfig implements SchedulingConfigurer, AsyncConfigurer {
             }
 
             private String nextThreadName() {
-                return PREFIX + this.threadCount.incrementAndGet();
+                return PREFIX + RandomUtil.randomString(8);
             }
         });
         // 设置拒绝策略.当工作队列已满,线程数为最大线程数的时候,接收新任务抛出RejectedExecutionException异常
@@ -101,9 +100,24 @@ public class ThreadPoolConfig implements SchedulingConfigurer, AsyncConfigurer {
         ThreadPoolTaskScheduler executor = new ThreadPoolTaskScheduler();
         // 大于等于 任务数量
         executor.setPoolSize(10);
-        executor.setThreadNamePrefix(SCHEDULE_PREFIX);
+        // executor.setThreadNamePrefix(SCHEDULE_PREFIX);
         // 等待时长
         executor.setAwaitTerminationSeconds(60);
+        executor.setThreadFactory(new ThreadFactory() {
+            @Override
+            public Thread newThread(@NotNull Runnable r) {
+                //创建一个线程
+                Thread t = new Thread(r);
+                t.setName(nextThreadName());
+                //给创建的线程设置UncaughtExceptionHandler对象 里面实现异常的默认逻辑
+                Thread.setDefaultUncaughtExceptionHandler(new CustomUncaughtExceptionHandler());
+                return t;
+            }
+
+            private String nextThreadName() {
+                return SCHEDULE_PREFIX + RandomUtil.randomString(8);
+            }
+        });
         executor.setErrorHandler(new CustomErrorHandler());
         //设置饱和策略
         //CallerRunsPolicy：线程池的饱和策略之一，当线程池使用饱和后，直接使用调用者所在的线程来执行任务；如果执行程序已关闭，则会丢弃该任务

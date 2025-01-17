@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ThreadTask {
 
-    @Scheduled(cron = "0 2 17 ? * ?")
+    @Scheduled(cron = "0 14 16 ? * ?")
     public void hello() {
         log.info("hello world");
         int a = 1 / 0;
