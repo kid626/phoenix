@@ -1,22 +1,18 @@
 package com.bruce.demo.web.controller;
 
 
-import com.bruce.demo.web.model.po.DemoUser;
 import com.bruce.demo.web.model.form.DemoUserForm;
-import com.bruce.demo.web.model.vo.DemoUserVO;
+import com.bruce.demo.web.model.po.DemoUser;
 import com.bruce.demo.web.model.query.DemoUserQuery;
+import com.bruce.demo.web.model.vo.DemoUserVO;
 import com.bruce.demo.web.service.DemoUserService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import io.swagger.annotations.Api;
+import com.bruce.phoenix.common.model.common.PageData;
+import com.bruce.phoenix.common.model.common.Result;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.bruce.phoenix.common.model.common.PageData;
-import com.bruce.phoenix.common.model.common.Result;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @Copyright Copyright © 2023 Bruce . All rights reserved.

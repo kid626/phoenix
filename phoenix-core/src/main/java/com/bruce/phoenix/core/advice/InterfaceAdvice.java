@@ -22,6 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * @Copyright Copyright © 2022 fanzh . All rights reserved.
@@ -94,17 +96,10 @@ public class InterfaceAdvice {
      * 参数拼装
      */
     private String argsArrayToString(Object[] paramsArray) {
-        StringBuilder params = new StringBuilder("[");
-        if (paramsArray != null) {
-            for (Object o : paramsArray) {
-                if (!isFilterObject(o)) {
-                    String jsonObj = JSONUtil.toJsonStr(o);
-                    params.append(jsonObj).append(",");
-                }
-            }
-        }
-        params.append("]");
-        return params.toString().trim();
+        return "[" + Arrays.stream(paramsArray)
+                .filter((obj) -> !isFilterObject(obj))
+                .map(JSONUtil::toJsonStr)
+                .collect(Collectors.joining(CommonConstant.COMMA)) + "]";
     }
 
     /**
