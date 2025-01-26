@@ -33,6 +33,8 @@ public class EnumValidator implements ConstraintValidator<EnumValid, String> {
         // 是否包含全部
         boolean containsAll = annotation.containsAll();
 
+        String[] additional = annotation.additional();
+
         // target为枚举，并且value有值，或者不忽视空值，才进行校验
         if (cls.isEnum() && (!StrUtil.isEmpty(value) || !ignoreEmpty)) {
 
@@ -46,6 +48,15 @@ public class EnumValidator implements ConstraintValidator<EnumValid, String> {
                 if (obj.toString().equals(String.valueOf(value))) {
                     result = true;
                     break;
+                }
+            }
+
+            if (additional != null) {
+                for (String addition : additional) {
+                    if (addition.equals(String.valueOf(value))) {
+                        result = true;
+                        break;
+                    }
                 }
             }
         } else {

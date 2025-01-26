@@ -42,4 +42,6 @@ public @interface EnumValid {
      */
     boolean containsAll() default false;
 
+    String[] additional() default {};
+
 }
