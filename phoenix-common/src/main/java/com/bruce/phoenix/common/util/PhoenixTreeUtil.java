@@ -19,6 +19,14 @@ import java.util.List;
  */
 public class PhoenixTreeUtil {
 
+    /**
+     * 构建树
+     *
+     * @param all      所有节点
+     * @param parentId 父id
+     * @param <T>      节点额外信息
+     * @return 树
+     */
     public static <T> List<BaseTreeVO<T>> build(List<BaseTreeVO<T>> all, String parentId) {
         List<Tree<String>> list = TreeUtil.build(all, parentId, (node, tree) -> {
             tree.setId(node.getCode());
@@ -29,9 +37,29 @@ public class PhoenixTreeUtil {
         return executeTree(list);
     }
 
-
+    /**
+     * 构建搜索树
+     *
+     * @param all      所有节点
+     * @param parentId 父id
+     * @param keyword  关键字
+     * @param <T>      节点额外信息
+     * @return 含关键字的节点，并以树结构返回
+     */
     public static <T> List<BaseTreeVO<T>> fuzzySearch(List<BaseTreeVO<T>> all, String parentId, String keyword) {
         List<BaseTreeVO<T>> list = build(all, parentId);
+        return fuzzySearch(list, keyword);
+    }
+
+    /**
+     * 构建搜索树
+     *
+     * @param list    已经构建好的树
+     * @param keyword 关键字
+     * @param <T>     节点额外信息
+     * @return 含关键字的节点，并以树结构返回
+     */
+    public static <T> List<BaseTreeVO<T>> fuzzySearch(List<BaseTreeVO<T>> list, String keyword) {
         List<BaseTreeVO<T>> result = new ArrayList<>();
         if (CollUtil.isEmpty(list)) {
             return result;
@@ -45,14 +73,46 @@ public class PhoenixTreeUtil {
         return result;
     }
 
+    /**
+     * 构建树
+     *
+     * @param all        所有节点
+     * @param parentId   父id
+     * @param <T>        节点额外信息
+     * @param treeConfig 树配置
+     * @return 树
+     */
+
     public static <T> List<BaseTreeVO<T>> build(List<BaseTreeVO<T>> all, String parentId, AbstractTreeConfig<T> treeConfig) {
         List<Tree<String>> list = TreeUtil.build(all, parentId, treeConfig.node2Tree());
         return executeTree(list, treeConfig);
     }
 
-
+    /**
+     * 构建搜索树
+     *
+     * @param all        所有节点
+     * @param parentId   父id
+     * @param keyword    关键字
+     * @param <T>        节点额外信息
+     * @param treeConfig 树配置
+     * @return 含关键字的节点，并以树结构返回
+     */
     public static <T> List<BaseTreeVO<T>> fuzzySearch(List<BaseTreeVO<T>> all, String parentId, String keyword, AbstractTreeConfig<T> treeConfig) {
         List<BaseTreeVO<T>> list = build(all, parentId, treeConfig);
+        return fuzzySearch(list, keyword, treeConfig);
+    }
+
+    /**
+     * 构建搜索树
+     *
+     * @param list       已经构建好的树
+     * @param keyword    关键字
+     * @param <T>        节点额外信息
+     * @param treeConfig 树配置
+     * @return 含关键字的节点，并以树结构返回
+     */
+    public static <T> List<BaseTreeVO<T>> fuzzySearch(List<BaseTreeVO<T>> list, String keyword, AbstractTreeConfig<T> treeConfig) {
         List<BaseTreeVO<T>> result = new ArrayList<>();
         if (CollUtil.isEmpty(list)) {
             return result;
@@ -67,6 +127,7 @@ public class PhoenixTreeUtil {
     }
 
 
+
     private static <T> List<BaseTreeVO<T>> executeTree(List<Tree<String>> list) {
         List<BaseTreeVO<T>> result = new ArrayList<>();
         if (CollUtil.isNotEmpty(list)) {
@@ -75,6 +136,7 @@ public class PhoenixTreeUtil {
                 vo.setCode(tree.getId());
                 vo.setPCode(tree.getParentId());
                 vo.setName(tree.getName().toString());
+                //noinspection unchecked
                 vo.setExt((T) tree.get("ext"));
                 vo.setChild(executeTree(tree.getChildren()));
                 vo.setHasChildren(CollUtil.isNotEmpty(tree.getChildren()));
