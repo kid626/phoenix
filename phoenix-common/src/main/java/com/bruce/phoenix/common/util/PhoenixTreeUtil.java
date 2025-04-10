@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeUtil;
 import cn.hutool.core.util.StrUtil;
+import com.bruce.phoenix.common.config.AbstractTreeConfig;
 import com.bruce.phoenix.common.model.common.BaseTreeVO;
 
 import java.util.ArrayList;
@@ -44,6 +45,27 @@ public class PhoenixTreeUtil {
         return result;
     }
 
+    public static <T> List<BaseTreeVO<T>> build(List<BaseTreeVO<T>> all, String parentId, AbstractTreeConfig<T> treeConfig) {
+        List<Tree<String>> list = TreeUtil.build(all, parentId, treeConfig.node2Tree());
+        return executeTree(list, treeConfig);
+    }
+
+
+    public static <T> List<BaseTreeVO<T>> fuzzySearch(List<BaseTreeVO<T>> all, String parentId, String keyword, AbstractTreeConfig<T> treeConfig) {
+        List<BaseTreeVO<T>> list = build(all, parentId, treeConfig);
+        List<BaseTreeVO<T>> result = new ArrayList<>();
+        if (CollUtil.isEmpty(list)) {
+            return result;
+        }
+        for (BaseTreeVO<T> tree : list) {
+            BaseTreeVO<T> matchedTree = findMatchedSubtree(tree, keyword);
+            if (treeConfig.isMatched(matchedTree, keyword)) {
+                result.add(matchedTree);
+            }
+        }
+        return result;
+    }
+
 
     private static <T> List<BaseTreeVO<T>> executeTree(List<Tree<String>> list) {
         List<BaseTreeVO<T>> result = new ArrayList<>();
@@ -54,6 +76,20 @@ public class PhoenixTreeUtil {
                 vo.setPCode(tree.getParentId());
                 vo.setName(tree.getName().toString());
                 vo.setExt((T) tree.get("ext"));
+                vo.setChild(executeTree(tree.getChildren()));
+                vo.setHasChildren(CollUtil.isNotEmpty(tree.getChildren()));
+                result.add(vo);
+            }
+        }
+        return result;
+    }
+
+
+    private static <T> List<BaseTreeVO<T>> executeTree(List<Tree<String>> list, AbstractTreeConfig<T> treeConfig) {
+        List<BaseTreeVO<T>> result = new ArrayList<>();
+        if (CollUtil.isNotEmpty(list)) {
+            for (Tree<String> tree : list) {
+                BaseTreeVO<T> vo = treeConfig.tree2Node(tree);
                 vo.setChild(executeTree(tree.getChildren()));
                 vo.setHasChildren(CollUtil.isNotEmpty(tree.getChildren()));
                 result.add(vo);
