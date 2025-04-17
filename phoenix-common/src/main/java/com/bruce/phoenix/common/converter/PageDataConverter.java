@@ -96,6 +96,18 @@ public class PageDataConverter {
         return convertFromPageList(query.getPageNum(), query.getPageSize(), CollUtil.newArrayList());
     }
 
+    public static <T, V> PageData<V> convert2PageData(PageData<T> pageData, List<V> list) {
+        PageData<V> anotherPageData = new PageData<>();
+        anotherPageData.setPageNum(pageData.getPageNum());
+        anotherPageData.setPageSize(pageData.getPageSize());
+        anotherPageData.setTotal(pageData.getTotal());
+        anotherPageData.setStartRow(pageData.getStartRow());
+        anotherPageData.setEndRow(pageData.getEndRow());
+        anotherPageData.setPages(pageData.getPages());
+        anotherPageData.setData(list);
+        return anotherPageData;
+    }
+
     /**
      * 手动分页
      *
