@@ -23,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
@@ -30,6 +32,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiConsumer;
 
 /**
  * @Copyright Copyright © 2024 fanzh . All rights reserved.
@@ -149,12 +152,78 @@ public class ExcelComponent {
      * 导出
      *
      * @param filename 文件名,建议不要带目录
-     * @param filepath 文件路径
+     * @param filepath 模版文件路径
      * @param data     查询出来的数据
      * @param <T>      数据类型
      */
     public <T> void export(String filename, String filepath, List<T> data) {
         export(filename, filepath, data, EXPORT_MAX_NUM, EXPORT_MAX_MESSAGE);
+    }
+
+    /**
+     * 导出 V2 自定义输出流
+     *
+     * @param filename 文件名,建议不要带目录
+     * @param filepath 模版文件路径
+     * @param data     查询出来的数据
+     * @param <T>      数据类型
+     */
+    public <T> void exportV2(String filename, String filepath, List<T> data) {
+        export(filename, filepath, data, (bos, inFileName) -> {
+            InputStream inputStream = null;
+            ServletOutputStream out = null;
+            try {
+                inputStream = new ByteArrayInputStream(bos.toByteArray());
+                out = response.getOutputStream();
+                // 设置响应类型
+                // response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                // 设置编码格式
+                response.setCharacterEncoding("utf-8");
+                response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(filename, "UTF-8"));
+
+                byte buff[] = new byte[1024];
+                int length = 0;
+
+                while ((length = inputStream.read(buff)) > 0) {
+                    out.write(buff, 0, length);
+                }
+
+            } catch (Exception e) {
+                log.warn("导出失败:{}", e.getMessage());
+            } finally {
+                try {
+                    inputStream.close();
+                    out.close();
+                    out.flush();
+                } catch (IOException e) {
+                    log.warn("导出失败:{}", e.getMessage());
+                }
+            }
+        });
+    }
+
+    /**
+     * 导出
+     *
+     * @param filename 文件名,建议不要带目录
+     * @param filepath 模版文件路径
+     * @param data     查询出来的数据
+     * @param consumer 自定义处理数据  写入到 response 或者写入到文件里
+     * @param <T>      数据类型
+     */
+    public <T> void export(String filename, String filepath, List<T> data, BiConsumer<ByteArrayOutputStream, String> consumer) {
+        ByteArrayOutputStream outputStream = getByteOutPutStream(filepath, data);
+        try {
+            consumer.accept(outputStream, filename);
+        } catch (Exception e) {
+            log.warn("导出文件失败");
+        } finally {
+            try {
+                outputStream.close();
+            } catch (IOException e) {
+                log.warn("导出失败");
+            }
+        }
     }
 
     /**
@@ -218,6 +287,28 @@ public class ExcelComponent {
         String key = MessageFormat.format(EXCEL_IMPORT_CACHE, operationId);
         String result = redisComponent.get(key);
         return JSONUtil.toBean(result, new TypeReference<ImportResultModel<T>>() {}, false);
+    }
+
+    /**
+     * 导出文件
+     */
+    private <T> ByteArrayOutputStream getByteOutPutStream(String templateName, List<T> list) {
+        ByteArrayOutputStream bos = null;
+        try {
+            ClassPathResource classPathResource = new ClassPathResource(templateName);
+            InputStream inStream = null;
+            try {
+                inStream = classPathResource.getInputStream();
+            } catch (IOException e) {
+                log.info("获取excel模板失败: {}", e.getMessage(), e);
+            }
+            bos = new ByteArrayOutputStream();
+            EasyExcelUtil.simpleWrite(bos, inStream, list);
+            bos.flush();
+        } catch (IOException e) {
+            log.info("传输异常: {}", e.getMessage(), e);
+        }
+        return bos;
     }
 
 }

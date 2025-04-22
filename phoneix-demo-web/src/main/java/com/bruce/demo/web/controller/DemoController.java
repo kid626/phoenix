@@ -39,6 +39,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -191,6 +192,22 @@ public class DemoController {
     public Result<ImportResultModel<DemoExcelModel>> importData(MultipartFile file) throws IOException {
         ImportResultModel<DemoExcelModel> model = excelComponent.importData(file, DemoExcelModel.class, new DemoExcelListener(demoUserService), 3);
         return Result.success(model);
+    }
+
+    @GetMapping("/excel/export")
+    @ApiOperation(value = "导出", httpMethod = "GET", notes = "下载符合条件的Excel", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public Result<String> export() {
+        List<DemoExcelModel> result = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            DemoExcelModel demoExcelModel = new DemoExcelModel();
+            demoExcelModel.setParam1("param1" + i);
+            demoExcelModel.setParam2("param2" + i);
+            demoExcelModel.setParam3("param3" + i);
+            demoExcelModel.setParam4("param4" + i);
+            result.add(demoExcelModel);
+        }
+        excelComponent.exportV2("测试导出001.xlsx", "test_export_template.xlsx", result);
+        return Result.success();
     }
 
     @PostMapping("/excel/import/parallel")

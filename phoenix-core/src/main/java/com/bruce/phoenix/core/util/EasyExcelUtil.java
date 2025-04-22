@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -135,6 +136,23 @@ public class EasyExcelUtil {
             write.needHead(needHead);
         }
         ExcelWriterSheetBuilder builder = write.sheet(sheetNo, sheetName);
+        builder.doWrite(data);
+    }
+
+    /**
+     * 最简单的写,若要自定义格式，合并单元格请参照 {@link "https://alibaba-easyexcel.github.io/quickstart/write.html#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%B7%E5%BC%8F"}
+     * <p>1. 创建excel对应的实体对象
+     * <p>2. 直接写即可
+     *
+     * @param bos      输出流
+     * @param inStream 输入流
+     * @param data     数据
+     * @param <T>      实体类
+     */
+    public static <T> void simpleWrite(ByteArrayOutputStream bos, InputStream inStream, List<T> data) {
+        ExcelWriterBuilder write = EasyExcel.write(bos);
+        write.withTemplate(inStream);
+        ExcelWriterSheetBuilder builder = write.sheet();
         builder.doWrite(data);
     }
 
