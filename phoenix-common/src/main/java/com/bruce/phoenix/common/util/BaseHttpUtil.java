@@ -105,6 +105,7 @@ public class BaseHttpUtil {
             log.warn("[BaseHttpUtil] 请求业务错误 code={} msg={}", e.getCode(), e.getMessage());
             throw e;
         } catch (Exception e) {
+            log.info("[BaseHttpUtil] 请求非业务错误 msg={}", e.getMessage(), e);
             throw new CommonException("系统错误,请联系管理员!");
         } finally {
             ThreadLocalUtil.remove();
