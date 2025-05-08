@@ -9,6 +9,7 @@ import com.bruce.demo.web.excel.DemoExcelModel;
 import com.bruce.demo.web.excel.DemoParallelExcelListener;
 import com.bruce.demo.web.model.constant.DemoConstant;
 import com.bruce.demo.web.model.enums.TestEnum;
+import com.bruce.demo.web.quartz.DemoJob;
 import com.bruce.demo.web.service.DemoUserService;
 import com.bruce.demo.web.service.ThreadService;
 import com.bruce.demo.web.ws.WebSocketHandler;
@@ -25,6 +26,8 @@ import com.bruce.phoenix.core.excel.model.ImportResultModel;
 import com.bruce.phoenix.core.model.gateway.GatewaySignModel;
 import com.bruce.phoenix.core.mq.component.MqComponent;
 import com.bruce.phoenix.core.mq.model.MqModel;
+import com.bruce.phoenix.core.quartz.component.QuartzComponent;
+import com.bruce.phoenix.core.quartz.model.JobInfoModel;
 import com.bruce.phoenix.core.token.component.TokenComponent;
 import com.bruce.phoenix.core.token.model.BaseTokenModel;
 import com.bruce.phoenix.core.util.GatewayHttpUtil;
@@ -72,6 +75,8 @@ public class DemoController {
     private TokenComponent tokenComponent;
     @Resource
     private SequenceComponent sequenceComponent;
+    @Resource
+    private QuartzComponent quartzComponent;
 
     @GetMapping("/async/say")
     public Result<String> sayHelloAsync() {
@@ -242,6 +247,21 @@ public class DemoController {
     @ApiOperation("sequence 多序列生成测试")
     public Result<List<String>> sequenceMulti() {
         List<String> list = sequenceComponent.generalSequence("test", 5, 10);
+        return Result.success(list);
+    }
+
+    @GetMapping("/quartz/create")
+    @ApiOperation("创建定时任务")
+    public Result<String> create(JobInfoModel model) {
+        model.setJobClass(DemoJob.class);
+        quartzComponent.createScheduleJob(model);
+        return Result.success();
+    }
+
+    @GetMapping("/quartz/all")
+    @ApiOperation("查询所有定时任务")
+    public Result<List<JobInfoModel>> all() {
+        List<JobInfoModel> list = quartzComponent.findAll();
         return Result.success(list);
     }
 
