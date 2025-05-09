@@ -222,7 +222,7 @@ public class QuartzComponent {
      * @param triggerKey 触发器
      */
     @SneakyThrows
-    public String getJobStatus(TriggerKey triggerKey) {
+    private String getJobStatus(TriggerKey triggerKey) {
         Trigger.TriggerState triggerState = scheduler.getTriggerState(triggerKey);
         return TRIGGER_STATE.get(triggerState);
     }

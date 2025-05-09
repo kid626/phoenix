@@ -265,5 +265,33 @@ public class DemoController {
         return Result.success(list);
     }
 
+    @GetMapping("/quartz/delete")
+    @ApiOperation("删除定时任务")
+    public Result<String> deleteScheduleJob(String jobName) {
+        quartzComponent.deleteScheduleJob(jobName);
+        return Result.success();
+    }
+
+    @GetMapping("/quartz/pause")
+    @ApiOperation("暂停定时任务")
+    public Result<String> pauseScheduleJob(String jobName) {
+        quartzComponent.pauseScheduleJob(jobName);
+        return Result.success();
+    }
+
+    @GetMapping("/quartz/resume")
+    @ApiOperation("恢复定时任务")
+    public Result<String> resumeScheduleJob(String jobName) {
+        quartzComponent.resumeScheduleJob(jobName);
+        return Result.success();
+    }
+
+    @GetMapping("/quartz/run")
+    @ApiOperation("手动运行一次")
+    public Result<String> runOnce(String jobName) {
+        quartzComponent.runOnce(jobName);
+        return Result.success();
+    }
+
 
 }
