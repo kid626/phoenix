@@ -26,6 +26,8 @@ import com.bruce.phoenix.core.excel.model.ImportResultModel;
 import com.bruce.phoenix.core.model.gateway.GatewaySignModel;
 import com.bruce.phoenix.core.mq.component.MqComponent;
 import com.bruce.phoenix.core.mq.model.MqModel;
+import com.bruce.phoenix.core.pipeline.compoent.PipelineComponent;
+import com.bruce.phoenix.core.pipeline.model.ProcessContextModel;
 import com.bruce.phoenix.core.quartz.component.QuartzComponent;
 import com.bruce.phoenix.core.quartz.model.JobInfoModel;
 import com.bruce.phoenix.core.token.component.TokenComponent;
@@ -77,6 +79,8 @@ public class DemoController {
     private SequenceComponent sequenceComponent;
     @Resource
     private QuartzComponent quartzComponent;
+    @Resource
+    private PipelineComponent<String> pipelineComponent;
 
     @GetMapping("/async/say")
     public Result<String> sayHelloAsync() {
@@ -291,6 +295,22 @@ public class DemoController {
     public Result<String> runOnce(String jobName) {
         quartzComponent.runOnce(jobName);
         return Result.success();
+    }
+
+    @GetMapping("/process/first")
+    @ApiOperation("pipeline执行1")
+    public Result<String> pipeline1() {
+        ProcessContextModel<String> model = ProcessContextModel.<String>builder().processModel("hello world").code("first").build();
+        ProcessContextModel<String> process = pipelineComponent.process(model);
+        return Result.success(process.getResponse());
+    }
+
+    @GetMapping("/process/second")
+    @ApiOperation("pipeline执行2")
+    public Result<String> pipeline2() {
+        ProcessContextModel<String> model = ProcessContextModel.<String>builder().processModel("hello world").code("second").build();
+        ProcessContextModel<String> process = pipelineComponent.process(model);
+        return Result.success(process.getResponse());
     }
 
 
