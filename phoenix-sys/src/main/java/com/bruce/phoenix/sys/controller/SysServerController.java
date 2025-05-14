@@ -2,8 +2,8 @@ package com.bruce.phoenix.sys.controller;
 
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.bruce.phoenix.common.model.common.Result;
 import com.bruce.phoenix.sys.util.SystemUtil;
-import com.frame.common.base.api.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +50,7 @@ public class SysServerController {
             result.put("time", DateUtil.format(new Date(), "HH:mm:ss"));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            return Result.success();
+            return Result.success(result);
         }
         return Result.success(result);
     }
