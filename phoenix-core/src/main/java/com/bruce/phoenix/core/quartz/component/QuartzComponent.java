@@ -5,6 +5,7 @@ import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.bruce.phoenix.core.quartz.model.JobInfoModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,8 +41,6 @@ public class QuartzComponent {
 
     private static final Map<Trigger.TriggerState, String> TRIGGER_STATE;
 
-    public static final String END_JOB_SUFFIX = ":endTask";
-
     static {
         TRIGGER_STATE = new HashMap<>();
         TRIGGER_STATE.put(NONE, "空");
@@ -59,7 +58,7 @@ public class QuartzComponent {
      */
     @SneakyThrows
     public void createScheduleJob(JobInfoModel model) {
-
+        log.info("[QuartzComponent#createScheduleJob] model={}", JSONUtil.toJsonStr(model));
         if (model.getJobClass() == null && StrUtil.isBlank(model.getJobClassName())) {
             throw new ServiceException("jobClass 和 jobClassName 不能同时为空");
         }
@@ -122,6 +121,7 @@ public class QuartzComponent {
      */
     @SneakyThrows
     public void pauseScheduleJob(String jobName) {
+        log.info("[QuartzComponent#pauseScheduleJob] jobName={}", jobName);
         JobKey jobKey = JobKey.jobKey(jobName, jobGroup);
         scheduler.pauseJob(jobKey);
     }
@@ -133,6 +133,7 @@ public class QuartzComponent {
      */
     @SneakyThrows
     public void resumeScheduleJob(String jobName) {
+        log.info("[QuartzComponent#resumeScheduleJob] jobName={}", jobName);
         JobKey jobKey = JobKey.jobKey(jobName, jobGroup);
         scheduler.resumeJob(jobKey);
     }
@@ -144,6 +145,7 @@ public class QuartzComponent {
      */
     @SneakyThrows
     public void runOnce(String jobName) {
+        log.info("[QuartzComponent#runOnce] jobName={}", jobName);
         JobKey jobKey = JobKey.jobKey(jobName, jobGroup);
         scheduler.triggerJob(jobKey);
     }
@@ -156,6 +158,7 @@ public class QuartzComponent {
      */
     @SneakyThrows
     public void deleteScheduleJob(String jobName) {
+        log.info("[QuartzComponent#deleteScheduleJob] jobName={}", jobName);
         JobKey jobKey = JobKey.jobKey(jobName, jobGroup);
         scheduler.deleteJob(jobKey);
     }
@@ -165,6 +168,7 @@ public class QuartzComponent {
      */
     @SneakyThrows
     public List<JobInfoModel> findAll() {
+        log.info("[QuartzComponent#findAll]");
         GroupMatcher<JobKey> matcher;
         if (StrUtil.isBlank(jobGroup)) {
             matcher = GroupMatcher.anyGroup();
@@ -223,6 +227,7 @@ public class QuartzComponent {
      */
     @SneakyThrows
     private String getJobStatus(TriggerKey triggerKey) {
+        log.info("[QuartzComponent#getJobStatus] triggerKey={}", JSONUtil.toJsonStr(triggerKey));
         Trigger.TriggerState triggerState = scheduler.getTriggerState(triggerKey);
         return TRIGGER_STATE.get(triggerState);
     }
