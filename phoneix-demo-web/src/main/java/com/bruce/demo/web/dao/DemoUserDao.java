@@ -86,6 +86,9 @@ public class DemoUserDao {
         return mapper.selectList(wrapper);
     }
 
+    public void batchSave(List<DemoUser> list) {
+        mapper.batchSave(list);
+    }
 
 
 }

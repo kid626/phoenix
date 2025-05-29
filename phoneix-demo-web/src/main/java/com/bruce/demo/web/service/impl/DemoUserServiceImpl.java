@@ -15,6 +15,7 @@ import com.bruce.phoenix.common.model.common.PageData;
 import com.bruce.phoenix.common.converter.PageDataConverter;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,6 +66,20 @@ public class DemoUserServiceImpl implements DemoUserService {
         } finally {
             PageHelper.clearPage();
         }
+    }
+
+    @Override
+    public void batchSave() {
+        List<DemoUser> list = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            DemoUser demoUser = new DemoUser();
+            demoUser.setId((long) i);
+            demoUser.setName("test" + i);
+            demoUser.setDeptId((long) i);
+            demoUser.setGrade(1);
+            list.add(demoUser);
+        }
+        dao.batchSave(list);
     }
 
 }

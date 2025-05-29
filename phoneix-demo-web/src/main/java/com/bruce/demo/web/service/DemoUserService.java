@@ -51,4 +51,9 @@ public interface DemoUserService {
      */
     PageData<DemoUserVO> queryByPage(DemoUserQuery query);
 
+    /**
+     * 批量新增
+     */
+    void batchSave();
+
 }

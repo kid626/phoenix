@@ -64,4 +64,11 @@ public class DemoUserController {
         return Result.success();
     }
 
+    @PostMapping("/v1/batch/save")
+    @ApiOperation("批量保存")
+    public Result<String> batchSave() {
+        service.batchSave();
+        return Result.success();
+    }
+
 }

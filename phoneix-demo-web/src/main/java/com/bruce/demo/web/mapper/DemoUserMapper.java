@@ -1,7 +1,7 @@
 package com.bruce.demo.web.mapper;
 
 import com.bruce.demo.web.model.po.DemoUser;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.bruce.phoenix.core.config.mybatisplus.CustomBaseMapper;
 
 /**
  * @Copyright Copyright © 2023 Bruce . All rights reserved.
@@ -10,6 +10,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @Date 2023-12-19
  * @Author Bruce
  */
-public interface DemoUserMapper extends BaseMapper<DemoUser> {
+public interface DemoUserMapper extends CustomBaseMapper<DemoUser> {
 
 }
