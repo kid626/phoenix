@@ -127,7 +127,6 @@ public class PhoenixTreeUtil {
     }
 
 
-
     private static <T> List<BaseTreeVO<T>> executeTree(List<Tree<String>> list) {
         List<BaseTreeVO<T>> result = new ArrayList<>();
         if (CollUtil.isNotEmpty(list)) {
@@ -135,7 +134,7 @@ public class PhoenixTreeUtil {
                 BaseTreeVO<T> vo = new BaseTreeVO<>();
                 vo.setCode(tree.getId());
                 vo.setPCode(tree.getParentId());
-                vo.setName(tree.getName().toString());
+                vo.setName(StrUtil.isNotBlank(tree.getName()) ? tree.getName().toString() : "");
                 //noinspection unchecked
                 vo.setExt((T) tree.get("ext"));
                 vo.setChild(executeTree(tree.getChildren()));
