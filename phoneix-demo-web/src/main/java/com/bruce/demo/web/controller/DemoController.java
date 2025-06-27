@@ -33,6 +33,7 @@ import com.bruce.phoenix.core.quartz.model.JobInfoModel;
 import com.bruce.phoenix.core.token.component.TokenComponent;
 import com.bruce.phoenix.core.token.model.BaseTokenModel;
 import com.bruce.phoenix.core.util.GatewayHttpUtil;
+import com.bruce.phoenix.sys.openapi.OpenApi;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -311,6 +312,12 @@ public class DemoController {
         ProcessContextModel<String> model = ProcessContextModel.<String>builder().processModel("hello world").code("second").build();
         ProcessContextModel<String> process = pipelineComponent.process(model);
         return Result.success(process.getResponse());
+    }
+
+    @GetMapping("/openapi")
+    @OpenApi
+    public Result<String> openapi() {
+        return Result.success("openapi");
     }
 
 

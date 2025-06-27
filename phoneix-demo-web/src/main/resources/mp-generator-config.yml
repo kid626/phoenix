@@ -5,14 +5,14 @@ dbDriverName: "com.mysql.cj.jdbc.Driver"
 dbUsername: root
 dbPassword: root
 
-parentPackage: com.bruce.phoenix.auth
-projectName: phoenix-auth
+parentPackage: com.bruce.phoenix.sys
+projectName: phoenix-sys
 moduleName:
 version: v1
 # 是否初始化
 isFirstInit: false
 prefix: auth
-includes: [ "auth_org","auth_user_org" ]
+includes: [ "sys_openapi"]
 excludes: [ ]
 
 #outputDir:

@@ -105,3 +105,20 @@ CREATE TABLE `sys_api_log`
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='系统第三方请求日志';
 SET
 FOREIGN_KEY_CHECKS = 1;
+
+
+CREATE TABLE sys_openapi
+(
+    id          BIGINT(20) NOT NULL COMMENT '主键',
+    access_key     varchar(32) NULL COMMENT 'accessKey',
+    access_secret  varchar(64) NULL COMMENT 'accessSecret',
+    note        varchar(128) NULL COMMENT '备注',
+    create_user varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL COMMENT '创建用户',
+    create_time datetime                                                     DEFAULT NULL NULL COMMENT '创建时间',
+    update_user varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL NULL COMMENT '更新用户',
+    update_time datetime                                                     DEFAULT NULL NULL COMMENT '更新时间',
+    is_delete  char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci     DEFAULT NULL NULL COMMENT '是否删除',
+    CONSTRAINT sys_openapi_pk PRIMARY KEY (id)
+) ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_general_ci;
