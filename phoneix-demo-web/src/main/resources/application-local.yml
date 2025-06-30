@@ -75,3 +75,5 @@ auth:
         expire: 7200
         nums: 5
 
+openapi:
+    enable: true

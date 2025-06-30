@@ -16,5 +16,6 @@ public class ModuleConstant {
     public static final String SYS_CONFIG = "sysConfig";
     public static final String SYS_DICT = "sysDict";
     public static final String SYS_LOG = "sysLog";
+    public static final String SYS_OPEN_API = "sysOpenapi";
 
 }

@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 public class GatewayHttpUtil {
 
 
-    private final static String DEFAULT_VERSION = "1.0.0";
+    public final static String DEFAULT_VERSION = "1.0.0";
 
 
     /**

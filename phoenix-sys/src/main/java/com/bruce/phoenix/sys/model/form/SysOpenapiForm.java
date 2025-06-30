@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
 * @Copyright Copyright © 2025 Bruce . All rights reserved.
@@ -20,31 +19,7 @@ public class SysOpenapiForm implements Serializable {
 
     private static final long serialVersionUID = -1L;
 
-    @ApiModelProperty(value = "主键")
-    private Long id;
-
-    @ApiModelProperty(value = "accessKey")
-    private String accessKey;
-
-    @ApiModelProperty(value = "accessSecret")
-    private String accessSecret;
-
     @ApiModelProperty(value = "备注")
     private String note;
-
-    @ApiModelProperty(value = "创建用户")
-    private String createUser;
-
-    @ApiModelProperty(value = "创建时间")
-    private Date createTime;
-
-    @ApiModelProperty(value = "更新用户")
-    private String updateUser;
-
-    @ApiModelProperty(value = "更新时间")
-    private Date updateTime;
-
-    @ApiModelProperty(value = "是否删除")
-    private String isDelete;
 
 }

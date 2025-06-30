@@ -15,6 +15,8 @@ import com.bruce.demo.web.service.ThreadService;
 import com.bruce.demo.web.ws.WebSocketHandler;
 import com.bruce.phoenix.common.model.common.BaseSelectVO;
 import com.bruce.phoenix.common.model.common.Result;
+import com.bruce.phoenix.common.model.enums.BusinessTypeEnum;
+import com.bruce.phoenix.common.model.enums.OperatorTypeEnum;
 import com.bruce.phoenix.common.util.BaseHttpUtil;
 import com.bruce.phoenix.common.util.EnumUtil;
 import com.bruce.phoenix.core.annotation.Limiter;
@@ -33,6 +35,8 @@ import com.bruce.phoenix.core.quartz.model.JobInfoModel;
 import com.bruce.phoenix.core.token.component.TokenComponent;
 import com.bruce.phoenix.core.token.model.BaseTokenModel;
 import com.bruce.phoenix.core.util.GatewayHttpUtil;
+import com.bruce.phoenix.sys.log.LogRecord;
+import com.bruce.phoenix.sys.model.constant.ModuleConstant;
 import com.bruce.phoenix.sys.openapi.OpenApi;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -315,7 +319,9 @@ public class DemoController {
     }
 
     @GetMapping("/openapi")
+    @ApiOperation("openapi鉴权")
     @OpenApi
+    @LogRecord(module = ModuleConstant.SYS_OPEN_API, businessType = BusinessTypeEnum.OTHER, operatorType = OperatorTypeEnum.OTHER)
     public Result<String> openapi() {
         return Result.success("openapi");
     }

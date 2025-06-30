@@ -1,5 +1,6 @@
 package com.bruce.phoenix.sys.service.impl;
 
+import cn.hutool.core.util.RandomUtil;
 import com.bruce.phoenix.sys.dao.SysOpenapiDao;
 import com.bruce.phoenix.sys.model.po.SysOpenapi;
 import com.bruce.phoenix.sys.model.form.SysOpenapiForm;
@@ -35,10 +36,13 @@ public class SysOpenapiServiceImpl implements SysOpenapiService {
     private static final SysOpenapiConverter CONVERTER = new SysOpenapiConverter();
 
     @Override
-    public Long save(SysOpenapiForm form) {
+    public SysOpenapi save(SysOpenapiForm form) {
         SysOpenapi po = new SysOpenapi();
+        po.setAccessKey(RandomUtil.randomString(16).toUpperCase());
+        po.setAccessSecret(RandomUtil.randomString(32).toUpperCase());
         CONVERTER.convert2Po(form, po);
-        return dao.save(po);
+        dao.save(po);
+        return po;
     }
 
     @Override

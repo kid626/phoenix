@@ -21,7 +21,7 @@ public interface SysOpenapiService {
      * @param form SysOpenapiForm
      * @return 主键
      */
-    Long save(SysOpenapiForm form);
+    SysOpenapi save(SysOpenapiForm form);
 
 
     /**
