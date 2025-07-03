@@ -1,6 +1,7 @@
 package com.bruce.phoenix.common.model.common;
 
 import com.bruce.phoenix.common.util.TraceUtil;
+import com.unicom.middleware.unicom.common.exception.ServiceException;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -49,6 +50,17 @@ public class Result<T> implements Serializable {
 
     public boolean isSuccess() {
         return code == SUCCESS_CODE;
+    }
+
+    /**
+     * 获取结果，如果失败则抛出异常
+     */
+    public T unWrapper() {
+        if (getCode() != SUCCESS_CODE) {
+            throw new ServiceException(getCode(), getMsg());
+        } else {
+            return getData();
+        }
     }
 
 }
