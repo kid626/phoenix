@@ -40,6 +40,13 @@ public class ScreenUtil {
                 .build();
     }
 
+    public static <T> ScreenBarChartV2VO<T> buildBarChartV2VO(List<ScreenBaseDataVO<T>> list, List<String> xAxis) {
+        return ScreenBarChartV2VO.<T>builder()
+                .series(list)
+                .xAxis(xAxis)
+                .build();
+    }
+
     public static <T> ScreenLineChartVO<T> buildLineChartVO(List<ScreenBaseDataVO<T>> list, List<String> xAxis) {
         return ScreenLineChartVO.<T>builder()
                 .series(Arrays.asList(list))
