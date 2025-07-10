@@ -47,4 +47,11 @@ public class ScreenUtil {
                 .build();
     }
 
+    public static <T> ScreenLineChartV2VO<T> buildLineChartV2VO(List<ScreenBaseDataVO<T>> list, List<String> xAxis) {
+        return ScreenLineChartV2VO.<T>builder()
+                .series(list)
+                .xAxis(xAxis)
+                .build();
+    }
+
 }
