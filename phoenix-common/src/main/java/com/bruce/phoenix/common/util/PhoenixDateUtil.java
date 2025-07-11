@@ -4,6 +4,7 @@ import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @Copyright Copyright © 2025 fanzh . All rights reserved.
@@ -12,6 +13,7 @@ import lombok.experimental.UtilityClass;
  * @Date 2025/7/3 15:03
  * @Author Bruce
  */
+@Slf4j
 @UtilityClass
 public class PhoenixDateUtil extends DateUtil {
 
@@ -28,6 +30,35 @@ public class PhoenixDateUtil extends DateUtil {
      */
     public static DateTime parse(String str) {
         return parse(str, DatePattern.NORM_DATETIME_PATTERN);
+    }
+
+    /**
+     * 时间转换 String - DateTime
+     * 傻瓜式 parse 会尝试多种常见格式
+     */
+    public static DateTime foolyParse(String str) {
+        try {
+            return parse(str, DatePattern.NORM_DATETIME_PATTERN);
+        } catch (Exception e) {
+            try {
+                return parse(str, DatePattern.NORM_DATE_PATTERN);
+            } catch (Exception e1) {
+                try {
+                    return parse(str, DatePattern.UTC_SIMPLE_MS_PATTERN);
+                } catch (Exception e3) {
+                    try {
+                        return parse(str, DatePattern.UTC_WITH_XXX_OFFSET_PATTERN);
+                    } catch (Exception e4) {
+                        try {
+                            return parse(str, DatePattern.UTC_WITH_XXX_OFFSET_PATTERN);
+                        } catch (Exception e5) {
+                            log.warn("You stupid asshole,parse it yourself!");
+                            throw e5;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**
