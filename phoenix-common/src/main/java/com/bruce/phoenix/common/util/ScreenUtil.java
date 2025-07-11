@@ -47,7 +47,7 @@ public class ScreenUtil {
         List<ScreenBaseDataVO<T>> series = vo.getSeries();
         Map<String, List<T>> seriesMap = new HashMap<>();
         for (ScreenBaseDataVO<T> tScreenBaseDataVO : series) {
-            seriesMap.put(tScreenBaseDataVO.getName(), tScreenBaseDataVO.getData());
+            seriesMap.put(tScreenBaseDataVO.getType(), tScreenBaseDataVO.getData());
         }
         return ScreenLineChartMapVO.<T>builder().series(seriesMap).xAxis(vo.getXAxis()).build();
     }
@@ -56,7 +56,7 @@ public class ScreenUtil {
         List<ScreenBaseDataVO<T>> series = vo.getSeries();
         Map<String, List<T>> seriesMap = new HashMap<>();
         for (ScreenBaseDataVO<T> tScreenBaseDataVO : series) {
-            seriesMap.put(tScreenBaseDataVO.getName(), tScreenBaseDataVO.getData());
+            seriesMap.put(tScreenBaseDataVO.getType(), tScreenBaseDataVO.getData());
         }
         return ScreenBarChartMapVO.<T>builder().series(seriesMap).xAxis(vo.getXAxis()).build();
     }
