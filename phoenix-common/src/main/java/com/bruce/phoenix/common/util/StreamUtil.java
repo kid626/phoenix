@@ -4,6 +4,7 @@ import com.bruce.phoenix.common.model.structure.CustomPriorityQueue;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -98,6 +99,42 @@ public class StreamUtil {
         return Stream.of(m1, m2)
                 .flatMap(m -> m.entrySet().stream())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (v1, v2) -> v1 + v2));
+    }
+
+    /**
+     * 先分组，再取最大值
+     *
+     * @param list      原数据表
+     * @param groupBy   分组的字段
+     * @param compareBy 比较的字段
+     * @param <T>       表中数据结构
+     * @return 分组后的结果
+     */
+    public static <T> Map<String, T> maxBy(List<T> list,
+                                           Function<? super T, ? extends String> groupBy,
+                                           Function<? super T, ? extends String> compareBy) {
+        return list.stream()
+                .collect(Collectors.toMap(groupBy,
+                        Function.identity(),
+                        BinaryOperator.maxBy(Comparator.comparing(compareBy))));
+    }
+
+    /**
+     * 先分组，再取最小值
+     *
+     * @param list      原数据表
+     * @param groupBy   分组的字段
+     * @param compareBy 比较的字段
+     * @param <T>       表中数据结构
+     * @return 分组后的结果
+     */
+    public static <T> Map<String, T> minBy(List<T> list,
+                                           Function<? super T, ? extends String> groupBy,
+                                           Function<? super T, ? extends String> compareBy) {
+        return list.stream()
+                .collect(Collectors.toMap(groupBy,
+                        Function.identity(),
+                        BinaryOperator.minBy(Comparator.comparing(compareBy))));
     }
 
 }
