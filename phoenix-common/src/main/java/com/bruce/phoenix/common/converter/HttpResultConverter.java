@@ -3,8 +3,8 @@ package com.bruce.phoenix.common.converter;
 import cn.hutool.core.lang.TypeReference;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
+import com.bruce.phoenix.common.exception.CommonException;
 import com.bruce.phoenix.common.model.common.HttpBaseResp;
-import com.unicom.middleware.unicom.common.exception.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -22,11 +22,11 @@ public abstract class HttpResultConverter<R extends HttpBaseResp> {
     public String resultToData(String resp) {
         log.info("[HttpResultConverter#resultToData] resp={}", resp);
         if (StrUtil.isBlank(resp)) {
-            throw new ServiceException("resp 不能为空!");
+            throw new CommonException("resp 不能为空!");
         }
         R r = JSONUtil.toBean(resp, new TypeReference<R>() {}, false);
         if (!r.isSuccess()) {
-            throw new ServiceException(r.getMessage());
+            throw new CommonException(r.getMessage());
         }
         return r.getData();
     }
