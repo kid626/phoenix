@@ -3,7 +3,7 @@ package com.bruce.phoenix.common.converter;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.bruce.phoenix.common.exception.CommonException;
-import com.bruce.phoenix.common.model.common.HttpBaseResp;
+import com.bruce.phoenix.common.model.common.IHttpBaseResp;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
  * @Author Bruce
  */
 @Slf4j
-public abstract class HttpResultConverter<R extends HttpBaseResp> {
+public abstract class AbstractHttpResultConverter<R extends IHttpBaseResp> {
 
     protected Class<R> respClass;
 
@@ -25,7 +25,7 @@ public abstract class HttpResultConverter<R extends HttpBaseResp> {
     }
 
     public String resultToData(String resp) {
-        log.info("[HttpResultConverter#resultToData] resp={}", resp);
+        log.info("[AbstractHttpResultConverter#resultToData] resp={}", resp);
         if (StrUtil.isBlank(resp)) {
             throw new CommonException("resp 不能为空!");
         }
