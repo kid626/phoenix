@@ -5,6 +5,7 @@ import cn.hutool.core.lang.TypeReference;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.json.JSONUtil;
 import com.alibaba.excel.enums.WriteDirectionEnum;
+import com.alibaba.excel.write.handler.WriteHandler;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.bruce.phoenix.common.exception.CommonException;
@@ -209,10 +210,9 @@ public class ExcelComponent {
      * @param filepath     模版文件路径
      * @param data         查询出来的数据
      * @param <T>          数据类型
-     * @param mergeRegions 合并单元格
      */
-    public <T> void exportWithMerge(String filename, String filepath, List<T> data, int[][] mergeRegions) {
-        exportWithMerge(filename, filepath, data, (bos, inFileName) -> {
+    public <T> void export(String filename, String filepath, List<T> data, List<WriteHandler> writeHandlerList) {
+        export(filename, filepath, data, (bos, inFileName) -> {
             InputStream inputStream = null;
             ServletOutputStream out = null;
             try {
@@ -242,7 +242,7 @@ public class ExcelComponent {
                     log.warn("导出失败:{}", e.getMessage());
                 }
             }
-        }, mergeRegions);
+        }, writeHandlerList);
     }
 
     /**
@@ -294,8 +294,8 @@ public class ExcelComponent {
      * @param data     查询出来的数据
      * @param <T>      数据类型
      */
-    public <T> void exportWithMerge(String filename, String filepath, List<T> data, BiConsumer<ByteArrayOutputStream, String> consumer, int[][] mergeRegions) {
-        ByteArrayOutputStream outputStream = getByteOutPutStream(filepath, data, mergeRegions);
+    public <T> void export(String filename, String filepath, List<T> data, BiConsumer<ByteArrayOutputStream, String> consumer, List<WriteHandler> writeHandlerList) {
+        ByteArrayOutputStream outputStream = getByteOutPutStream(filepath, data, writeHandlerList);
         try {
             consumer.accept(outputStream, filename);
         } catch (Exception e) {
@@ -380,7 +380,7 @@ public class ExcelComponent {
     /**
      * 导出文件
      */
-    private <T> ByteArrayOutputStream getByteOutPutStream(String templateName, List<T> list, int[][] mergeRegions) {
+    private <T> ByteArrayOutputStream getByteOutPutStream(String templateName, List<T> list, List<WriteHandler> writeHandlerList) {
         ByteArrayOutputStream bos = null;
         try {
             ClassPathResource classPathResource = new ClassPathResource(templateName);
@@ -391,7 +391,7 @@ public class ExcelComponent {
                 log.info("获取excel模板失败: {}", e.getMessage(), e);
             }
             bos = new ByteArrayOutputStream();
-            EasyExcelUtil.simpleWriteWithMerge(bos, inStream, list, mergeRegions);
+            EasyExcelUtil.simpleWrite(bos, inStream, list, writeHandlerList);
             bos.flush();
         } catch (IOException e) {
             log.info("传输异常: {}", e.getMessage(), e);
