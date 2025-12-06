@@ -172,12 +172,11 @@ public class EasyExcelUtil {
         ExcelWriterBuilder write = EasyExcel.write(bos);
         write.withTemplate(inStream);
         for (WriteHandler writeHandler : writeHandlerList) {
-            write.registerWriteHandler(writeHandler);
+            write = write.registerWriteHandler(writeHandler);
         }
         ExcelWriterSheetBuilder builder = write.sheet();
         builder.doWrite(data);
     }
-
 
 
     /**
