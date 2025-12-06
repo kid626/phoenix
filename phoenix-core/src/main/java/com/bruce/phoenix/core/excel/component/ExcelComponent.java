@@ -203,6 +203,49 @@ public class ExcelComponent {
     }
 
     /**
+     * 导出 V2 自定义输出流
+     *
+     * @param filename     文件名,建议不要带目录
+     * @param filepath     模版文件路径
+     * @param data         查询出来的数据
+     * @param <T>          数据类型
+     * @param mergeRegions 合并单元格
+     */
+    public <T> void exportWithMerge(String filename, String filepath, List<T> data, int[][] mergeRegions) {
+        exportWithMerge(filename, filepath, data, (bos, inFileName) -> {
+            InputStream inputStream = null;
+            ServletOutputStream out = null;
+            try {
+                inputStream = new ByteArrayInputStream(bos.toByteArray());
+                out = response.getOutputStream();
+                // 设置响应类型
+                // response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                // 设置编码格式
+                response.setCharacterEncoding("utf-8");
+                response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(filename, "UTF-8"));
+
+                byte buff[] = new byte[1024];
+                int length = 0;
+
+                while ((length = inputStream.read(buff)) > 0) {
+                    out.write(buff, 0, length);
+                }
+
+            } catch (Exception e) {
+                log.warn("导出失败:{}", e.getMessage());
+            } finally {
+                try {
+                    inputStream.close();
+                    out.close();
+                    out.flush();
+                } catch (IOException e) {
+                    log.warn("导出失败:{}", e.getMessage());
+                }
+            }
+        }, mergeRegions);
+    }
+
+    /**
      * 导出
      *
      * @param filename 文件名,建议不要带目录
@@ -241,6 +284,29 @@ public class ExcelComponent {
             throw new CommonException(message);
         }
         fillTemplate(filename, filepath, data);
+    }
+
+    /**
+     * 导出
+     *
+     * @param filename 文件名,建议不要带目录
+     * @param filepath 文件路径
+     * @param data     查询出来的数据
+     * @param <T>      数据类型
+     */
+    public <T> void exportWithMerge(String filename, String filepath, List<T> data, BiConsumer<ByteArrayOutputStream, String> consumer, int[][] mergeRegions) {
+        ByteArrayOutputStream outputStream = getByteOutPutStream(filepath, data, mergeRegions);
+        try {
+            consumer.accept(outputStream, filename);
+        } catch (Exception e) {
+            log.warn("导出文件失败");
+        } finally {
+            try {
+                outputStream.close();
+            } catch (IOException e) {
+                log.warn("导出失败");
+            }
+        }
     }
 
     /**
@@ -304,6 +370,28 @@ public class ExcelComponent {
             }
             bos = new ByteArrayOutputStream();
             EasyExcelUtil.simpleWrite(bos, inStream, list);
+            bos.flush();
+        } catch (IOException e) {
+            log.info("传输异常: {}", e.getMessage(), e);
+        }
+        return bos;
+    }
+
+    /**
+     * 导出文件
+     */
+    private <T> ByteArrayOutputStream getByteOutPutStream(String templateName, List<T> list, int[][] mergeRegions) {
+        ByteArrayOutputStream bos = null;
+        try {
+            ClassPathResource classPathResource = new ClassPathResource(templateName);
+            InputStream inStream = null;
+            try {
+                inStream = classPathResource.getInputStream();
+            } catch (IOException e) {
+                log.info("获取excel模板失败: {}", e.getMessage(), e);
+            }
+            bos = new ByteArrayOutputStream();
+            EasyExcelUtil.simpleWriteWithMerge(bos, inStream, list, mergeRegions);
             bos.flush();
         } catch (IOException e) {
             log.info("传输异常: {}", e.getMessage(), e);

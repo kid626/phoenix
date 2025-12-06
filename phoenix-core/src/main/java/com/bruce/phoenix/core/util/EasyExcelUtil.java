@@ -5,12 +5,19 @@ import cn.hutool.core.util.StrUtil;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.enums.WriteDirectionEnum;
+import com.alibaba.excel.metadata.Head;
 import com.alibaba.excel.read.listener.ReadListener;
 import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import com.alibaba.excel.write.builder.ExcelWriterSheetBuilder;
+import com.alibaba.excel.write.merge.AbstractMergeStrategy;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.fill.FillConfig;
+import com.alibaba.excel.write.metadata.style.WriteCellStyle;
+import com.alibaba.excel.write.metadata.style.WriteFont;
+import com.alibaba.excel.write.style.HorizontalCellStyleStrategy;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -154,6 +161,88 @@ public class EasyExcelUtil {
         write.withTemplate(inStream);
         ExcelWriterSheetBuilder builder = write.sheet();
         builder.doWrite(data);
+    }
+
+    /**
+     * 最简单的写,若要自定义格式，合并单元格请参照 {@link "https://alibaba-easyexcel.github.io/quickstart/write.html#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%B7%E5%BC%8F"}
+     * <p>1. 创建excel对应的实体对象
+     * <p>2. 直接写即可
+     *
+     * @param bos          输出流
+     * @param inStream     输入流
+     * @param data         数据
+     * @param <T>          实体类
+     * @param mergeRegions 合并区域
+     */
+    public static <T> void simpleWriteWithMerge(ByteArrayOutputStream bos, InputStream inStream, List<T> data, int[][] mergeRegions) {
+        ExcelWriterBuilder write = EasyExcel.write(bos);
+        write.withTemplate(inStream);
+        write.registerWriteHandler(new AbstractMergeStrategy() {
+            @Override
+            protected void merge(Sheet sheet, Cell cell, Head head, Integer relativeRowIndex) {
+                // 遍历所有合并区域，添加合并配置
+                for (int[] region : mergeRegions) {
+                    if (region.length != 4) {
+                        throw new IllegalArgumentException("合并区域配置错误：格式必须是{起始行, 结束行, 起始列, 结束列}");
+                    }
+                    int firstRow = region[0];
+                    int lastRow = region[1];
+                    int firstCol = region[2];
+                    int lastCol = region[3];
+                    // 校验行名列名合法性
+                    if (firstRow < 0 || lastRow < firstRow || firstCol < 0 || lastCol < firstCol) {
+                        throw new IllegalArgumentException("合并区域参数非法：起始行/列不能小于0，结束行/列不能小于起始行/列");
+                    }
+                    sheet.addMergedRegionUnsafe(new CellRangeAddress(firstRow, lastRow, firstCol, lastCol));
+                }
+            }
+
+        });
+        write.registerWriteHandler(defaultCellStyleStrategy());
+        ExcelWriterSheetBuilder builder = write.sheet();
+        builder.doWrite(data);
+    }
+
+    /**
+     * 默认单元格样式策略（可根据需求修改）
+     */
+    private static HorizontalCellStyleStrategy defaultCellStyleStrategy() {
+        // 表头样式
+        WriteCellStyle headStyle = new WriteCellStyle();
+        // 表头背景色：浅蓝色（可修改IndexedColors枚举）
+        headStyle.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
+        headStyle.setFillPatternType(FillPatternType.SOLID_FOREGROUND);
+        // 表头字体：加粗、12号
+        WriteFont headFont = new WriteFont();
+        headFont.setBold(true);
+        headFont.setFontHeightInPoints((short) 12);
+        headStyle.setWriteFont(headFont);
+        // 表头对齐：水平居中、垂直居中
+        headStyle.setHorizontalAlignment(HorizontalAlignment.CENTER);
+        headStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        // 表头边框：全边框
+        headStyle.setBorderTop(BorderStyle.THIN);
+        headStyle.setBorderBottom(BorderStyle.THIN);
+        headStyle.setBorderLeft(BorderStyle.THIN);
+        headStyle.setBorderRight(BorderStyle.THIN);
+
+        // 内容样式
+        WriteCellStyle contentStyle = new WriteCellStyle();
+        // 内容字体：11号
+        WriteFont contentFont = new WriteFont();
+        contentFont.setFontHeightInPoints((short) 11);
+        contentStyle.setWriteFont(contentFont);
+        // 内容对齐：水平居中、垂直居中
+        contentStyle.setHorizontalAlignment(HorizontalAlignment.CENTER);
+        contentStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        // 内容边框：全边框
+        contentStyle.setBorderTop(BorderStyle.THIN);
+        contentStyle.setBorderBottom(BorderStyle.THIN);
+        contentStyle.setBorderLeft(BorderStyle.THIN);
+        contentStyle.setBorderRight(BorderStyle.THIN);
+
+        // 返回样式策略（表头+内容）
+        return new HorizontalCellStyleStrategy(headStyle, contentStyle);
     }
 
     /**
