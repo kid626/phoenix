@@ -1,6 +1,7 @@
 package com.bruce.phoenix.common.annotation;
 
 import javax.validation.Constraint;
+import javax.validation.Payload;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -17,4 +18,11 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ListValidValidator.class)
 public @interface ListValid {
+
+    String message() default "";
+
+    // 作用参考@Validated和@Valid的区别
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
 }
