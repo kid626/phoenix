@@ -247,6 +247,17 @@ public class RedisComponent implements Lock {
     }
 
     /**
+     * 集合内元素总数
+     *
+     * @param key 集合名
+     * @return 元素总数
+     */
+    public Long zCard(String key) {
+        ZSetOperations<String, String> zSet = redisTemplate.opsForZSet();
+        return zSet.zCard(getKey(key));
+    }
+
+    /**
      * 加入集合
      *
      * @param key   集合名
