@@ -21,6 +21,7 @@ public interface AbstractTreeConfig<T> {
             tree.setId(node.getCode());
             tree.setParentId(node.getPCode());
             tree.setName(node.getName());
+            tree.setWeight(getPriority(node));
             tree.putExtra("ext", node.getExt());
         });
     }
@@ -33,6 +34,7 @@ public interface AbstractTreeConfig<T> {
         vo.setCode(tree.getId());
         vo.setPCode(tree.getParentId());
         vo.setName(tree.getName().toString());
+        vo.setSort((Integer) tree.getWeight());
         vo.setExt((T) tree.get("ext"));
         return vo;
     }
@@ -42,6 +44,10 @@ public interface AbstractTreeConfig<T> {
      */
     default boolean isMatched(BaseTreeVO<T> node, String keyword) {
         return node != null;
+    }
+
+    default int getPriority(BaseTreeVO<T> node) {
+        return node.getSort();
     }
 
 

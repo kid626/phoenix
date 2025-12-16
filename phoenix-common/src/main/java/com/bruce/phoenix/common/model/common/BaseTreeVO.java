@@ -26,6 +26,9 @@ public class BaseTreeVO<T> {
     @ApiModelProperty("父编码")
     private String pCode;
 
+    @ApiModelProperty("排序")
+    private Integer sort;
+
     @ApiModelProperty("是否有子节点")
     private boolean hasChildren;
 
