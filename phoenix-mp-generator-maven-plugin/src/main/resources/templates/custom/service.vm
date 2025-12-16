@@ -6,6 +6,8 @@ import ${package.Entity}.vo.${entity}VO;
 import ${package.Entity}.query.${entity}Query;
 import com.bruce.phoenix.common.model.common.PageData;
 
+import java.util.List;
+
 /**
  * @Copyright Copyright © ${date.substring(0,4)} ${author} . All rights reserved.
  * @Desc ${table.comment}service 层
@@ -50,5 +52,13 @@ public interface ${entity}Service {
      * @return 分页信息
      */
     PageData<${entity}VO> queryByPage(${entity}Query query);
+
+    /**
+     * 列表查询
+     *
+     * @param query ${entity}Query
+     * @return 列表查询
+     */
+    List<${entity}> queryList(${entity}Query query);
 
 }
