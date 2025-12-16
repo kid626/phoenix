@@ -30,4 +30,11 @@ public final class FunctionConstant {
      * 合并两个map
      */
     public final static BiFunction<Map<String, Long>, Map<String, Long>, Map<String, Long>> MERGE_MAP = StreamUtil::merge;
+
+
+    /**
+     * 替换
+     */
+    public final static BiFunction<?, ?, ?> REPLACE_FUNCTION = (existing, replacing) -> replacing;
+
 }
